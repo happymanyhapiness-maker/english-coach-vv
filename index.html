@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>英コミュCoach</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <h1>英コミュCoach <span class="version-badge">v0.4 Phase2-1</span></h1>
+      </div>
+      <button class="ghost-button" id="resetBtn" type="button" title="この試作版の学習ログを消します">ログ初期化</button>
+    </header>
+
+    <main>
+      <section id="homeView" class="view active" aria-label="ホーム">
+        <div id="homeContinueSlot"></div>
+
+        <div class="section-label">
+          <p class="eyebrow">Today</p>
+          <h2>今日の導線</h2>
+          <p>迷ったら、まずはここから。</p>
+        </div>
+
+        <div class="today-grid">
+          <button class="action-card hero-action" data-start-mode="today">
+            <span class="mode-icon">🌱</span>
+            <strong>今日の10問</strong>
+            <small>構文・読解をミックス</small>
+          </button>
+          <button class="action-card" data-start-mode="reviewToday">
+            <span class="mode-icon">🐾</span>
+            <strong>今日やる復習</strong>
+            <small>まずはここだけでOK</small>
+          </button>
+          <button class="action-card" data-action="test-prep">
+            <span class="mode-icon">🎯</span>
+            <strong>テスト対策</strong>
+            <small>範囲を選んで重点チェック</small>
+          </button>
+        </div>
+
+        <div class="stats-strip" aria-label="学習状況">
+          <div class="mini-stat">
+            <span id="statCleared">0</span>
+            <small>習得済み</small>
+          </div>
+          <div class="mini-stat">
+            <span id="statReview">0</span>
+            <small>復習中</small>
+          </div>
+          <div class="mini-stat">
+            <span id="statWeak">0</span>
+            <small>苦手</small>
+          </div>
+        </div>
+
+        <div class="section-label compact">
+          <h2>教材から選ぶ</h2>
+          <p>教材を選んでから、ランダム10問・範囲別・並び替えで選べます。</p>
+        </div>
+
+        <div class="mode-grid">
+          <button class="mode-card" data-material="focus">
+            <span class="mode-icon">🔎</span>
+            <strong>FOCUS構文</strong>
+            <small>ランダム / FOCUS別</small>
+          </button>
+          <button class="mode-card" data-material="reading">
+            <span class="mode-icon">📘</span>
+            <strong>Cutting Edge読解</strong>
+            <small>ランダム / Y別</small>
+          </button>
+          <button class="mode-card" data-material="vocab">
+            <span class="mode-icon">🧩</span>
+            <strong>重要単語</strong>
+            <small>ランダム / プリント別</small>
+          </button>
+        </div>
+      </section>
+
+      <section id="materialView" class="view" aria-label="教材別選択">
+        <div class="quiz-topbar">
+          <button class="back-button" data-nav="homeView" type="button">← ホーム</button>
+        </div>
+        <div class="section-head">
+          <p class="eyebrow">Material</p>
+          <h2 id="materialTitle">教材</h2>
+          <p id="materialLead">どう復習する？</p>
+        </div>
+        <div id="materialActionBox" class="review-list"></div>
+      </section>
+
+      <section id="testPrepView" class="view" aria-label="テスト対策">
+        <div class="quiz-topbar">
+          <button class="back-button" data-nav="homeView" type="button">← ホーム</button>
+        </div>
+        <div class="section-head">
+          <p class="eyebrow">Test Prep</p>
+          <h2>テスト対策</h2>
+          <p>今回の範囲を選んで、範囲内の weak / review / new / cleared を重点チェックします。</p>
+        </div>
+
+        <article class="test-card">
+          <h3>今回の範囲を選ぶ</h3>
+          <div class="range-grid">
+            <label>
+              <span>Cutting Edge</span>
+              <div class="range-row">
+                <select id="ceStart"></select>
+                <span>〜</span>
+                <select id="ceEnd"></select>
+              </div>
+            </label>
+            <label>
+              <span>FOCUS</span>
+              <div class="range-row">
+                <select id="focusStart"></select>
+                <span>〜</span>
+                <select id="focusEnd"></select>
+              </div>
+            </label>
+          </div>
+          <div class="coming-soon-box">
+            <strong>Rules / 英作文</strong>
+            <small>問題データ追加後に対応予定</small>
+          </div>
+          <div id="testPrepSummary" class="test-summary"></div>
+          <button id="testPrepStartBtn" class="primary-button wide" type="button">この範囲で始める</button>
+        </article>
+      </section>
+
+      <section id="quizView" class="view" aria-label="クイズ">
+        <div class="quiz-topbar">
+          <button class="back-button" id="backHomeBtn" type="button">← ホーム</button>
+          <button class="ghost-button" id="stopBtn" type="button">今日はここまで</button>
+          <div class="progress-pill" id="progressPill">1 / 10</div>
+        </div>
+
+        <article class="question-card">
+          <div class="source-row">
+            <span id="sourceText">参照元</span>
+            <span id="lastBadge" class="last-badge hidden">前回ミス</span>
+          </div>
+          <h2 id="questionTitle">タイトル</h2>
+          <p id="questionText" class="question-text">問題文</p>
+          <div id="choicesBox" class="choices-box"></div>
+        </article>
+
+        <section id="feedbackBox" class="feedback-box hidden" aria-live="polite">
+          <div class="feedback-head">
+            <strong id="feedbackTitle">いいね！</strong>
+            <span id="mistakeTagBadge" class="tag-badge"></span>
+          </div>
+          <p id="feedbackText"></p>
+          <button id="nextBtn" class="primary-button wide" type="button">次へ</button>
+        </section>
+      </section>
+
+      <section id="resultView" class="view" aria-label="結果">
+        <div class="result-card">
+          <p class="eyebrow">おつかれさま</p>
+          <h2 id="resultTitle">おつかれさま</h2>
+          <p id="resultSummary">今回の結果</p>
+          <div id="resultMistakes" class="result-list"></div>
+          <div class="result-actions">
+            <button class="primary-button" id="resultHomeBtn" type="button">今日はここまで</button>
+            <button class="secondary-button" id="againBtn" type="button">確認ポイントだけやる</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="reviewView" class="view" aria-label="復習">
+        <div class="section-head">
+          <h2>復習</h2>
+          <p>今日やる復習と、余裕がある日の追加復習</p>
+        </div>
+        <div id="reviewContinueSlot"></div>
+        <div id="reviewList" class="review-list"></div>
+      </section>
+
+      <section id="analysisView" class="view" aria-label="分析">
+        <div class="section-head">
+          <h2>分析</h2>
+          <p>今日の先生メモと、次に確認するポイント</p>
+        </div>
+
+        <div id="todayReflectionCard" class="analysis-card full today-reflection"></div>
+        <div class="analysis-grid">
+          <article class="analysis-card">
+            <h3>習得度チェック</h3>
+            <div class="mastery-row"><span>習得済み</span><strong id="analysisCleared">0</strong></div>
+            <div class="mastery-row"><span>復習中</span><strong id="analysisReview">0</strong></div>
+            <div class="mastery-row"><span>苦手</span><strong id="analysisWeak">0</strong></div>
+            <div class="mastery-row"><span>未着手</span><strong id="analysisNew">0</strong></div>
+          </article>
+
+          <article class="analysis-card">
+            <h3>残っている確認ポイント</h3>
+            <div id="weakTagsList" class="tag-list"></div>
+          </article>
+
+          <article class="analysis-card full learning-log-card">
+            <div class="learning-log-head">
+              <div>
+                <h3>学習ログ</h3>
+                <p>くわしい解答履歴は必要なときだけ開けます。AI分析に使う場合はコピーできます。</p>
+              </div>
+            </div>
+            <div class="learning-log-actions">
+              <button id="toggleTodayLearningBtn" class="secondary-button" type="button">今日の学習ログを開く</button>
+              <button id="copyAnalysisLogBtn" class="ghost-button copy-log-button" type="button">学習ログをコピー</button>
+            </div>
+            <div id="todayLearningBlock" class="learning-log-body hidden">
+              <h3>今日の学習</h3>
+              <div id="todayLearningList" class="learning-list"></div>
+              <div id="todayLearningPager" class="pager-row"></div>
+              <button id="togglePreviousLearningBtn" class="secondary-button wide subtle-toggle" type="button">前回の学習も見る</button>
+              <div id="previousLearningBlock" class="previous-learning-block hidden">
+                <h3>前回の学習</h3>
+                <div id="previousLearningList" class="learning-list"></div>
+                <div id="previousLearningPager" class="pager-row"></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="メインナビゲーション">
+      <button class="nav-item active" data-nav="homeView">ホーム</button>
+      <button class="nav-item" data-nav="reviewView">復習</button>
+      <button class="nav-item" data-nav="analysisView">分析</button>
+    </nav>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
