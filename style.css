@@ -1121,3 +1121,62 @@ h2, h3, p { margin-top: 0; }
 @media (max-width: 640px) {
   .learning-log-actions { display: grid; }
 }
+
+/* v0.4 Phase2-1.3: recommended drill progress */
+.drill-progress {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 12px;
+}
+
+.drill-progress-bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--teal-soft);
+  border: 1px solid rgba(63, 111, 107, 0.12);
+}
+
+.drill-progress-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--teal-deep);
+  transition: width 180ms ease;
+}
+
+.drill-progress small {
+  color: var(--muted);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.drill-preview-list li.done {
+  color: var(--muted);
+}
+
+.drill-complete-box {
+  margin-top: 10px;
+  padding: 13px;
+  border: 1px solid rgba(109,175,139,0.35);
+  border-radius: var(--radius-md);
+  background: var(--mint-soft);
+}
+
+.drill-complete-box strong {
+  display: block;
+  color: #3A765A;
+  margin-bottom: 6px;
+}
+
+.drill-complete-box p {
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.drill-complete-box small {
+  color: var(--muted);
+  line-height: 1.5;
+}

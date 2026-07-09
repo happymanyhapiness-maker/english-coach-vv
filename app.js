@@ -2,6 +2,7 @@
   const STORAGE_KEY = "eikomiCoachPrototypeLog.v03";
   const SESSION_KEY = "eikomiCoachPrototypeActiveSession.v03";
   const TODAY_SESSION_KEY = "eikomiCoachPrototypeTodaySession.v03";
+  const RECOMMENDED_DRILL_KEY = "eikomiCoachPrototypeRecommendedDrill.v04";
 
   const questions = (typeof QUESTIONS !== "undefined" ? QUESTIONS : [])
     .filter(q => q && q.id && q.choices && q.choices.length === 4)
@@ -431,9 +432,6 @@
   function questionsForTestPrep(options) {
     const selected = new Map();
     questions.forEach(q => {
-      // テスト対策は FOCUS / Cutting Edge の読解・構文問題だけを対象にする。
-      // 重要単語（teacher_vocab）は専用メニューで扱うため、ここでは除外する。
-      if (q.type === "teacher_vocab") return;
       const ce = extractNumber(q, /Cutting Edge Y(\d+)/);
       const focus = extractNumber(q, /FOCUS (\d+)/);
       if (inRange(ce, options.ceStart, options.ceEnd)) selected.set(q.id, q);
@@ -654,6 +652,7 @@
     state.sessionResults.push({ question: originalQ, correct, countedAsMistake, attemptMode, selected: selectedOriginalIndex });
     saveRecords();
     updateActiveSessionAfterAnswer(originalQ.id);
+    if (state.currentMode === "recommendedDrill") updateRecommendedDrillProgress(originalQ.id);
     renderFeedback(originalQ, correct, countedAsMistake, attemptMode, r);
   }
 
@@ -820,7 +819,15 @@
     homeBtn.textContent = "今日はここまで";
     actionBtn.classList.remove("hidden");
 
-    if (wrong) {
+    if (state.currentMode === "recommendedDrill") {
+      const drillState = normalizeRecommendedDrillState(loadRecommendedDrillState());
+      el("resultTitle").textContent = "おすすめドリル完了！";
+      el("resultSummary").textContent = drillState?.finished
+        ? `Coachおすすめの確認ポイント、今日はクリアです😊 ${total}問確認できました。`
+        : `${total}問確認できました。続きは分析タブまたはホームの続きからできます。`;
+      actionBtn.classList.add("hidden");
+      state.resultAction = null;
+    } else if (wrong) {
       actionBtn.textContent = "確認ポイントだけやる";
       state.resultAction = { mode: "sessionMistakes", options: { ids: wrongItems.map(r => r.question.id) } };
     } else if (state.currentMode === "today") {
@@ -971,13 +978,9 @@
       btn.className = "material-row review-action";
       btn.dataset.materialPrint = material;
       btn.dataset.printName = group.key;
-      const allCleared = group.total > 0 && group.counts.cleared === group.total;
-      if (allCleared) btn.dataset.allCleared = "true";
       btn.innerHTML = `
         <strong>${escapeHtml(group.label)}</strong>
-        <span>${allCleared
-          ? `全${group.total}問クリア済み`
-          : `習得済み${group.counts.cleared}・未習得${group.counts.new}・復習${group.reviewTotal}・全${group.total}問`}</span>
+        <span>未習得${group.counts.new}・復習${group.reviewTotal}・全${group.total}問</span>
       `;
       list.appendChild(btn);
     });
@@ -1201,16 +1204,92 @@
     return [...notRecent, ...recent].slice(0, 3);
   }
 
-  function buildRecommendedDrillSession(options = {}) {
-    let tag = normalizeMistakeTag(options.mistakeTag);
-    if (!tag || tag === "unknown") tag = getTopMistakeInfo().top?.tag || "pinpoint";
-    let result = recommendedDrillCandidates(tag);
+  function selectRecommendedDrillItems(tag) {
+    let normalized = normalizeMistakeTag(tag);
+    if (!normalized || normalized === "unknown") normalized = getTopMistakeInfo().top?.tag || "pinpoint";
+    let result = recommendedDrillCandidates(normalized);
 
     if (result.length < 3) {
       const fallback = shuffle(questions.filter(q => q.type !== "teacher_vocab" && !result.some(item => item.id === q.id)));
       result = [...result, ...fallback].slice(0, 3);
     }
     return result;
+  }
+
+  function loadRecommendedDrillState() {
+    try { return JSON.parse(localStorage.getItem(RECOMMENDED_DRILL_KEY)) || null; }
+    catch { return null; }
+  }
+
+  function saveRecommendedDrillState(drillState) {
+    if (!drillState) localStorage.removeItem(RECOMMENDED_DRILL_KEY);
+    else localStorage.setItem(RECOMMENDED_DRILL_KEY, JSON.stringify(drillState));
+  }
+
+  function normalizeRecommendedDrillState(drillState) {
+    if (!drillState || drillState.appDate !== getAppTodayDate() || !Array.isArray(drillState.ids)) return null;
+    const validIds = drillState.ids.filter(id => questions.some(q => q.id === id));
+    if (!validIds.length) return null;
+    const completedIds = Array.isArray(drillState.completedIds)
+      ? drillState.completedIds.filter(id => validIds.includes(id))
+      : [];
+    const uniqueCompleted = [...new Set(completedIds)];
+    return {
+      ...drillState,
+      ids: validIds,
+      completedIds: uniqueCompleted,
+      finished: validIds.every(id => uniqueCompleted.includes(id))
+    };
+  }
+
+  function getRecommendedDrillState(options = {}, createIfMissing = true) {
+    const rawSaved = loadRecommendedDrillState();
+    const saved = normalizeRecommendedDrillState(rawSaved);
+    if (saved) {
+      saveRecommendedDrillState(saved);
+      return saved;
+    }
+    if (!createIfMissing) return null;
+
+    let tag = normalizeMistakeTag(options.mistakeTag);
+    if (!tag || tag === "unknown") tag = getTopMistakeInfo().top?.tag || "pinpoint";
+    const items = selectRecommendedDrillItems(tag);
+    if (!items.length) return null;
+
+    const drillState = {
+      appDate: getAppTodayDate(),
+      tag,
+      ids: items.map(q => q.id),
+      completedIds: [],
+      finished: false,
+      createdAt: new Date().toISOString()
+    };
+    saveRecommendedDrillState(drillState);
+    return drillState;
+  }
+
+  function recommendedDrillQuestions(drillState, onlyRemaining = true) {
+    if (!drillState) return [];
+    const completed = new Set(drillState.completedIds || []);
+    return (drillState.ids || [])
+      .filter(id => !onlyRemaining || !completed.has(id))
+      .map(id => questions.find(q => q.id === id))
+      .filter(Boolean);
+  }
+
+  function buildRecommendedDrillSession(options = {}) {
+    const drillState = getRecommendedDrillState(options, true);
+    if (!drillState || drillState.finished) return [];
+    return recommendedDrillQuestions(drillState, true);
+  }
+
+  function updateRecommendedDrillProgress(questionId) {
+    const drillState = normalizeRecommendedDrillState(loadRecommendedDrillState());
+    if (!drillState || !drillState.ids.includes(questionId)) return;
+    if (!drillState.completedIds.includes(questionId)) drillState.completedIds.push(questionId);
+    drillState.finished = drillState.ids.every(id => drillState.completedIds.includes(id));
+    drillState.updatedAt = new Date().toISOString();
+    saveRecommendedDrillState(drillState);
   }
 
   function buildTeacherDiagnosis(topInfo) {
@@ -1271,17 +1350,33 @@
     const topInfo = getTopMistakeInfo();
     const diagnosis = buildTeacherDiagnosis(topInfo);
     const stats = topInfo.stats.slice(0, 3);
-    const drillItems = buildRecommendedDrillSession({ mistakeTag: diagnosis.tag });
-    const canStart = drillItems.length > 0;
+    const drillState = getRecommendedDrillState({ mistakeTag: diagnosis.tag }, true);
+    const allDrillItems = recommendedDrillQuestions(drillState, false);
+    const remainingDrillItems = recommendedDrillQuestions(drillState, true);
+    const completedCount = drillState?.completedIds?.length || 0;
+    const totalDrillCount = drillState?.ids?.length || 0;
+    const drillFinished = Boolean(drillState?.finished);
+    const canStart = remainingDrillItems.length > 0 && !drillFinished;
     const scopeLabel = topInfo.scope === "today" ? "今日の確認ポイントTOP3" : "最近の確認ポイントTOP3";
 
     const statsHtml = stats.length
       ? stats.map(item => `<div class="tag-item"><span>${escapeHtml(item.label)}</span><strong>${item.count}</strong></div>`).join("")
       : `<div class="tag-item"><span>確認ポイント</span><strong>なし</strong></div>`;
 
-    const drillPreview = canStart
-      ? drillItems.map(q => `<li>${escapeHtml(q.title || q.id)} <small>${escapeHtml(q.source || "")}</small></li>`).join("")
+    const drillPreview = allDrillItems.length
+      ? allDrillItems.map(q => {
+          const done = drillState?.completedIds?.includes(q.id);
+          return `<li class="${done ? "done" : ""}">${done ? "✅" : "□"} ${escapeHtml(q.title || q.id)} <small>${escapeHtml(q.source || "")}</small></li>`;
+        }).join("")
       : `<li>今出せる確認問題がまだありません</li>`;
+
+    const drillProgressHtml = totalDrillCount
+      ? `<div class="drill-progress" aria-label="おすすめドリル進捗"><div class="drill-progress-bar"><span style="width:${Math.round((completedCount / totalDrillCount) * 100)}%"></span></div><small>${completedCount} / ${totalDrillCount}</small></div>`
+      : "";
+
+    const drillActionHtml = drillFinished
+      ? `<div class="drill-complete-box"><strong>🎉 今日のおすすめドリル完了！</strong><p>Coachおすすめの確認ポイント、今日はクリアです😊</p><small>追加でやるなら「今日やる復習」か「教材から選ぶ」へ進もう。</small></div>`
+      : `<button class="primary-button wide" type="button" data-action="recommended-drill" data-mistake-tag="${escapeHtml(drillState?.tag || diagnosis.tag)}" ${canStart ? "" : "disabled"}>${completedCount > 0 ? "おすすめドリルを続ける" : "おすすめドリルを始める"}</button>`;
 
     card.innerHTML = `
       <div class="teacher-diagnosis-head">
@@ -1297,9 +1392,10 @@
         </div>
         <div class="teacher-panel teacher-drill-panel">
           <h4>${escapeHtml(diagnosis.drillTitle)}</h4>
-          <p>${escapeHtml(diagnosis.drillMessage)}</p>
+          <p>${drillFinished ? "今日のおすすめは確認済みです。" : escapeHtml(diagnosis.drillMessage)}</p>
+          ${drillProgressHtml}
           <ul class="drill-preview-list">${drillPreview}</ul>
-          <button class="primary-button wide" type="button" data-action="recommended-drill" data-mistake-tag="${escapeHtml(diagnosis.tag)}" ${canStart ? "" : "disabled"}>おすすめドリルを始める</button>
+          ${drillActionHtml}
         </div>
       </div>
     `;
@@ -1403,7 +1499,8 @@
     const diagnosis = buildTeacherDiagnosis(topInfo);
     const stats = topInfo.stats.slice(0, 3);
     const attempts = getTodayAttemptsForLog();
-    const drillItems = buildRecommendedDrillSession({ mistakeTag: diagnosis.tag });
+    const drillState = getRecommendedDrillState({ mistakeTag: diagnosis.tag }, true);
+    const drillItems = recommendedDrillQuestions(drillState, false);
 
     const lines = [];
     lines.push("英コミュCoach 学習ログ");
@@ -1660,14 +1757,7 @@
 
     const materialPrintBtn = e.target.closest("[data-material-print]");
     if (materialPrintBtn) {
-      const options = { material: materialPrintBtn.dataset.materialPrint, printName: materialPrintBtn.dataset.printName };
-      if (materialPrintBtn.dataset.allCleared === "true") {
-        const label = materialPrintBtn.querySelector("strong")?.textContent || "この範囲";
-        const items = questionsForMaterialPrint(options.material, options.printName);
-        const ok = confirm(`${label} は全${items.length}問クリア済みです。\nもう一度確認する？`);
-        if (!ok) return;
-      }
-      startQuiz("materialPrint", options);
+      startQuiz("materialPrint", { material: materialPrintBtn.dataset.materialPrint, printName: materialPrintBtn.dataset.printName });
       return;
     }
 
