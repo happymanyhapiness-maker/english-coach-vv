@@ -431,6 +431,9 @@
   function questionsForTestPrep(options) {
     const selected = new Map();
     questions.forEach(q => {
+      // テスト対策は FOCUS / Cutting Edge の読解・構文問題だけを対象にする。
+      // 重要単語（teacher_vocab）は専用メニューで扱うため、ここでは除外する。
+      if (q.type === "teacher_vocab") return;
       const ce = extractNumber(q, /Cutting Edge Y(\d+)/);
       const focus = extractNumber(q, /FOCUS (\d+)/);
       if (inRange(ce, options.ceStart, options.ceEnd)) selected.set(q.id, q);
@@ -968,9 +971,13 @@
       btn.className = "material-row review-action";
       btn.dataset.materialPrint = material;
       btn.dataset.printName = group.key;
+      const allCleared = group.total > 0 && group.counts.cleared === group.total;
+      if (allCleared) btn.dataset.allCleared = "true";
       btn.innerHTML = `
         <strong>${escapeHtml(group.label)}</strong>
-        <span>未習得${group.counts.new}・復習${group.reviewTotal}・全${group.total}問</span>
+        <span>${allCleared
+          ? `全${group.total}問クリア済み`
+          : `習得済み${group.counts.cleared}・未習得${group.counts.new}・復習${group.reviewTotal}・全${group.total}問`}</span>
       `;
       list.appendChild(btn);
     });
@@ -1211,10 +1218,10 @@
     const scopeText = topInfo.scope === "today" ? "今日" : "最近";
     if (!totalWrong) {
       return {
-        title: "今日はかなり安定しています",
-        message: "確認ポイントはまだ少なめです。このまま新しい問題に進んでもOK。",
-        drillTitle: "軽く3問だけ確認",
-        drillMessage: "必要なら、読解問題を3問だけ追加で確認できます。",
+        title: "今日はいい感じに進められています",
+        message: "確認ポイントは少なめです。このまま終わっても、新しい問題に少し進んでもOK。",
+        drillTitle: "次におすすめ",
+        drillMessage: "必要なら、読解問題を3問だけ確認しておこう。",
         tag: "pinpoint"
       };
     }
@@ -1227,10 +1234,10 @@
     };
 
     return {
-      title: `${scopeText}は「${advice.title}」で少し迷いが出ています`,
+      title: `${scopeText}は「${advice.title}」を少し確認しておくとよさそう`,
       message: advice.message,
-      drillTitle: advice.drillLabel,
-      drillMessage: `${mistakeTagLabel(top.tag)}を3問だけ確認しよう。`,
+      drillTitle: "次におすすめ",
+      drillMessage: `「${mistakeTagLabel(top.tag)}」を3問だけ確認しておこう。`,
       tag: top.tag
     };
   }
@@ -1266,7 +1273,7 @@
     const stats = topInfo.stats.slice(0, 3);
     const drillItems = buildRecommendedDrillSession({ mistakeTag: diagnosis.tag });
     const canStart = drillItems.length > 0;
-    const scopeLabel = topInfo.scope === "today" ? "今日のつまずきTOP3" : "最近のつまずきTOP3";
+    const scopeLabel = topInfo.scope === "today" ? "今日の確認ポイントTOP3" : "最近の確認ポイントTOP3";
 
     const statsHtml = stats.length
       ? stats.map(item => `<div class="tag-item"><span>${escapeHtml(item.label)}</span><strong>${item.count}</strong></div>`).join("")
@@ -1274,11 +1281,11 @@
 
     const drillPreview = canStart
       ? drillItems.map(q => `<li>${escapeHtml(q.title || q.id)} <small>${escapeHtml(q.source || "")}</small></li>`).join("")
-      : `<li>おすすめできる問題がまだありません</li>`;
+      : `<li>今出せる確認問題がまだありません</li>`;
 
     card.innerHTML = `
       <div class="teacher-diagnosis-head">
-        <span class="teacher-badge">先生メモ</span>
+        <span class="teacher-badge">メモ</span>
         <span class="teacher-summary">${total}問 / 正解 ${correct} / ミス ${misses} / 復習あと${dueCount}問</span>
       </div>
       <h3>${escapeHtml(diagnosis.title)}</h3>
@@ -1344,22 +1351,24 @@
     const attempts = getAllAttemptsWithQuestionId();
     const today = getAppTodayDate();
     const todayAttempts = attempts.filter(a => (a.appDate || toAppDate(a.answeredAt)) === today);
+    const todaySummaries = buildLearningSummaries(todayAttempts);
     const previousDate = getPreviousLearningDate(attempts, today);
     const previousAttempts = previousDate
       ? attempts.filter(a => (a.appDate || toAppDate(a.answeredAt)) === previousDate)
       : [];
+    const previousSummaries = buildLearningSummaries(previousAttempts);
 
     const todayToggleBtn = el("toggleTodayLearningBtn");
     const todayBlock = el("todayLearningBlock");
     if (todayToggleBtn) {
       todayToggleBtn.textContent = state.showTodayLearning
         ? "今日の学習ログを閉じる"
-        : `今日の学習ログを開く（${todayAttempts.length}件）`;
+        : `今日の学習ログを開く（${todaySummaries.length}問）`;
     }
     todayBlock?.classList.toggle("hidden", !state.showTodayLearning);
 
     if (state.showTodayLearning) {
-      renderLearningList("today", todayAttempts, el("todayLearningList"), el("todayLearningPager"), "今日の学習はまだありません");
+      renderLearningList("today", todaySummaries, el("todayLearningList"), el("todayLearningPager"), "今日の学習はまだありません");
     } else {
       if (el("todayLearningList")) el("todayLearningList").innerHTML = "";
       if (el("todayLearningPager")) el("todayLearningPager").innerHTML = "";
@@ -1367,17 +1376,17 @@
 
     const toggleBtn = el("togglePreviousLearningBtn");
     const previousBlock = el("previousLearningBlock");
-    if (!state.showTodayLearning || !previousAttempts.length) {
+    if (!state.showTodayLearning || !previousSummaries.length) {
       toggleBtn?.classList.add("hidden");
       previousBlock?.classList.add("hidden");
       return;
     }
 
     toggleBtn?.classList.remove("hidden");
-    toggleBtn.textContent = state.showPreviousLearning ? "前回の学習を閉じる" : `前回の学習も見る（${previousDate}）`;
+    toggleBtn.textContent = state.showPreviousLearning ? "前回の学習を閉じる" : `前回の学習も見る（${previousDate} / ${previousSummaries.length}問）`;
     previousBlock?.classList.toggle("hidden", !state.showPreviousLearning);
     if (state.showPreviousLearning) {
-      renderLearningList("previous", previousAttempts, el("previousLearningList"), el("previousLearningPager"), "前回の学習はありません");
+      renderLearningList("previous", previousSummaries, el("previousLearningList"), el("previousLearningPager"), "前回の学習はありません");
     }
   }
 
@@ -1400,12 +1409,12 @@
     lines.push("英コミュCoach 学習ログ");
     lines.push(`日付：${today}`);
     lines.push("");
-    lines.push("【今日の診断】");
+    lines.push("【今日のメモ】");
     lines.push(diagnosis.title);
     lines.push(diagnosis.message);
     lines.push(`おすすめ：${diagnosis.drillTitle}`);
     lines.push("");
-    lines.push("【つまずきTOP3】");
+    lines.push("【確認ポイントTOP3】");
     if (stats.length) {
       stats.forEach((item, index) => lines.push(`${index + 1}. ${item.label}：${item.count}回`));
     } else {
@@ -1475,26 +1484,59 @@
     }
   }
 
-  function renderLearningList(kind, attempts, listEl, pagerEl, emptyText) {
+  function buildLearningSummaries(attempts) {
+    const grouped = new Map();
+    attempts.forEach(attempt => {
+      if (!attempt.questionId) return;
+      if (!grouped.has(attempt.questionId)) grouped.set(attempt.questionId, []);
+      grouped.get(attempt.questionId).push(attempt);
+    });
+
+    return [...grouped.entries()].map(([questionId, items]) => {
+      const sorted = [...items].sort((a, b) => new Date(a.answeredAt || 0) - new Date(b.answeredAt || 0));
+      const first = sorted[0];
+      const last = sorted[sorted.length - 1];
+      let status = "needs-check";
+      if (sorted.length === 1 && first?.correct) status = "clean-clear";
+      else if (sorted.length >= 2 && last?.correct) status = "retry-clear";
+
+      return {
+        questionId,
+        attempts: sorted,
+        first,
+        last,
+        status,
+        attemptCount: sorted.length,
+        latestAnsweredAt: last?.answeredAt || ""
+      };
+    }).sort((a, b) => new Date(b.latestAnsweredAt || 0) - new Date(a.latestAnsweredAt || 0));
+  }
+
+  function trimQuestionText(text, length = 72) {
+    const compact = String(text || "問題文データなし").replace(/\s+/g, " ").trim();
+    return compact.length > length ? `${compact.slice(0, length)}…` : compact;
+  }
+
+  function renderLearningList(kind, summaries, listEl, pagerEl, emptyText) {
     if (!listEl || !pagerEl) return;
     const pageSize = 20;
-    const maxPage = Math.max(0, Math.ceil(attempts.length / pageSize) - 1);
+    const maxPage = Math.max(0, Math.ceil(summaries.length / pageSize) - 1);
     state.learningPages[kind] = Math.min(state.learningPages[kind] || 0, maxPage);
     const page = state.learningPages[kind];
     const start = page * pageSize;
-    const pageItems = attempts.slice(start, start + pageSize);
+    const pageItems = summaries.slice(start, start + pageSize);
 
     listEl.innerHTML = "";
     pagerEl.innerHTML = "";
-    if (!attempts.length) {
+    if (!summaries.length) {
       listEl.innerHTML = `<div class="learning-empty">${escapeHtml(emptyText)}</div>`;
       return;
     }
 
-    pageItems.forEach(a => listEl.appendChild(createLearningCard(a)));
+    pageItems.forEach(summary => listEl.appendChild(createLearningCard(summary)));
 
     const info = document.createElement("span");
-    info.textContent = `${start + 1}〜${Math.min(start + pageSize, attempts.length)}件を表示中 / 全${attempts.length}件`;
+    info.textContent = `${start + 1}〜${Math.min(start + pageSize, summaries.length)}問を表示中 / 全${summaries.length}問`;
     pagerEl.appendChild(info);
 
     if (page > 0) {
@@ -1517,21 +1559,34 @@
     }
   }
 
-  function createLearningCard(attempt) {
-    const q = questions.find(item => item.id === attempt.questionId);
+  function createLearningCard(summary) {
+    const q = questions.find(item => item.id === summary.questionId);
     const correctText = q?.choices?.[q.answer] ?? "正解データなし";
-    const selectedText = q?.choices?.[attempt.selected] ?? "選択記録なし";
+    const selectedText = q?.choices?.[summary.last?.selected] ?? "選択記録なし";
     const card = document.createElement("article");
-    card.className = `learning-card ${attempt.correct ? "is-correct" : "is-wrong"}`;
+    const statusClass = `is-${summary.status}`;
+    const isCleanClear = summary.status === "clean-clear";
+    const isRetryClear = summary.status === "retry-clear";
+    const isNeedsCheck = summary.status === "needs-check";
+    const icon = isCleanClear ? "✅" : isRetryClear ? "🟡" : "❌";
+    const statusText = isCleanClear ? "1回目でクリア" : isRetryClear ? `${summary.attemptCount}回目でクリア` : "確認ポイント";
+    const pillClass = isCleanClear ? "clean" : isRetryClear ? "retry" : "needs";
+    const source = q?.source || "参照元未設定";
+    const title = q?.title || summary.questionId;
+
+    card.className = `learning-card ${statusClass}`;
     card.innerHTML = `
       <div class="learning-card-head">
-        <strong>${escapeHtml(q?.title || attempt.questionId)}</strong>
-        <span class="result-pill ${attempt.correct ? "correct" : "wrong"}">${attempt.correct ? "正解" : "確認ポイント"}</span>
+        <div class="learning-card-title">
+          <span class="learning-icon" aria-hidden="true">${icon}</span>
+          <strong>${escapeHtml(source)}｜${escapeHtml(title)}</strong>
+        </div>
+        <span class="result-pill ${pillClass}">${escapeHtml(statusText)}</span>
       </div>
-      <p><b>Q：</b>${escapeHtml(q?.question || "問題文データなし")}</p>
-      <p><b>A：</b><span class="answer-text">${escapeHtml(correctText)}</span></p>
-      ${attempt.correct ? "" : `<p><b>誤答：</b><span class="wrong-text">${escapeHtml(selectedText)}</span></p>`}
-      <small>確認ポイント：${escapeHtml(mistakeTagLabel(q?.mistakeTag))}</small>
+      <p class="learning-question">${escapeHtml(trimQuestionText(q?.question))}</p>
+      ${isNeedsCheck ? `<p><b>正解：</b><span class="answer-text">${escapeHtml(correctText)}</span></p>` : ""}
+      ${isNeedsCheck ? `<p><b>選んだ答え：</b><span class="wrong-text">${escapeHtml(selectedText)}</span></p>` : ""}
+      ${isNeedsCheck ? `<small>ポイント：${escapeHtml(mistakeTagLabel(q?.mistakeTag))}</small>` : ""}
     `;
     return card;
   }
@@ -1605,7 +1660,14 @@
 
     const materialPrintBtn = e.target.closest("[data-material-print]");
     if (materialPrintBtn) {
-      startQuiz("materialPrint", { material: materialPrintBtn.dataset.materialPrint, printName: materialPrintBtn.dataset.printName });
+      const options = { material: materialPrintBtn.dataset.materialPrint, printName: materialPrintBtn.dataset.printName };
+      if (materialPrintBtn.dataset.allCleared === "true") {
+        const label = materialPrintBtn.querySelector("strong")?.textContent || "この範囲";
+        const items = questionsForMaterialPrint(options.material, options.printName);
+        const ok = confirm(`${label} は全${items.length}問クリア済みです。\nもう一度確認する？`);
+        if (!ok) return;
+      }
+      startQuiz("materialPrint", options);
       return;
     }
 
