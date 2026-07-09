@@ -1,7 +1,13 @@
-// questions_test1.js
-// 第一回英語定期テスト対策アプリ用 追加問題データ
-// 作成方針: status は確認前のため draft。確認後に active へ変更。
-// 注意: GitHub に授業プリントPDFは置かず、この questions.js データだけを統合する想定。
+// questions.js
+// 英コミュCoach 第一回 定期テスト対策 問題データ
+// BASE: v0.4.1 増補済み310問版
+// UPDATED: 2026-07-09 読解系4件の選択肢品質修正を再適用
+// TOTAL_EXPECTED: 310
+// teacher_vocab: 254
+// non_teacher_vocab: 56
+// FOCUS_1_EXPECTED: 4
+// V04_EXTRA_EXPECTED: 10
+// 注意: 283問版 questions_test1.js 系で上書きしないこと
 
 const QUESTIONS = [
   {
@@ -9,23 +15,23 @@ const QUESTIONS = [
     "testRound": "1st",
     "type": "reading_reference",
     "source": "Cutting Edge Y01 問題1",
-    "title": "it が指す内容",
-    "question": "It makes us wonder why scientists can’t find a treatment for the regular cold ... の It が指す内容として最も自然なものは？",
+    "title": "短い文脈で読む",
+    "question": "次の英文を読んで、It が指す内容として最も自然なものは？\n\n英文：\nA majority of people catch colds during the spring or winter. It makes us wonder why scientists can’t find a treatment for the regular cold.",
     "choices": [
-      "scientists can’t find a treatment",
-      "the regular cold",
+      "scientists can send people to the moon",
       "spring or winter",
+      "a treatment for the regular cold",
       "most people catch colds in spring or winter"
     ],
     "answer": 3,
-    "explanation": "It を spring or winter や the regular cold に置き換えると不自然。ここでは直前の文内容全体、つまり『大多数の人々が春や冬の間に風邪をひくこと（most people catch colds in spring or winter）』を受けている。参照：Cutting Edge Y01 問題1",
+    "explanation": "It は直前の文全体を受けている。ここでは「大多数の人が春や冬に風邪をひくこと」が、なぜ普通の風邪の治療法を見つけられないのかと私たちに思わせる、という流れになる。参照：Cutting Edge Y01 問題1",
     "tags": [
       "第一回",
       "Cutting Edge Y01",
       "指示語",
       "it"
     ],
-    "mistakeTag": "指示語の戻り先ミス",
+    "mistakeTag": "reference",
     "status": "draft"
   },
   {
@@ -49,7 +55,7 @@ const QUESTIONS = [
       "構文",
       "make O do"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -58,22 +64,22 @@ const QUESTIONS = [
     "type": "reading_example",
     "source": "Cutting Edge Y01 問題3",
     "title": "具体例を探す",
-    "question": "When a cold attacks your body, your body works hard to stop it. の具体例として最も本文に合うものは？",
+    "question": "次の英文を読んで、「体が風邪を止めようと働く」の具体例として最も適切なものは？\n\n英文：\nWhen a cold attacks your body, your body works hard to stop it. For example, blood flows quickly to your nose and as a result, you can’t breathe very well.",
     "choices": [
-      "春や冬に風邪をひきやすいこと",
-      "鼻の血流が増え呼吸が苦しくなること",
-      "月に人を送る技術があること",
-      "風邪薬がすぐに効くこと"
+      "春や冬に風邪をひくこと",
+      "鼻の血流が増え、呼吸が苦しくなること",
+      "科学者が治療法を探すこと",
+      "薬で症状を和らげること"
     ],
     "answer": 1,
-    "explanation": "直後の For example 以下が具体例。blood flows quickly to your nose and as a result, you can’t breathe very well が『体が風邪を止めようと働く』例になっている。参照：Cutting Edge Y01 問題3",
+    "explanation": "直後の For example 以下が具体例。blood flows quickly to your nose and as a result, you can’t breathe very well が、「体が風邪を止めようと働く」例になっている。参照：Cutting Edge Y01 問題3",
     "tags": [
       "第一回",
       "Cutting Edge Y01",
       "具体例",
       "本文根拠"
     ],
-    "mistakeTag": "本文根拠を見つけられない",
+    "mistakeTag": "pinpoint",
     "status": "draft"
   },
   {
@@ -97,7 +103,7 @@ const QUESTIONS = [
       "接続語",
       "as a result"
     ],
-    "mistakeTag": "文脈判断ミス",
+    "mistakeTag": "inference",
     "status": "draft"
   },
   {
@@ -121,7 +127,7 @@ const QUESTIONS = [
       "文脈語彙",
       "熟語推測"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -146,7 +152,7 @@ const QUESTIONS = [
       "what",
       "和訳ポイント"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -170,7 +176,7 @@ const QUESTIONS = [
       "内容一致",
       "数字"
     ],
-    "mistakeTag": "選択肢の読み違い",
+    "mistakeTag": "tf",
     "status": "draft"
   },
   {
@@ -178,23 +184,23 @@ const QUESTIONS = [
     "testRound": "1st",
     "type": "reading_reference",
     "source": "Cutting Edge Y03 問題2",
-    "title": "It is called journaling.",
-    "question": "It is called journaling. の It が指す内容として最も自然なものは？",
+    "title": "短い文脈で読む",
+    "question": "次の英文を読んで、2文目の It が指す内容として最も自然なものは？\n\n英文：\nIt also has spaces to write about what you’re doing or thinking. It is called journaling.",
     "choices": [
-      "紫色の花",
+      "花の色を選ぶこと",
       "自分の行動や考えを書くこと",
       "ストレスを減らす専門家",
-      "塗り絵の本そのもの"
+      "塗り絵の本を開くこと"
     ],
     "answer": 1,
-    "explanation": "It は前文内容を受ける。代入して『自分の行動や考えを書くことは journaling と呼ばれる』とすると自然。参照：Cutting Edge Y03 問題2",
+    "explanation": "2文目の It は前文の内容を受ける。代入して「自分の行動や考えを書くことは journaling と呼ばれる」とすると自然。「スペースそのもの」ではなく「書くこと」が呼ばれている点に注意。参照：Cutting Edge Y03 問題2",
     "tags": [
       "第一回",
       "Cutting Edge Y03",
       "指示語",
       "it"
     ],
-    "mistakeTag": "指示語の戻り先ミス",
+    "mistakeTag": "reference",
     "status": "draft"
   },
   {
@@ -202,8 +208,8 @@ const QUESTIONS = [
     "testRound": "1st",
     "type": "discourse_marker",
     "source": "Cutting Edge Y03 問題4",
-    "title": "In addition",
-    "question": "coloring can reduce stress という内容に続けて、coloring can bring out your imagination ... と追加する空所に最も合う語句は？",
+    "title": "空所に入る語句",
+    "question": "次の英文の空所に最も合う語句は？\n\n英文：\nColoring can reduce stress. ______, coloring can bring out your imagination.",
     "choices": [
       "From now on",
       "Over there",
@@ -218,7 +224,7 @@ const QUESTIONS = [
       "ディスコースマーカー",
       "追加"
     ],
-    "mistakeTag": "文脈判断ミス",
+    "mistakeTag": "inference",
     "status": "draft"
   },
   {
@@ -226,7 +232,7 @@ const QUESTIONS = [
     "testRound": "1st",
     "type": "translation_point",
     "source": "Cutting Edge Y03 問題5",
-    "title": "Sitting down and coloring の主語化",
+    "title": "Sitting down and coloring の働き",
     "question": "Sitting down and coloring, Jackson adds, relaxes her ... の Sitting down and coloring の働きは？",
     "choices": [
       "動名詞句として主語になっている",
@@ -243,7 +249,7 @@ const QUESTIONS = [
       "動名詞主語",
       "挿入"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -252,22 +258,22 @@ const QUESTIONS = [
     "type": "reading_reason",
     "source": "Cutting Edge Y04 問題4",
     "title": "月が乾燥している理由",
-    "question": "the moon is very dry because the impact created so much heat that it dried up all the water. の理由説明として最も自然なものは？",
+    "question": "次の英文を読んで、月がとても乾燥している理由として最も自然なものは？\n\n英文：\nSome scientists think a large object hit the Earth. The moon is very dry because the impact created so much heat that it dried up all the water.",
     "choices": [
-      "月が地球から遠く離れているから",
+      "地球から遠く離れて水が失われたから",
       "月の中心部に鉄が多く含まれていたから",
       "衝突で水が干上がるほどの熱が生じたから",
       "宇宙飛行士が月の石を持ち帰ったから"
     ],
     "answer": 2,
-    "explanation": "because 以下が理由。impact は前の『大きな物体と地球の衝突』を指し、その衝突で水が干上がるほどの熱が生じた。参照：Cutting Edge Y04 問題4",
+    "explanation": "because 以下が理由。impact は前文の「大きな物体が地球に衝突したこと」を指す。その衝突で、水が干上がるほどの熱が生じた。参照：Cutting Edge Y04 問題4",
     "tags": [
       "第一回",
       "Cutting Edge Y04",
       "理由説明",
       "本文根拠"
     ],
-    "mistakeTag": "本文根拠を見つけられない",
+    "mistakeTag": "pinpoint",
     "status": "draft"
   },
   {
@@ -291,7 +297,7 @@ const QUESTIONS = [
       "文脈語彙",
       "make up"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -300,7 +306,7 @@ const QUESTIONS = [
     "type": "reading_reason",
     "source": "Cutting Edge Y05 問題1",
     "title": "It is important for ... to do",
-    "question": "It is important for the printing process ( 1 ). の空所に最も合うものは？",
+    "question": "次の英文の空所に最も合うものは？\n\n英文：\nThis house was actually printed in high winds, blowing dust and rain. It is important for the printing process ( 1 ).",
     "choices": [
       "to operate in extreme conditions",
       "to be completed as quickly as possible in the near future",
@@ -308,14 +314,14 @@ const QUESTIONS = [
       "to be shown to everyone visiting the company"
     ],
     "answer": 0,
-    "explanation": "前文に high winds, blowing dust and rain とあり、悪条件の中でプリントできたことが述べられている。よって『極端な状況の中で機能すること』が最もつながる。参照：Cutting Edge Y05 問題1",
+    "explanation": "前文に「強い風、吹きつけるほこりや雨の中で実際にプリントされた」とある。この流れを受けるので「極端な状況の中で機能すること」が最もつながる。It is ~ for X to do の形式主語構文。参照：Cutting Edge Y05 問題1",
     "tags": [
       "第一回",
       "Cutting Edge Y05",
       "文脈判断",
       "不定詞"
     ],
-    "mistakeTag": "文脈判断ミス",
+    "mistakeTag": "inference",
     "status": "draft"
   },
   {
@@ -324,7 +330,7 @@ const QUESTIONS = [
     "type": "vocab_context",
     "source": "Cutting Edge Y05 問題2",
     "title": "on-site の推測",
-    "question": "The homes are printed on-site, so the equipment has to be light enough to move from one property to the next. の on-site の意味として最も自然なものは？",
+    "question": "次の英文を読んで、on-site の意味として最も自然なものは？\n\n英文：\nThe homes are printed on-site, so the equipment has to be light enough to move from one property to the next.",
     "choices": [
       "家が建てられる現地で",
       "公式ウェブサイト上で",
@@ -339,38 +345,40 @@ const QUESTIONS = [
       "文脈語彙",
       "on-site"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
     "id": "T1_CE_Y05_003",
     "testRound": "1st",
-    "type": "reading_tf",
+    "type": "number_compare",
     "source": "Cutting Edge Y05 問題4",
-    "title": "quarter speed と full speed",
-    "question": "4分の1のスピードで48時間足らずなら、全速力では何時間程度と考えられる？",
+    "title": "at about a quarter speed",
+    "question": "次の英文を読んで、内容として正しいものはどれ？\n\n英文：\nWe ran this printer at about a quarter speed to print this house, and we were able to complete the house in less than 48 hours of print time.\nAt full speed, the printing process could take as little as (4) hours.",
     "choices": [
-      "約48時間",
-      "約192時間",
-      "約24時間",
-      "約12時間"
+      "この家は、約4分の1のスピードで印刷しても48時間未満で完成した",
+      "この家は、全速力で印刷したため48時間未満で完成した",
+      "この英文では、全速力なら48時間より長くかかるとわかる",
+      "この英文では、4分の1のスピードでも全速力でも時間は同じだとわかる"
     ],
-    "answer": 3,
-    "explanation": "4分の1のスピードで48時間なので、全速力では48÷4=12時間程度。参照：Cutting Edge Y05 問題4",
+    "answer": 0,
+    "explanation": "We ran this printer at about a quarter speed ... in less than 48 hours of print time とあるので、実際は約4分の1のスピードで48時間未満で完成したと読める。At full speed は全速力の場合の説明。参照：Cutting Edge Y05 問題4",
     "tags": [
       "第一回",
       "Cutting Edge Y05",
-      "内容一致",
-      "数字"
+      "数字",
+      "比較",
+      "アプリ完結",
+      "原本突合済み"
     ],
-    "mistakeTag": "本文根拠を見つけられない",
+    "mistakeTag": "tf",
     "status": "draft"
   },
   {
     "id": "T1_CE_Y06_001",
     "testRound": "1st",
     "type": "vocab_context",
-    "source": "Cutting Edge Y06",
+    "source": "Cutting Edge Y06（原本本文未確認）",
     "title": "be based on",
     "question": "This theory is based on ... の be based on の意味として最も近いものは？",
     "choices": [
@@ -380,21 +388,23 @@ const QUESTIONS = [
       "〜する傾向がある"
     ],
     "answer": 0,
-    "explanation": "be based on は『〜に基づいている』。説や理論の根拠を示すときに使う。参照：Cutting Edge Y06",
+    "explanation": "原本突合で、Cutting Edge Y06 授業プリント本文中に This theory is based on ... の英文を確認できなかったため保留。be based on ～ は先生指定重要単語側 T1_VOC_186 で扱う。",
     "tags": [
       "第一回",
       "Cutting Edge Y06",
       "重要表現",
-      "be based on"
+      "be based on",
+      "原本未確認",
+      "hold"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
-    "status": "draft"
+    "mistakeTag": "meaning",
+    "status": "hold"
   },
   {
     "id": "T1_CE_Y06_002",
     "testRound": "1st",
     "type": "vocab_context",
-    "source": "Cutting Edge Y06",
+    "source": "Cutting Edge Y06（原本本文未確認）",
     "title": "tend to do",
     "question": "Women’s clothes tend to button up differently. の tend to do の意味として最も近いものは？",
     "choices": [
@@ -404,15 +414,17 @@ const QUESTIONS = [
       "〜する傾向がある"
     ],
     "answer": 3,
-    "explanation": "tend to do は『〜する傾向がある』。習慣・一般的傾向を表す。参照：Cutting Edge Y06",
+    "explanation": "原本突合で、Cutting Edge Y06 授業プリント本文中に Women’s clothes tend to button up differently. の英文を確認できなかったため保留。tend to do は先生指定重要単語側 T1_VOC_195 で扱う。",
     "tags": [
       "第一回",
       "Cutting Edge Y06",
       "重要表現",
-      "tend to do"
+      "tend to do",
+      "原本未確認",
+      "hold"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
-    "status": "draft"
+    "mistakeTag": "meaning",
+    "status": "hold"
   },
   {
     "id": "T1_CE_Y06_003",
@@ -435,7 +447,7 @@ const QUESTIONS = [
       "重要表現",
       "on purpose"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -443,7 +455,7 @@ const QUESTIONS = [
     "testRound": "1st",
     "type": "translation_point",
     "source": "FOCUS 1-1",
-    "title": "名詞を動詞化して訳す",
+    "title": "dependence の訳し方",
     "question": "Despite our dependence on it の dependence を自然に訳すときのポイントは？",
     "choices": [
       "Despite を『だから』と訳す",
@@ -459,7 +471,7 @@ const QUESTIONS = [
       "和訳ポイント",
       "名詞の動詞化"
     ],
-    "mistakeTag": "日本語化ミス",
+    "mistakeTag": "transword",
     "status": "draft"
   },
   {
@@ -483,7 +495,7 @@ const QUESTIONS = [
       "構文",
       "appear to do"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -507,7 +519,7 @@ const QUESTIONS = [
       "構文",
       "so as not to do"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -531,7 +543,7 @@ const QUESTIONS = [
       "構文",
       "enable O to do"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -555,7 +567,7 @@ const QUESTIONS = [
       "構文",
       "完了不定詞"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -579,7 +591,7 @@ const QUESTIONS = [
       "構文",
       "受け身"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -603,7 +615,7 @@ const QUESTIONS = [
       "構文",
       "have difficulty doing"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -627,7 +639,7 @@ const QUESTIONS = [
       "構文",
       "make O C"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -635,7 +647,7 @@ const QUESTIONS = [
     "testRound": "1st",
     "type": "grammar_focus",
     "source": "FOCUS 4-2",
-    "title": "過去分詞の後置修飾",
+    "title": "used by their elders の役割",
     "question": "the sounds and tones used by their elders の used by their elders は何を修飾している？",
     "choices": [
       "from a very early age",
@@ -651,7 +663,7 @@ const QUESTIONS = [
       "分詞",
       "後置修飾"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -659,7 +671,7 @@ const QUESTIONS = [
     "testRound": "1st",
     "type": "grammar_focus",
     "source": "FOCUS 5-1",
-    "title": "独立分詞構文",
+    "title": "each having の解釈",
     "question": "each having a specialized function の each having はどのように考える？",
     "choices": [
       "each が意味上の主語になる分詞構文",
@@ -675,7 +687,7 @@ const QUESTIONS = [
       "分詞構文",
       "独立分詞構文"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -699,7 +711,7 @@ const QUESTIONS = [
       "分詞構文",
       "with A doing"
     ],
-    "mistakeTag": "構文を拾えていない",
+    "mistakeTag": "structure",
     "status": "draft"
   },
   {
@@ -724,7 +736,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -749,7 +761,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -774,7 +786,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -799,7 +811,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -824,7 +836,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -849,7 +861,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -874,7 +886,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -899,7 +911,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -924,7 +936,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -949,7 +961,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -974,7 +986,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -999,7 +1011,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1024,7 +1036,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1049,7 +1061,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1074,7 +1086,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1099,7 +1111,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1124,7 +1136,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1149,7 +1161,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1174,7 +1186,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1199,7 +1211,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1224,7 +1236,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1237,7 +1249,7 @@ const QUESTIONS = [
     "choices": [
       "最後に",
       "違い",
-      "最後に、ついに、ようやく",
+      "確かに、確実に",
       "～を受け入れる、容認する"
     ],
     "answer": 0,
@@ -1249,7 +1261,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1274,7 +1286,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1299,7 +1311,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1324,7 +1336,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1349,7 +1361,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1374,7 +1386,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1399,7 +1411,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1424,7 +1436,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1449,7 +1461,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1474,7 +1486,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1499,7 +1511,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1524,7 +1536,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1549,7 +1561,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1574,7 +1586,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1599,7 +1611,7 @@ const QUESTIONS = [
       "Cutting Edge Y01",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1624,7 +1636,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1649,7 +1661,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1674,7 +1686,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1699,7 +1711,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1724,7 +1736,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1749,7 +1761,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1774,7 +1786,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1799,7 +1811,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1824,7 +1836,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1849,7 +1861,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1874,7 +1886,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1899,7 +1911,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1924,7 +1936,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1949,7 +1961,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1974,7 +1986,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -1999,7 +2011,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2024,7 +2036,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2049,7 +2061,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2074,7 +2086,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2099,7 +2111,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2124,7 +2136,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2149,7 +2161,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2174,7 +2186,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2199,7 +2211,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2224,7 +2236,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2249,7 +2261,7 @@ const QUESTIONS = [
       "Cutting Edge Y02",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2274,7 +2286,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2299,7 +2311,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2324,7 +2336,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2349,7 +2361,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2374,7 +2386,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2399,7 +2411,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2424,7 +2436,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2449,7 +2461,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2474,7 +2486,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2499,7 +2511,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2524,7 +2536,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2549,7 +2561,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2574,7 +2586,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2599,7 +2611,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2624,7 +2636,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2649,7 +2661,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2674,7 +2686,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2699,7 +2711,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2724,7 +2736,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2749,7 +2761,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2774,7 +2786,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2799,7 +2811,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2824,7 +2836,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2849,7 +2861,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2874,7 +2886,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2899,7 +2911,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2924,7 +2936,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2949,7 +2961,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2974,7 +2986,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -2999,7 +3011,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3024,7 +3036,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3049,7 +3061,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3074,7 +3086,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3099,7 +3111,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3124,7 +3136,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3149,7 +3161,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3174,7 +3186,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3199,7 +3211,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3224,7 +3236,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3249,7 +3261,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3274,7 +3286,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3299,7 +3311,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3324,7 +3336,7 @@ const QUESTIONS = [
       "Cutting Edge Y03",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3349,7 +3361,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3374,7 +3386,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3399,7 +3411,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3424,7 +3436,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3449,7 +3461,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3474,7 +3486,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3499,7 +3511,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3524,7 +3536,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3549,7 +3561,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3574,7 +3586,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3599,7 +3611,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3624,7 +3636,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3649,7 +3661,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3674,7 +3686,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3699,7 +3711,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3724,7 +3736,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3749,7 +3761,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3774,7 +3786,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3799,7 +3811,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3824,7 +3836,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3849,7 +3861,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3874,7 +3886,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3899,7 +3911,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3924,7 +3936,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3949,7 +3961,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3974,7 +3986,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -3999,7 +4011,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4024,7 +4036,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4049,7 +4061,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4074,7 +4086,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4099,7 +4111,7 @@ const QUESTIONS = [
       "Cutting Edge Y04",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4124,7 +4136,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4149,7 +4161,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4174,7 +4186,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4199,7 +4211,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4224,7 +4236,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4249,7 +4261,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4274,7 +4286,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4299,7 +4311,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4324,7 +4336,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4349,7 +4361,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4374,7 +4386,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4399,7 +4411,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4424,7 +4436,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4449,7 +4461,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4474,7 +4486,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4499,7 +4511,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4524,7 +4536,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4549,7 +4561,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4574,7 +4586,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4599,7 +4611,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4624,7 +4636,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4649,7 +4661,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4674,7 +4686,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4699,7 +4711,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4724,7 +4736,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4749,7 +4761,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4774,7 +4786,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4799,7 +4811,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4824,7 +4836,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4849,7 +4861,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4874,7 +4886,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4899,7 +4911,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4924,7 +4936,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4949,7 +4961,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4974,7 +4986,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -4999,7 +5011,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5024,7 +5036,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5049,7 +5061,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5074,7 +5086,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5099,7 +5111,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5124,7 +5136,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5149,7 +5161,7 @@ const QUESTIONS = [
       "Cutting Edge Y05",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5174,7 +5186,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5199,7 +5211,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5224,7 +5236,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5249,7 +5261,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5274,7 +5286,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5299,7 +5311,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5324,7 +5336,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5349,7 +5361,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5374,7 +5386,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5399,7 +5411,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5424,7 +5436,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5449,7 +5461,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5474,7 +5486,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5499,7 +5511,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5524,7 +5536,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5549,7 +5561,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5574,7 +5586,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5599,7 +5611,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5624,7 +5636,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5649,7 +5661,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5674,7 +5686,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5699,7 +5711,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5724,7 +5736,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5749,7 +5761,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5774,7 +5786,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5799,7 +5811,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5824,7 +5836,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5849,7 +5861,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5874,7 +5886,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5899,7 +5911,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5924,7 +5936,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5949,7 +5961,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5974,7 +5986,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -5999,7 +6011,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6024,7 +6036,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6049,7 +6061,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6074,7 +6086,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6099,7 +6111,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6124,7 +6136,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6149,7 +6161,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6174,7 +6186,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6199,7 +6211,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6224,7 +6236,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6249,7 +6261,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6274,7 +6286,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6299,7 +6311,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6324,7 +6336,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6349,7 +6361,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6374,7 +6386,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6399,7 +6411,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6424,7 +6436,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6449,7 +6461,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6474,7 +6486,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6499,7 +6511,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6524,7 +6536,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6549,7 +6561,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6574,7 +6586,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6599,7 +6611,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6624,7 +6636,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6649,7 +6661,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6674,7 +6686,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6699,7 +6711,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6724,7 +6736,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6749,7 +6761,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6774,7 +6786,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6799,7 +6811,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6824,7 +6836,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6849,7 +6861,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6874,7 +6886,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6899,7 +6911,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6924,7 +6936,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6949,7 +6961,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6974,7 +6986,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -6999,7 +7011,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -7024,7 +7036,7 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
     "status": "draft"
   },
   {
@@ -7049,13 +7061,654 @@ const QUESTIONS = [
       "Cutting Edge Y06",
       "重要単語"
     ],
-    "mistakeTag": "単語・熟語の意味ミス",
+    "mistakeTag": "meaning",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_01_002",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 1-1",
+    "title": "because of it の it",
+    "question": "Despite our dependence on it, or perhaps because of it の it が指すものは？（it は「水」）この or perhaps because of it の意味として正しいものは？",
+    "choices": [
+      "水に依存できないにもかかわらず",
+      "あるいはひょっとすると水に依存しているせいで",
+      "水に依存しているのだから当然",
+      "水に依存しないようにして"
+    ],
+    "answer": 1,
+    "explanation": "because of X で「Xのせいで・Xが原因で」。or perhaps は「あるいはひょっとすると」。前の Despite（〜にもかかわらず）と対比になっている。参照：FOCUS 1",
+    "tags": [
+      "第一回",
+      "FOCUS 1",
+      "熟語"
+    ],
+    "mistakeTag": "meaning",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_01_003",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 1-1",
+    "title": "be likely to do",
+    "question": "and this problem is likely to increase. の is likely to increase の意味として正しいものは？",
+    "choices": [
+      "増大したにちがいない",
+      "増大しそうにない",
+      "増大する可能性が高い",
+      "増大するのを好む"
+    ],
+    "answer": 2,
+    "explanation": "be likely to do で「〜する可能性が高い・〜しそうだ」。this problem は水質汚染を指す。「この問題は増大する可能性が高い」。参照：FOCUS 1",
+    "tags": [
+      "第一回",
+      "FOCUS 1",
+      "構文"
+    ],
+    "mistakeTag": "grammar",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_01_004",
+    "testRound": "1st",
+    "type": "translation_point",
+    "source": "FOCUS 1-1",
+    "title": "One of the effects of A on B",
+    "question": "One of the effects of the growth of the human population on the earth is the high level of water pollution. の on the earth は何にかかるか？",
+    "choices": [
+      "One（地球上の一つ）",
+      "the growth of the human population（地球上での人口増加）",
+      "the effects（地球への影響）",
+      "water pollution（地球上の水質汚染）"
+    ],
+    "answer": 1,
+    "explanation": "the growth of the human population on the earth で「地球上での人口増加」。effect of A on B「AがBに及ぼす影響」の形も意識。「人口増加が及ぼす影響の一つが高レベルの水質汚染である」。参照：FOCUS 1",
+    "tags": [
+      "第一回",
+      "FOCUS 1",
+      "修飾"
+    ],
+    "mistakeTag": "structure",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_02_004",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 2-1",
+    "title": "need to do",
+    "question": "children need to recreate their experiences の need to recreate の意味として正しいものは？",
+    "choices": [
+      "再現するのをやめる",
+      "再現したがっている",
+      "再現するのが得意だ",
+      "再現する必要がある"
+    ],
+    "answer": 3,
+    "explanation": "need to do で「〜する必要がある」。recreate は「再現する・作り直す」。「子どもたちは経験したことを再現する必要がある」。参照：FOCUS 2",
+    "tags": [
+      "第一回",
+      "FOCUS 2",
+      "構文"
+    ],
+    "mistakeTag": "grammar",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_02_005",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 2-1",
+    "title": "be associated with",
+    "question": "Young children's thinking is closely associated with physical action の is closely associated with の意味として正しいものは？",
+    "choices": [
+      "〜を思い出させる",
+      "〜と密接に結びついている",
+      "〜から遠く離れている",
+      "〜を強く嫌っている"
+    ],
+    "answer": 1,
+    "explanation": "associate A with B「AをBと結びつける」の受動態 A be associated with B「AはBと結びついている」。closely は「密接に」。「幼い子どもの思考は身体を動かすことと密接に結びついている」。参照：FOCUS 2",
+    "tags": [
+      "第一回",
+      "FOCUS 2",
+      "構文"
+    ],
+    "mistakeTag": "structure",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_02_006",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 2-1",
+    "title": "be unable to do",
+    "question": "they are unable to imagine the consequences of undone actions の are unable to imagine の意味として正しいものは？",
+    "choices": [
+      "想像するのが好きだ",
+      "想像する必要がない",
+      "想像しようとしない",
+      "想像することができない"
+    ],
+    "answer": 3,
+    "explanation": "be unable to do で「〜することができない」。the consequences of undone actions は「まだ行っていない行動の結果」。参照：FOCUS 2",
+    "tags": [
+      "第一回",
+      "FOCUS 2",
+      "構文"
+    ],
+    "mistakeTag": "grammar",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_03_003",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 3-1",
+    "title": "vital to ~ の後置修飾",
+    "question": "He invented many of the technologies vital to the modern world. の vital to the modern world は何を修飾しているか？",
+    "choices": [
+      "invented（重要に発明した）",
+      "technologies（現代世界にとって重要な技術）",
+      "He（重要な彼）",
+      "many（重要な多く）"
+    ],
+    "answer": 1,
+    "explanation": "形容詞句 vital to the modern world「現代世界にとってきわめて重要な」が直前の technologies を後ろから修飾している。「彼は現代世界にとってきわめて重要な技術の多くを発明した」。参照：FOCUS 3",
+    "tags": [
+      "第一回",
+      "FOCUS 3",
+      "修飾"
+    ],
+    "mistakeTag": "structure",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_03_004",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 3-1",
+    "title": "Although の譲歩",
+    "question": "Although he patented over 1,100 inventions, many were improvements to the inventions of others. の Although の意味として正しいものは？",
+    "choices": [
+      "〜する限り",
+      "〜だけれども",
+      "〜するとすぐに",
+      "〜なので"
+    ],
+    "answer": 1,
+    "explanation": "接続詞 Although は「〜だけれども・〜にもかかわらず」の譲歩。patent は「特許をとる」。「彼は1,100を超える発明品の特許をとったが、多くは他人の発明品を改良したものだった」。参照：FOCUS 3",
+    "tags": [
+      "第一回",
+      "FOCUS 3",
+      "接続詞"
+    ],
+    "mistakeTag": "grammar",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_03_005",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 3-2",
+    "title": "how to do",
+    "question": "The goal of the American education system is to teach children how to learn の how to learn の意味として正しいものは？",
+    "choices": [
+      "学習の仕方",
+      "学習する場所",
+      "学習したい時",
+      "学習する理由"
+    ],
+    "answer": 0,
+    "explanation": "how to do で「〜する方法・仕方」。teach O how to do で「Oに〜の仕方を教える」。「子どもたちに学習の仕方を教えること」。参照：FOCUS 3",
+    "tags": [
+      "第一回",
+      "FOCUS 3",
+      "構文"
+    ],
+    "mistakeTag": "grammar",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_03_006",
+    "testRound": "1st",
+    "type": "translation_point",
+    "source": "FOCUS 3-2",
+    "title": "help O (to) do",
+    "question": "to help them reach their maximum potential の help them reach の意味として正しいものは？",
+    "choices": [
+      "彼らに〜に達するよう命じる",
+      "彼らの代わりに〜に達する",
+      "彼らが〜に達するのを妨げる",
+      "彼らが〜に達するのを手助けする"
+    ],
+    "answer": 3,
+    "explanation": "help O (to) do で「Oが〜するのを手助けする」。to が省略され help them reach の形。「彼らが自分の潜在能力を最大限に伸ばすのを手助けすること」。参照：FOCUS 3",
+    "tags": [
+      "第一回",
+      "FOCUS 3",
+      "構文"
+    ],
+    "mistakeTag": "structure",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_04_004",
+    "testRound": "1st",
+    "type": "translation_point",
+    "source": "FOCUS 4-2",
+    "title": "From a need to communicate",
+    "question": "From a need to communicate, they begin to imitate the sound patterns. の From a need to communicate を自然に訳すときのポイントは？",
+    "choices": [
+      "From を「〜から来て」と場所で訳す",
+      "need を「〜が必要だ」と否定で訳す",
+      "名詞 need を「必要性から」と訳す（名詞構文）",
+      "communicate を名詞で「通信」と訳す"
+    ],
+    "answer": 2,
+    "explanation": "a need to communicate は「意志を伝える必要性」。From と合わせて「意志を伝える必要性から」と、名詞を中心に訳す名詞構文。参照：FOCUS 4",
+    "tags": [
+      "第一回",
+      "FOCUS 4",
+      "名詞構文"
+    ],
+    "mistakeTag": "transword",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_04_005",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 4-3",
+    "title": "given の後置修飾",
+    "question": "'Fan mail' is the name given to enthusiastic, admiring letters の given to ~ は何を修飾しているか？",
+    "choices": [
+      "letters（与えられた手紙）",
+      "is（与えて存在する）",
+      "the name（〜に与えられた名前）",
+      "Fan mail（与えられたファンメール）"
+    ],
+    "answer": 2,
+    "explanation": "過去分詞 given to ~「〜に与えられた」が直前の the name を後ろから修飾。「『ファンレター』とは、熱狂的で賞賛に満ちた手紙に与えられた名前である」。参照：FOCUS 4",
+    "tags": [
+      "第一回",
+      "FOCUS 4",
+      "分詞"
+    ],
+    "mistakeTag": "structure",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_04_006",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 4-3",
+    "title": "tend to do",
+    "question": "They tend to be uninhibited, sentimental and extravagant in style and content の tend to be の意味として正しいものは？",
+    "choices": [
+      "〜である傾向がある",
+      "〜になろうとする",
+      "〜であるふりをする",
+      "〜であるべきだ"
+    ],
+    "answer": 0,
+    "explanation": "tend to do で「〜する傾向がある」。「それら（手紙）は文体と内容において、形式ばらず、感傷的で大げさである傾向がある」。参照：FOCUS 4",
+    "tags": [
+      "第一回",
+      "FOCUS 4",
+      "構文"
+    ],
+    "mistakeTag": "grammar",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_05_003",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 5-1",
+    "title": "be divided into",
+    "question": "The individual members of the society are divided into groups の are divided into の意味として正しいものは？",
+    "choices": [
+      "〜に分けられる",
+      "〜を分ける",
+      "〜に加わる",
+      "〜から離れる"
+    ],
+    "answer": 0,
+    "explanation": "divide A into B「AをBに分ける」の受動態 be divided into「〜に分けられる」。「その社会の個々の成員は集団に分けられる」。参照：FOCUS 5",
+    "tags": [
+      "第一回",
+      "FOCUS 5",
+      "構文"
+    ],
+    "mistakeTag": "structure",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_05_004",
+    "testRound": "1st",
+    "type": "translation_point",
+    "source": "FOCUS 5-3",
+    "title": "Faced with A の分詞構文",
+    "question": "Faced with this situation, convenience store chains have had to employ new strategies. の Faced with this situation の訳として自然なものは？",
+    "choices": [
+      "この状況を無視して",
+      "このような状況に直面して",
+      "この状況に満足して",
+      "この状況を作り出して"
+    ],
+    "answer": 1,
+    "explanation": "be faced with A「Aに直面する」が分詞構文になった形。文頭で「このような状況に直面して」と訳す。参照：FOCUS 5",
+    "tags": [
+      "第一回",
+      "FOCUS 5",
+      "分詞構文"
+    ],
+    "mistakeTag": "structure",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_05_005",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 5-3",
+    "title": "have had to do",
+    "question": "convenience store chains have had to employ new strategies の have had to employ の意味として正しいものは？",
+    "choices": [
+      "採用したいと思った",
+      "採用しなければならなくなった",
+      "採用することができた",
+      "採用するのをやめた"
+    ],
+    "answer": 1,
+    "explanation": "have to do「〜しなければならない」の現在完了 have had to do「〜しなければならなくなった（今も続く）」。employ は「（戦略などを）とる・採用する」。参照：FOCUS 5",
+    "tags": [
+      "第一回",
+      "FOCUS 5",
+      "構文"
+    ],
+    "mistakeTag": "grammar",
+    "status": "draft"
+  },
+  {
+    "id": "T1_FOCUS_05_006",
+    "testRound": "1st",
+    "type": "grammar_focus",
+    "source": "FOCUS 5-3",
+    "title": "shift A from B to C",
+    "question": "They are shifting their focus away from young people to the middle-aged, the elderly, and homemakers. の shifting ... away from ... to ... の意味として正しいものは？",
+    "choices": [
+      "焦点を〜のために失っている",
+      "焦点を〜から〜へ移している",
+      "焦点を〜と〜で比べている",
+      "焦点を〜から〜へ戻している"
+    ],
+    "answer": 1,
+    "explanation": "shift A away from B to C で「AをBから遠ざけてCへ移す」。the middle-aged / the elderly は〈the+形容詞〉で「中年の人々／年配者」。「焦点を若者から中高年や主婦に移しつつある」。参照：FOCUS 5",
+    "tags": [
+      "第一回",
+      "FOCUS 5",
+      "構文"
+    ],
+    "mistakeTag": "structure",
+    "status": "draft"
+  },
+  {
+    "id": "T1_CE_Y01_V04_MINICTX_001",
+    "testRound": "1st",
+    "type": "mini_context",
+    "source": "Cutting Edge Y01 問題1",
+    "title": "短い文脈で読む",
+    "question": "次の英文の It が指す内容として最も自然なものは？\n\n英文：\nA majority of people catch colds during the spring or winter. It makes us wonder why scientists can’t find a treatment for the regular cold.",
+    "choices": [
+      "大多数の人が春や冬に風邪をひくこと",
+      "科学者たちが月に人を送れること",
+      "普通の風邪の治療法そのもの",
+      "春や冬という季節だけ"
+    ],
+    "answer": 0,
+    "explanation": "It は直前の文全体を受けている。『大多数の人が春や冬に風邪をひくこと』が、なぜ普通の風邪の治療法を見つけられないのかと私たちに思わせる、という流れになる。",
+    "tags": [
+      "第一回",
+      "Cutting Edge Y01",
+      "短文文脈",
+      "指示語",
+      "アプリ完結"
+    ],
+    "mistakeTag": "reference",
+    "status": "draft"
+  },
+  {
+    "id": "T1_CE_Y01_V04_ELIM_001",
+    "testRound": "1st",
+    "type": "choice_elimination",
+    "source": "Cutting Edge Y01 問題1",
+    "title": "条件のズレを見抜く",
+    "question": "次の英文を読んで、選択肢『人は春にだけ風邪をひく』が英文内容と合わない理由として最も近いものは？\n\n英文：\nA majority of people catch colds during the spring or winter.",
+    "choices": [
+      "英文では spring or winter とあり、春だけに限定していないから",
+      "英文では風邪ではなく月についてだけ述べているから",
+      "英文では人ではなく科学者だけが主語だから",
+      "英文では誰も風邪をひかないと述べているから"
+    ],
+    "answer": 0,
+    "explanation": "英文は during the spring or winter なので、『春または冬の間に』という意味。『春にだけ』とすると条件を狭くしすぎている。",
+    "tags": [
+      "第一回",
+      "Cutting Edge Y01",
+      "選択肢消去",
+      "条件",
+      "アプリ完結"
+    ],
+    "mistakeTag": "tf",
+    "trapType": "partial_match",
+    "status": "draft"
+  },
+  {
+    "id": "T1_CE_Y01_V04_EVIDENCE_001",
+    "testRound": "1st",
+    "type": "reading_evidence",
+    "source": "Cutting Edge Y01 問題3",
+    "title": "具体例の根拠",
+    "question": "次の英文を読んで、『体が風邪を止めようと働く』ことの具体例として最も近いものはどれ？\n\n英文：\nWhen a cold attacks your body, your body works hard to stop it. For example, blood flows quickly to your nose and as a result, you can’t breathe very well.",
+    "choices": [
+      "血液が急速に鼻に流れ、その結果、呼吸しにくくなること",
+      "大多数の人が春や冬に風邪をひくこと",
+      "科学者が普通の風邪の治療法を探していること",
+      "風邪薬がすぐに効くこと"
+    ],
+    "answer": 0,
+    "explanation": "For example の後が具体例。blood flows quickly to your nose と you can’t breathe very well が、体が風邪に反応している例になっている。",
+    "tags": [
+      "第一回",
+      "Cutting Edge Y01",
+      "根拠探し",
+      "具体例",
+      "アプリ完結"
+    ],
+    "mistakeTag": "pinpoint",
+    "status": "draft"
+  },
+  {
+    "id": "T1_CE_Y01_V04_ELIM_002",
+    "testRound": "1st",
+    "type": "choice_elimination",
+    "source": "Cutting Edge Y01 問題3",
+    "title": "本文にない情報を消す",
+    "question": "次の英文を読んで、選択肢『風邪薬がすぐに効くこと』を具体例として選ばない理由として最も近いものは？\n\n英文：\nWhen a cold attacks your body, your body works hard to stop it. For example, blood flows quickly to your nose and as a result, you can’t breathe very well.",
+    "choices": [
+      "英文の具体例は体の反応であり、薬がすぐ効く話ではないから",
+      "英文では薬の名前が4つ説明されているから",
+      "英文では鼻ではなく耳の話だけをしているから",
+      "英文では風邪をひく人はいないと述べているから"
+    ],
+    "answer": 0,
+    "explanation": "この英文で示されている具体例は、血液が鼻に流れて呼吸しにくくなるという体の反応。薬がすぐ効くという情報は英文内にない。",
+    "tags": [
+      "第一回",
+      "Cutting Edge Y01",
+      "選択肢消去",
+      "本文にない情報",
+      "アプリ完結"
+    ],
+    "mistakeTag": "tf",
+    "trapType": "not_in_text",
+    "status": "draft"
+  },
+  {
+    "id": "T1_CE_Y02_V04_NUMBER_001",
+    "testRound": "1st",
+    "type": "number_compare",
+    "source": "Cutting Edge Y02 問題5",
+    "title": "ago の数字を読む",
+    "question": "次の英文から考えて、『現在の私』について正しいものはどれ？\n\n英文：\nForty-three years ago, I was twelve years old.",
+    "choices": [
+      "私は現在、55歳である",
+      "私は現在、43歳である",
+      "私は現在、12歳である",
+      "この英文だけでは、現在の年齢はまったく判断できない"
+    ],
+    "answer": 0,
+    "explanation": "Forty-three years ago は『43年前』。そのとき12歳だったので、現在は 12 + 43 = 55歳。43を現在の年齢として読まないことがポイント。",
+    "tags": [
+      "第一回",
+      "Cutting Edge Y02",
+      "数字",
+      "ago",
+      "アプリ完結"
+    ],
+    "mistakeTag": "tf",
+    "status": "draft"
+  },
+  {
+    "id": "T1_CE_Y02_V04_ELIM_001",
+    "testRound": "1st",
+    "type": "choice_elimination",
+    "source": "Cutting Edge Y02 問題5",
+    "title": "数字の役割を見抜く",
+    "question": "次の英文を読んで、選択肢『現在の私は43歳である』が合わない理由として最も近いものは？\n\n英文：\nForty-three years ago, I was twelve years old.",
+    "choices": [
+      "43は現在の年齢ではなく、『43年前』を表す数字だから",
+      "43は12より小さい数字だから",
+      "英文では年齢の話をしていないから",
+      "英文では現在の私は12歳だと書かれているから"
+    ],
+    "answer": 0,
+    "explanation": "43 years ago は『43年前』であり、現在の年齢ではない。数字が『年齢』なのか『何年前』なのかを見分ける必要がある。",
+    "tags": [
+      "第一回",
+      "Cutting Edge Y02",
+      "選択肢消去",
+      "数字",
+      "アプリ完結"
+    ],
+    "mistakeTag": "tf",
+    "trapType": "number_mismatch",
+    "status": "draft"
+  },
+  {
+    "id": "T1_CE_Y03_V04_MINICTX_001",
+    "testRound": "1st",
+    "type": "mini_context",
+    "source": "Cutting Edge Y03 問題2",
+    "title": "短い文脈で読む",
+    "question": "次の英文の2文目の It が指す内容として最も自然なものは？\n\n英文：\nIt also has spaces to write about what you’re doing or thinking. It is called journaling.",
+    "choices": [
+      "自分がしていることや考えていることについて書くこと",
+      "spaces という空白そのもの",
+      "紫色の花をぬること",
+      "ストレスを減らす専門家"
+    ],
+    "answer": 0,
+    "explanation": "It is called journaling. の It は、前の文の『自分の行動や考えについて書くこと』を受けている。空白そのものではなく、書く行為が journaling と呼ばれる。",
+    "tags": [
+      "第一回",
+      "Cutting Edge Y03",
+      "短文文脈",
+      "指示語",
+      "アプリ完結"
+    ],
+    "mistakeTag": "reference",
+    "status": "draft"
+  },
+  {
+    "id": "T1_CE_Y03_V04_ELIM_001",
+    "testRound": "1st",
+    "type": "choice_elimination",
+    "source": "Cutting Edge Y03 問題4",
+    "title": "追加の流れを読む",
+    "question": "次の英文の空所に From now on が合いにくい理由として最も近いものは？\n\n英文：\nColoring can reduce stress. ______, coloring can bring out your imagination.",
+    "choices": [
+      "後ろの文は別の効果を追加しているので、『これからは』では流れが合わないから",
+      "後ろの文は前の文と完全に逆の内容だから",
+      "前後の文はどちらも過去の出来事だけを述べているから",
+      "Coloring は人の名前として使われているから"
+    ],
+    "answer": 0,
+    "explanation": "前文は『ストレスを減らす』、後文は『想像力を引き出す』という別の効果の追加。したがって In addition のような追加表現が合う。From now on は『これからは』なので流れがズレる。",
+    "tags": [
+      "第一回",
+      "Cutting Edge Y03",
+      "選択肢消去",
+      "接続語",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "wrong_time",
+    "status": "draft"
+  },
+  {
+    "id": "T1_CE_Y05_V04_NUMBER_001",
+    "testRound": "1st",
+    "type": "number_compare",
+    "source": "Cutting Edge Y05 問題4",
+    "title": "at full speed",
+    "question": "次の英文を読んで、at full speed の場合について最も自然に言えることはどれ？\n\n英文：\nWe ran this printer at about a quarter speed to print this house, and we were able to complete the house in less than 48 hours of print time.\nAt full speed, the printing process could take as little as (4) hours.",
+    "choices": [
+      "4分の1のスピードより、さらに短い時間で印刷できる可能性がある",
+      "4分の1のスピードより、必ず4倍長い時間がかかる",
+      "48時間ちょうどかかるという意味である",
+      "48日以上かかるという意味である"
+    ],
+    "answer": 0,
+    "explanation": "at full speed は『全速力で』。英文では、約4分の1のスピードで48時間未満だった後に、At full speed, the printing process could take as little as (4) hours. と続く。したがって、全速力ならさらに短い時間で印刷できる可能性があると読む。参照：Cutting Edge Y05 問題4",
+    "tags": [
+      "第一回",
+      "Cutting Edge Y05",
+      "数字",
+      "比較",
+      "number_compare",
+      "原本突合済み"
+    ],
+    "mistakeTag": "tf",
+    "status": "draft"
+  },
+  {
+    "id": "T1_CE_Y05_V04_ELIM_001",
+    "testRound": "1st",
+    "type": "choice_elimination",
+    "source": "Cutting Edge Y05 問題1",
+    "title": "文脈に合わない選択肢を消す",
+    "question": "次の英文を読んで、選択肢『できるだけ早く完成することが重要』が最適ではない理由として最も近いものは？\n\n英文：\nThis house was actually printed in high winds, blowing dust and rain. It is important for the printing process to operate in extreme conditions.",
+    "choices": [
+      "直前では悪天候の中で印刷した話をしており、極端な状況で作動することが焦点だから",
+      "直前では完成までの日数だけを説明しているから",
+      "直前では訪問者に見せる予定だけを説明しているから",
+      "直前ではコンピュータソフトの名前だけを説明しているから"
+    ],
+    "answer": 0,
+    "explanation": "high winds, blowing dust and rain という悪条件が示されている。文脈の焦点は『速さ』ではなく、『極端な状況で作動できること』。",
+    "tags": [
+      "第一回",
+      "Cutting Edge Y05",
+      "選択肢消去",
+      "文脈判断",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "partial_match",
     "status": "draft"
   }
 ];
-
-// ブラウザ直読み用: const QUESTIONS を参照
-// Node/CommonJS で確認したい場合用
-if (typeof module !== "undefined") {
-  module.exports = QUESTIONS;
-}
