@@ -1,7 +1,7 @@
 // questions.js
 // 英コミュCoach 第一回 定期テスト対策 問題データ
 // BASE: v0.4.1 増補済み310問版
-// UPDATED: 2026-07-09 読解系4件の選択肢品質修正を再適用
+// UPDATED: 2026-07-09 選択肢バランス調整（日本語/英語混在・正解長さバイアス対策）
 // TOTAL_EXPECTED: 310
 // teacher_vocab: 254
 // non_teacher_vocab: 56
@@ -66,10 +66,10 @@ const QUESTIONS = [
     "title": "具体例を探す",
     "question": "次の英文を読んで、「体が風邪を止めようと働く」の具体例として最も適切なものは？\n\n英文：\nWhen a cold attacks your body, your body works hard to stop it. For example, blood flows quickly to your nose and as a result, you can’t breathe very well.",
     "choices": [
-      "春や冬に風邪をひくこと",
+      "体が春や冬に風邪をひくこと",
       "鼻の血流が増え、呼吸が苦しくなること",
-      "科学者が治療法を探すこと",
-      "薬で症状を和らげること"
+      "科学者が治療法を探し続けること",
+      "薬で症状をすぐに止められること"
     ],
     "answer": 1,
     "explanation": "直後の For example 以下が具体例。blood flows quickly to your nose and as a result, you can’t breathe very well が、「体が風邪を止めようと働く」例になっている。参照：Cutting Edge Y01 問題3",
@@ -308,7 +308,7 @@ const QUESTIONS = [
     "title": "It is important for ... to do",
     "question": "次の英文の空所に最も合うものは？\n\n英文：\nThis house was actually printed in high winds, blowing dust and rain. It is important for the printing process ( 1 ).",
     "choices": [
-      "to operate in extreme conditions",
+      "to operate properly in extreme conditions",
       "to be completed as quickly as possible in the near future",
       "to start according to the plan designed by computer software programs",
       "to be shown to everyone visiting the company"
@@ -675,8 +675,8 @@ const QUESTIONS = [
     "question": "each having a specialized function の each having はどのように考える？",
     "choices": [
       "each が意味上の主語になる分詞構文",
-      "命令文の主語",
-      "比較表現の一部",
+      "each が命令文の主語になる形",
+      "each が比較表現の一部になる形",
       "each を修飾する関係代名詞節"
     ],
     "answer": 0,
@@ -723,9 +723,9 @@ const QUESTIONS = [
     "question": "a majority of ～ の意味として最も近いものは？",
     "choices": [
       "大多数の〜、大部分の～",
-      "説、学説、理論",
-      "驚くべき",
-      "理にかなう、筋が通っている"
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
+      "〜に（さっと）目を通す"
     ],
     "answer": 0,
     "explanation": "a majority of ～ は『大多数の〜、大部分の～』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -748,9 +748,9 @@ const QUESTIONS = [
     "question": "catch a cold の意味として最も近いものは？",
     "choices": [
       "風邪をひく",
-      "実際（は）",
-      "素材、材料",
-      "組織、団体"
+      "〜によれば",
+      "〜に重なる",
+      "～をまねる"
     ],
     "answer": 0,
     "explanation": "catch a cold は『風邪をひく』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -773,9 +773,9 @@ const QUESTIONS = [
     "question": "wonder の意味として最も近いものは？",
     "choices": [
       "〜だろうかと思う",
-      "（病気による）熱、発熱",
-      "素材、材料",
-      "～ではないかと恐れる"
+      "〜する傾向がある",
+      "〜に基づいている",
+      "〜を干上がらせる"
     ],
     "answer": 0,
     "explanation": "wonder は『〜だろうかと思う』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -798,9 +798,9 @@ const QUESTIONS = [
     "question": "treatment の意味として最も近いものは？",
     "choices": [
       "治療法",
-      "〜に集中する",
-      "～を修理する",
-      "薬"
+      "ボタン",
+      "外側の",
+      "巨大な"
     ],
     "answer": 0,
     "explanation": "treatment は『治療法』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -822,10 +822,10 @@ const QUESTIONS = [
     "title": "重要単語: regular",
     "question": "regular の意味として最も近いものは？",
     "choices": [
-      "世の中には、どこかに",
-      "ひとかけらの〜、〜の一片",
+      "〜に対する需要",
+      "4分の1（の）",
       "普通の、通常の",
-      "理にかなう、筋が通っている"
+      "AかあるいはB"
     ],
     "answer": 2,
     "explanation": "regular は『普通の、通常の』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -848,9 +848,9 @@ const QUESTIONS = [
     "question": "out there の意味として最も近いものは？",
     "choices": [
       "世の中には、どこかに",
-      "適切に",
-      "楽しみ、楽しいもの",
-      "大量生産する"
+      "（〜の）大きさがある",
+      "～ではないかと恐れる",
+      "～に仕える、奉仕する"
     ],
     "answer": 0,
     "explanation": "out there は『世の中には、どこかに』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -872,10 +872,10 @@ const QUESTIONS = [
     "title": "重要単語: in fact",
     "question": "in fact の意味として最も近いものは？",
     "choices": [
-      "（病気による）熱、発熱",
-      "理由",
+      "〜によれば",
+      "〜に重なる",
       "実際（は）",
-      "わざと、故意に"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "in fact は『実際（は）』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -897,10 +897,10 @@ const QUESTIONS = [
     "title": "重要単語: medicine",
     "question": "medicine の意味として最も近いものは？",
     "choices": [
-      "治療法",
+      "客",
       "薬",
-      "～を含む、～が入っている",
-      "ジャンケン"
+      "形",
+      "剣"
     ],
     "answer": 1,
     "explanation": "medicine は『薬』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -922,10 +922,10 @@ const QUESTIONS = [
     "title": "重要単語: according to ～",
     "question": "according to ～ の意味として最も近いものは？",
     "choices": [
-      "～を持続させる、継続する",
-      "住宅建設",
+      "〜に重なる",
+      "～をまねる",
       "〜によれば",
-      "作動する、機能する"
+      "～を減らす"
     ],
     "answer": 2,
     "explanation": "according to ～ は『〜によれば』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -948,9 +948,9 @@ const QUESTIONS = [
     "question": "the Center for Disease Control の意味として最も近いものは？",
     "choices": [
       "疾病管理センター",
-      "形",
-      "～を説明する",
-      "AをBに提供する"
+      "〜する傾向がある",
+      "〜だろうかと思う",
+      "〜に基づいている"
     ],
     "answer": 0,
     "explanation": "the Center for Disease Control は『疾病管理センター』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -973,9 +973,9 @@ const QUESTIONS = [
     "question": "limited の意味として最も近いものは？",
     "choices": [
       "〔形〕限られた、わずかな",
-      "〜のボタンを留める［掛ける］",
-      "静かに、目立たないように",
-      "ジャンケン"
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
+      "～を含む、～が入っている"
     ],
     "answer": 0,
     "explanation": "limited は『〔形〕限られた、わずかな』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -998,9 +998,9 @@ const QUESTIONS = [
     "question": "success の意味として最も近いものは？",
     "choices": [
       "成功",
-      "（試合・競技の）相手、敵",
-      "密度",
-      "～を完成する"
+      "違い",
+      "活動",
+      "滑る"
     ],
     "answer": 0,
     "explanation": "success は『成功』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1023,9 +1023,9 @@ const QUESTIONS = [
     "question": "attack の意味として最も近いものは？",
     "choices": [
       "～を襲う、攻撃する",
-      "開催される",
-      "教え、教訓",
-      "～を投げる"
+      "〜で満たされている",
+      "…を〜に集中させる",
+      "（卓球の）ラケット"
     ],
     "answer": 0,
     "explanation": "attack は『～を襲う、攻撃する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1047,10 +1047,10 @@ const QUESTIONS = [
     "title": "重要単語: blood",
     "question": "blood の意味として最も近いものは？",
     "choices": [
-      "さらに、加えて",
-      "滑らかな、すべすべした",
+      "違い",
+      "活動",
       "血液",
-      "素材、材料"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "blood は『血液』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1073,9 +1073,9 @@ const QUESTIONS = [
     "question": "as a result の意味として最も近いものは？",
     "choices": [
       "その結果",
-      "～から落ちる",
-      "軽量の",
-      "極端な"
+      "～を許す",
+      "～を選ぶ",
+      "クレヨン"
     ],
     "answer": 0,
     "explanation": "as a result は『その結果』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1097,10 +1097,10 @@ const QUESTIONS = [
     "title": "重要単語: breathe",
     "question": "breathe の意味として最も近いものは？",
     "choices": [
-      "客",
-      "現代の",
+      "～を許す",
+      "～を選ぶ",
       "呼吸する",
-      "段階"
+      "クレヨン"
     ],
     "answer": 2,
     "explanation": "breathe は『呼吸する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1122,10 +1122,10 @@ const QUESTIONS = [
     "title": "重要単語: in addition",
     "question": "in addition の意味として最も近いものは？",
     "choices": [
-      "巨大な",
+      "〜に対する需要",
       "さらに、加えて",
-      "鉄",
-      "実は、実際は"
+      "4分の1（の）",
+      "AかあるいはB"
     ],
     "answer": 1,
     "explanation": "in addition は『さらに、加えて』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1147,10 +1147,10 @@ const QUESTIONS = [
     "title": "重要単語: heat",
     "question": "heat の意味として最も近いものは？",
     "choices": [
-      "実際に、実は",
-      "日常の",
+      "～を許す",
+      "～を選ぶ",
       "熱、熱さ",
-      "薬"
+      "クレヨン"
     ],
     "answer": 2,
     "explanation": "heat は『熱、熱さ』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1172,10 +1172,10 @@ const QUESTIONS = [
     "title": "重要単語: fever",
     "question": "fever の意味として最も近いものは？",
     "choices": [
-      "（赤ん坊が）母乳を飲む",
-      "（規模が）大きくなる、拡大する",
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
       "（病気による）熱、発熱",
-      "要因"
+      "〜に（さっと）目を通す"
     ],
     "answer": 2,
     "explanation": "fever は『（病気による）熱、発熱』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1198,9 +1198,9 @@ const QUESTIONS = [
     "question": "at the same time の意味として最も近いものは？",
     "choices": [
       "同時に",
-      "（物の一部が）はがれる、取れる",
-      "呼吸困難",
-      "～を想像する"
+      "ボタン",
+      "外側の",
+      "巨大な"
     ],
     "answer": 0,
     "explanation": "at the same time は『同時に』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1223,9 +1223,9 @@ const QUESTIONS = [
     "question": "sweat の意味として最も近いものは？",
     "choices": [
       "汗をかく",
-      "～に挨拶する",
-      "理由",
-      "（感情・音などが）弱まる、なくなる"
+      "～を許す",
+      "～を選ぶ",
+      "クレヨン"
     ],
     "answer": 0,
     "explanation": "sweat は『汗をかく』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1248,9 +1248,9 @@ const QUESTIONS = [
     "question": "finally の意味として最も近いものは？",
     "choices": [
       "最後に",
-      "違い",
-      "確かに、確実に",
-      "～を受け入れる、容認する"
+      "ボタン",
+      "外側の",
+      "巨大な"
     ],
     "answer": 0,
     "explanation": "finally は『最後に』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1272,10 +1272,10 @@ const QUESTIONS = [
     "title": "重要単語: pain",
     "question": "pain の意味として最も近いものは？",
     "choices": [
-      "～を作り出す",
-      "隠れた、人目につかない",
+      "違い",
+      "活動",
       "痛み",
-      "大多数の〜、大部分の～"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "pain は『痛み』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1298,9 +1298,9 @@ const QUESTIONS = [
     "question": "miserable の意味として最も近いものは？",
     "choices": [
       "みじめな",
-      "〔動〕～をリラックスさせる",
-      "競争力のある",
-      "問題、悩み事、心配事"
+      "～を許す",
+      "～を選ぶ",
+      "クレヨン"
     ],
     "answer": 0,
     "explanation": "miserable は『みじめな』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1322,10 +1322,10 @@ const QUESTIONS = [
     "title": "重要単語: actually",
     "question": "actually の意味として最も近いものは？",
     "choices": [
-      "世の中には、どこかに",
-      "ひとかけらの〜、〜の一片",
+      "〜に参加する",
+      "〜に取り組む",
       "実は、実際は",
-      "ストレス"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "actually は『実は、実際は』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1347,10 +1347,10 @@ const QUESTIONS = [
     "title": "重要単語: take a bath",
     "question": "take a bath の意味として最も近いものは？",
     "choices": [
-      "スペース、空白",
+      "〜によれば",
       "風呂に入る",
-      "モルタル",
-      "10億（の）"
+      "〜に重なる",
+      "～をまねる"
     ],
     "answer": 1,
     "explanation": "take a bath は『風呂に入る』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1372,10 +1372,10 @@ const QUESTIONS = [
     "title": "重要単語: take medicine",
     "question": "take medicine の意味として最も近いものは？",
     "choices": [
-      "物体",
-      "大多数の〜、大部分の～",
+      "～を許す",
+      "～を選ぶ",
       "薬を飲む",
-      "裏口"
+      "クレヨン"
     ],
     "answer": 2,
     "explanation": "take medicine は『薬を飲む』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1397,10 +1397,10 @@ const QUESTIONS = [
     "title": "重要単語: a variety of ～",
     "question": "a variety of ～ の意味として最も近いものは？",
     "choices": [
-      "居心地の悪い",
-      "治療法",
+      "～を許す",
+      "～を選ぶ",
       "様々な〜",
-      "〜を埋める、塗りつぶす"
+      "クレヨン"
     ],
     "answer": 2,
     "explanation": "a variety of ～ は『様々な〜』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1422,10 +1422,10 @@ const QUESTIONS = [
     "title": "重要単語: breathing difficulty",
     "question": "breathing difficulty の意味として最も近いものは？",
     "choices": [
-      "～に挨拶する",
+      "～を許す",
       "呼吸困難",
-      "遠く離れて",
-      "発展途上国"
+      "～を選ぶ",
+      "クレヨン"
     ],
     "answer": 1,
     "explanation": "breathing difficulty は『呼吸困難』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1448,9 +1448,9 @@ const QUESTIONS = [
     "question": "come in the form of ～ の意味として最も近いものは？",
     "choices": [
       "〜の形で手に入る［売られている］",
-      "今のところ",
-      "〜と共同する、提携する",
-      "痛み"
+      "（ゴルフの）ティー、球をのせる台",
+      "（線で描いた）絵、線画、デッサン",
+      "〜から形成される、〜からできている"
     ],
     "answer": 0,
     "explanation": "come in the form of ～ は『〜の形で手に入る［売られている］』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1473,9 +1473,9 @@ const QUESTIONS = [
     "question": "reason の意味として最も近いものは？",
     "choices": [
       "理由",
-      "外側の",
-      "衣類、衣料品",
-      "道順、経路"
+      "違い",
+      "活動",
+      "滑る"
     ],
     "answer": 0,
     "explanation": "reason は『理由』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1497,10 +1497,10 @@ const QUESTIONS = [
     "title": "重要単語: create",
     "question": "create の意味として最も近いものは？",
     "choices": [
-      "共同創設者",
-      "近隣、地域",
+      "〜に参加する",
+      "〜に取り組む",
       "～を生み出す",
-      "反応"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "create は『～を生み出す』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1523,9 +1523,9 @@ const QUESTIONS = [
     "question": "defense の意味として最も近いものは？",
     "choices": [
       "防御（力）、防御手段",
-      "（卓球・テニスなどの）ラリー",
-      "物質",
-      "～を持続させる、継続する"
+      "（〜の）大きさがある",
+      "～ではないかと恐れる",
+      "～に仕える、奉仕する"
     ],
     "answer": 0,
     "explanation": "defense は『防御（力）、防御手段』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1547,10 +1547,10 @@ const QUESTIONS = [
     "title": "重要単語: properly",
     "question": "properly の意味として最も近いものは？",
     "choices": [
-      "〜の形で手に入る［売られている］",
-      "～（ということ）を証明する",
+      "ボタン",
+      "外側の",
       "適切に",
-      "物体"
+      "巨大な"
     ],
     "answer": 2,
     "explanation": "properly は『適切に』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1572,10 +1572,10 @@ const QUESTIONS = [
     "title": "重要単語: amazing",
     "question": "amazing の意味として最も近いものは？",
     "choices": [
-      "～を襲う、攻撃する",
+      "～を許す",
       "驚くべき",
-      "武器",
-      "薬"
+      "～を選ぶ",
+      "クレヨン"
     ],
     "answer": 1,
     "explanation": "amazing は『驚くべき』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1597,10 +1597,10 @@ const QUESTIONS = [
     "title": "重要単語: on one’s own",
     "question": "on one’s own の意味として最も近いものは？",
     "choices": [
-      "確かに、確実に",
-      "〜しようとする、企てる",
+      "〜に対する需要",
+      "4分の1（の）",
       "独力で、一人で",
-      "〜だろうかと思う"
+      "AかあるいはB"
     ],
     "answer": 2,
     "explanation": "on one’s own は『独力で、一人で』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y01 重要単語",
@@ -1622,10 +1622,10 @@ const QUESTIONS = [
     "title": "重要単語: customer",
     "question": "customer の意味として最も近いものは？",
     "choices": [
-      "〜で満たされている",
-      "密度",
+      "形",
+      "剣",
       "客",
-      "～するたびに"
+      "敵"
     ],
     "answer": 2,
     "explanation": "customer は『客』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1647,10 +1647,10 @@ const QUESTIONS = [
     "title": "重要単語: route",
     "question": "route の意味として最も近いものは？",
     "choices": [
-      "スペース、空白",
+      "〜によれば",
       "道順、経路",
-      "～するたびに",
-      "〜を構成する"
+      "〜に重なる",
+      "～をまねる"
     ],
     "answer": 1,
     "explanation": "route は『道順、経路』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1672,10 +1672,10 @@ const QUESTIONS = [
     "title": "重要単語: lesson",
     "question": "lesson の意味として最も近いものは？",
     "choices": [
-      "汗をかく",
-      "住まい",
+      "〜によれば",
+      "〜に重なる",
       "教え、教訓",
-      "裕福な"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "lesson は『教え、教訓』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1698,9 +1698,9 @@ const QUESTIONS = [
     "question": "forgive の意味として最も近いものは？",
     "choices": [
       "～を許す",
-      "地域社会",
-      "巨大な",
-      "〜につき、〜あたり（の）"
+      "～を選ぶ",
+      "クレヨン",
+      "ストレス"
     ],
     "answer": 0,
     "explanation": "forgive は『～を許す』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1722,10 +1722,10 @@ const QUESTIONS = [
     "title": "重要単語: throw",
     "question": "throw の意味として最も近いものは？",
     "choices": [
-      "～に挨拶する",
-      "適切に",
+      "〜によれば",
+      "〜に重なる",
       "～を投げる",
-      "群衆、観衆、聴衆"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "throw は『～を投げる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1748,9 +1748,9 @@ const QUESTIONS = [
     "question": "hidden の意味として最も近いものは？",
     "choices": [
       "隠れた、人目につかない",
-      "戦略",
-      "滑らかな、すべすべした",
-      "作業、課題"
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
+      "〜に（さっと）目を通す"
     ],
     "answer": 0,
     "explanation": "hidden は『隠れた、人目につかない』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1772,10 +1772,10 @@ const QUESTIONS = [
     "title": "重要単語: backyard",
     "question": "backyard の意味として最も近いものは？",
     "choices": [
-      "（〜の）大きさがある",
-      "4分の1（の）",
+      "違い",
+      "活動",
       "裏庭",
-      "昔は、過去に"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "backyard は『裏庭』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1797,10 +1797,10 @@ const QUESTIONS = [
     "title": "重要単語: roll off ～",
     "question": "roll off ～ の意味として最も近いものは？",
     "choices": [
-      "～を減らす",
+      "〜で満たされている",
       "～から転がり落ちる",
-      "起源",
-      "進歩"
+      "…を〜に集中させる",
+      "（卓球の）ラケット"
     ],
     "answer": 1,
     "explanation": "roll off ～ は『～から転がり落ちる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1822,10 +1822,10 @@ const QUESTIONS = [
     "title": "重要単語: comet",
     "question": "comet の意味として最も近いものは？",
     "choices": [
-      "痛み",
-      "日常の",
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
       "彗（すい）星、ほうき星",
-      "説、学説、理論"
+      "〜に（さっと）目を通す"
     ],
     "answer": 2,
     "explanation": "comet は『彗（すい）星、ほうき星』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1847,10 +1847,10 @@ const QUESTIONS = [
     "title": "重要単語: fall from ～",
     "question": "fall from ～ の意味として最も近いものは？",
     "choices": [
-      "ストレス",
-      "〜に対する需要",
+      "〜に参加する",
+      "〜に取り組む",
       "～から落ちる",
-      "現地で、現場で"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "fall from ～ は『～から落ちる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1872,10 +1872,10 @@ const QUESTIONS = [
     "title": "重要単語: smooth",
     "question": "smooth の意味として最も近いものは？",
     "choices": [
-      "〜の形で手に入る［売られている］",
+      "〜しようとする、企てる",
       "滑らかな、すべすべした",
-      "ロボット工学",
-      "材料、素材"
+      "〜と共同する、提携する",
+      "〜に（さっと）目を通す"
     ],
     "answer": 1,
     "explanation": "smooth は『滑らかな、すべすべした』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1897,10 +1897,10 @@ const QUESTIONS = [
     "title": "重要単語: slip",
     "question": "slip の意味として最も近いものは？",
     "choices": [
-      "教え、教訓",
-      "ロボット工学",
+      "違い",
+      "活動",
       "滑る",
-      "住まい"
+      "起源"
     ],
     "answer": 2,
     "explanation": "slip は『滑る』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1922,10 +1922,10 @@ const QUESTIONS = [
     "title": "重要単語: back porch",
     "question": "back porch の意味として最も近いものは？",
     "choices": [
-      "（感情・音などが）弱まる、なくなる",
-      "独力で、一人で",
+      "違い",
+      "活動",
       "裏口",
-      "（病気による）熱、発熱"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "back porch は『裏口』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1947,10 +1947,10 @@ const QUESTIONS = [
     "title": "重要単語: be afraid that ～",
     "question": "be afraid that ～ の意味として最も近いものは？",
     "choices": [
-      "鉄",
-      "平等な",
+      "（〜の）大きさがある",
+      "～に仕える、奉仕する",
       "～ではないかと恐れる",
-      "反応"
+      "お気に入りの、好きな"
     ],
     "answer": 2,
     "explanation": "be afraid that ～ は『～ではないかと恐れる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1973,9 +1973,9 @@ const QUESTIONS = [
     "question": "find out that ～ の意味として最も近いものは？",
     "choices": [
       "～ということを探り出す、～だと知る",
-      "説、学説、理論",
-      "現代の",
-      "鉄"
+      "〜から形成される、〜からできている",
+      "（感情・音などが）弱まる、なくなる",
+      "〜の形で手に入る［売られている］"
     ],
     "answer": 0,
     "explanation": "find out that ～ は『～ということを探り出す、～だと知る』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -1997,10 +1997,10 @@ const QUESTIONS = [
     "title": "重要単語: be sure that ～",
     "question": "be sure that ～ の意味として最も近いものは？",
     "choices": [
-      "さらに、加えて",
-      "住まい",
+      "（規模が）大きくなる、拡大する",
+      "（物の一部が）はがれる、取れる",
       "～だと確信している、自信がある",
-      "専門家"
+      "～を打ち負かす、～に勝る、勝つ"
     ],
     "answer": 2,
     "explanation": "be sure that ～ は『～だと確信している、自信がある』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2022,10 +2022,10 @@ const QUESTIONS = [
     "title": "重要単語: feel guilty about ～",
     "question": "feel guilty about ～ の意味として最も近いものは？",
     "choices": [
-      "決定する、強い影響を与える",
+      "〜しようとする、企てる",
       "～を後ろめたいと感じる",
-      "型、版",
-      "薬"
+      "〜と共同する、提携する",
+      "〜に（さっと）目を通す"
     ],
     "answer": 1,
     "explanation": "feel guilty about ～ は『～を後ろめたいと感じる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2047,10 +2047,10 @@ const QUESTIONS = [
     "title": "重要単語: greet",
     "question": "greet の意味として最も近いものは？",
     "choices": [
-      "汗をかく",
-      "共同創設者",
+      "〜に参加する",
+      "〜に取り組む",
       "～に挨拶する",
-      "実際に、実は"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "greet は『～に挨拶する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2072,10 +2072,10 @@ const QUESTIONS = [
     "title": "重要単語: uncomfortable",
     "question": "uncomfortable の意味として最も近いものは？",
     "choices": [
-      "秒",
-      "特に",
+      "〜に参加する",
+      "〜に取り組む",
       "居心地の悪い",
-      "〜を干上がらせる"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "uncomfortable は『居心地の悪い』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2097,10 +2097,10 @@ const QUESTIONS = [
     "title": "重要単語: whenever",
     "question": "whenever の意味として最も近いものは？",
     "choices": [
-      "AかあるいはB",
+      "〜に参加する",
       "～するたびに",
-      "〜に集中する",
-      "健康的な"
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 1,
     "explanation": "whenever は『～するたびに』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2122,10 +2122,10 @@ const QUESTIONS = [
     "title": "重要単語: fix",
     "question": "fix の意味として最も近いものは？",
     "choices": [
-      "4分の1（の）",
-      "滑らかな、すべすべした",
+      "〜に参加する",
+      "〜に取り組む",
       "～を修理する",
-      "～に挨拶する"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "fix は『～を修理する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2147,10 +2147,10 @@ const QUESTIONS = [
     "title": "重要単語: envelope",
     "question": "envelope の意味として最も近いものは？",
     "choices": [
-      "住まい",
-      "～を投げる",
+      "違い",
+      "活動",
       "封筒",
-      "ジャンケン"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "envelope は『封筒』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2172,10 +2172,10 @@ const QUESTIONS = [
     "title": "重要単語: note",
     "question": "note の意味として最も近いものは？",
     "choices": [
-      "会議、（定期的な）大会",
+      "〜に対する需要",
       "メモ、短い手紙",
-      "ほこり、ちり",
-      "〜に対する需要"
+      "4分の1（の）",
+      "AかあるいはB"
     ],
     "answer": 1,
     "explanation": "note は『メモ、短い手紙』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2198,9 +2198,9 @@ const QUESTIONS = [
     "question": "quietly の意味として最も近いものは？",
     "choices": [
       "静かに、目立たないように",
-      "～ということを探り出す、～だと知る",
-      "自由に〜する［できる］",
-      "AかあるいはB"
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
+      "〔形〕限られた、わずかな"
     ],
     "answer": 0,
     "explanation": "quietly は『静かに、目立たないように』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2222,10 +2222,10 @@ const QUESTIONS = [
     "title": "重要単語: continue",
     "question": "continue の意味として最も近いものは？",
     "choices": [
-      "伝統的な",
-      "〜に基づいている",
+      "〜によれば",
+      "〜に重なる",
       "～を続ける",
-      "理由"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "continue は『～を続ける』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2247,10 +2247,10 @@ const QUESTIONS = [
     "title": "重要単語: be proud of ～",
     "question": "be proud of ～ の意味として最も近いものは？",
     "choices": [
-      "薬",
+      "〜につき、〜あたり（の）",
       "～を誇りに思う、自慢する",
-      "～に直面する",
-      "〜だろうかと思う"
+      "（試合・競技の）相手、敵",
+      "〔形〕限られた、わずかな"
     ],
     "answer": 1,
     "explanation": "be proud of ～ は『～を誇りに思う、自慢する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y02 重要単語",
@@ -2272,10 +2272,10 @@ const QUESTIONS = [
     "title": "重要単語: stress",
     "question": "stress の意味として最も近いものは？",
     "choices": [
-      "今のところ（は）",
-      "静かに、目立たないように",
+      "～を許す",
+      "～を選ぶ",
       "ストレス",
-      "理論"
+      "クレヨン"
     ],
     "answer": 2,
     "explanation": "stress は『ストレス』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2297,10 +2297,10 @@ const QUESTIONS = [
     "title": "重要単語: coloring",
     "question": "coloring の意味として最も近いものは？",
     "choices": [
-      "モルタル",
-      "〜しようとする、企てる",
+      "ボタン",
+      "外側の",
       "塗り絵",
-      "（試合・競技の）相手、敵"
+      "巨大な"
     ],
     "answer": 2,
     "explanation": "coloring は『塗り絵』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2322,10 +2322,10 @@ const QUESTIONS = [
     "title": "重要単語: activity",
     "question": "activity の意味として最も近いものは？",
     "choices": [
-      "風呂に入る",
+      "違い",
       "活動",
-      "実際（は）",
-      "その結果"
+      "滑る",
+      "起源"
     ],
     "answer": 1,
     "explanation": "activity は『活動』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2347,10 +2347,10 @@ const QUESTIONS = [
     "title": "重要単語: worldwide",
     "question": "worldwide の意味として最も近いものは？",
     "choices": [
-      "～（ということ）を証明する",
-      "（〜の）大きさがある",
+      "〜に対する需要",
+      "4分の1（の）",
       "世界中で［の］",
-      "～を選ぶ"
+      "AかあるいはB"
     ],
     "answer": 2,
     "explanation": "worldwide は『世界中で［の］』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2372,10 +2372,10 @@ const QUESTIONS = [
     "title": "重要単語: choose",
     "question": "choose の意味として最も近いものは？",
     "choices": [
-      "ひとかけらの〜、〜の一片",
-      "白紙の、何も書［描］いていない",
+      "～を許す",
+      "クレヨン",
       "～を選ぶ",
-      "実は、実際は"
+      "ストレス"
     ],
     "answer": 2,
     "explanation": "choose は『～を選ぶ』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2397,10 +2397,10 @@ const QUESTIONS = [
     "title": "重要単語: crayon",
     "question": "crayon の意味として最も近いものは？",
     "choices": [
-      "～だと確信している、自信がある",
+      "～を許す",
       "クレヨン",
-      "～を感知する",
-      "彗（すい）星、ほうき星"
+      "～を選ぶ",
+      "ストレス"
     ],
     "answer": 1,
     "explanation": "crayon は『クレヨン』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2422,9 +2422,9 @@ const QUESTIONS = [
     "title": "重要単語: marker",
     "question": "marker の意味として最も近いものは？",
     "choices": [
-      "子ども時代",
-      "ボタン",
-      "～（ということ）を証明する",
+      "〜する傾向がある",
+      "〜だろうかと思う",
+      "〜に基づいている",
       "マーカー（ペン）"
     ],
     "answer": 3,
@@ -2447,10 +2447,10 @@ const QUESTIONS = [
     "title": "重要単語: favorite",
     "question": "favorite の意味として最も近いものは？",
     "choices": [
-      "～を強調する",
-      "卓球",
+      "（〜の）大きさがある",
+      "～ではないかと恐れる",
       "お気に入りの、好きな",
-      "様々な〜"
+      "～に仕える、奉仕する"
     ],
     "answer": 2,
     "explanation": "favorite は『お気に入りの、好きな』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2472,10 +2472,10 @@ const QUESTIONS = [
     "title": "重要単語: fill 〜 in",
     "question": "fill 〜 in の意味として最も近いものは？",
     "choices": [
-      "進歩",
+      "〜しようとする、企てる",
       "〜を埋める、塗りつぶす",
-      "理由",
-      "10億（の）"
+      "〜と共同する、提携する",
+      "〜に（さっと）目を通す"
     ],
     "answer": 1,
     "explanation": "fill 〜 in は『〜を埋める、塗りつぶす』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2497,10 +2497,10 @@ const QUESTIONS = [
     "title": "重要単語: fun",
     "question": "fun の意味として最も近いものは？",
     "choices": [
-      "フェアプレーで勝負する",
-      "ロボットの",
+      "〜で満たされている",
+      "…を〜に集中させる",
       "楽しみ、楽しいもの",
-      "教え、教訓"
+      "（卓球の）ラケット"
     ],
     "answer": 2,
     "explanation": "fun は『楽しみ、楽しいもの』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2522,10 +2522,10 @@ const QUESTIONS = [
     "title": "重要単語: create",
     "question": "create の意味として最も近いものは？",
     "choices": [
-      "物質",
-      "クレヨン",
+      "〜に参加する",
+      "〜に取り組む",
       "～を作り出す",
-      "一緒になる、集まる"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "create は『～を作り出す』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2547,10 +2547,10 @@ const QUESTIONS = [
     "title": "重要単語: latest",
     "question": "latest の意味として最も近いものは？",
     "choices": [
-      "同時に",
+      "ボタン",
       "最新の",
-      "（ある目的のための）行為、活動、練習課題",
-      "道順、経路"
+      "外側の",
+      "巨大な"
     ],
     "answer": 1,
     "explanation": "latest は『最新の』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2572,10 +2572,10 @@ const QUESTIONS = [
     "title": "重要単語: contain",
     "question": "contain の意味として最も近いものは？",
     "choices": [
-      "地域社会",
-      "精度、正確さ",
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
       "～を含む、～が入っている",
-      "治療法"
+      "〔形〕限られた、わずかな"
     ],
     "answer": 2,
     "explanation": "contain は『～を含む、～が入っている』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2597,10 +2597,10 @@ const QUESTIONS = [
     "title": "重要単語: (be) filled with 〜",
     "question": "(be) filled with 〜 の意味として最も近いものは？",
     "choices": [
-      "出てくる、現れる",
-      "成功",
+      "…を〜に集中させる",
+      "（卓球の）ラケット",
       "〜で満たされている",
-      "～を減らす"
+      "～から転がり落ちる"
     ],
     "answer": 2,
     "explanation": "(be) filled with 〜 は『〜で満たされている』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2622,10 +2622,10 @@ const QUESTIONS = [
     "title": "重要単語: hand-sketched",
     "question": "hand-sketched の意味として最も近いものは？",
     "choices": [
-      "軌道",
+      "～を許す",
       "手描きの",
-      "～から落ちる",
-      "〜によれば"
+      "～を選ぶ",
+      "クレヨン"
     ],
     "answer": 1,
     "explanation": "hand-sketched は『手描きの』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2647,9 +2647,9 @@ const QUESTIONS = [
     "title": "重要単語: drawing",
     "question": "drawing の意味として最も近いものは？",
     "choices": [
-      "世の中には、どこかに",
-      "衣類、衣料品",
-      "反応",
+      "〜の形で手に入る［売られている］",
+      "（ゴルフの）ティー、球をのせる台",
+      "〜から形成される、〜からできている",
       "（線で描いた）絵、線画、デッサン"
     ],
     "answer": 3,
@@ -2672,10 +2672,10 @@ const QUESTIONS = [
     "title": "重要単語: space",
     "question": "space の意味として最も近いものは？",
     "choices": [
-      "遠く離れて",
-      "～を説明する",
+      "〜に対する需要",
+      "4分の1（の）",
       "スペース、空白",
-      "〜を干上がらせる"
+      "AかあるいはB"
     ],
     "answer": 2,
     "explanation": "space は『スペース、空白』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2697,10 +2697,10 @@ const QUESTIONS = [
     "title": "重要単語: exercise",
     "question": "exercise の意味として最も近いものは？",
     "choices": [
-      "住まい",
+      "変化をもたらす、影響を与える、状況を変える",
       "（ある目的のための）行為、活動、練習課題",
-      "起源",
-      "驚くべき"
+      "〜から形成される、〜からできている",
+      "（感情・音などが）弱まる、なくなる"
     ],
     "answer": 1,
     "explanation": "exercise は『（ある目的のための）行為、活動、練習課題』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2722,10 +2722,10 @@ const QUESTIONS = [
     "title": "重要単語: expert",
     "question": "expert の意味として最も近いものは？",
     "choices": [
-      "～に直面する",
-      "～を投げる",
+      "ボタン",
+      "外側の",
       "専門家",
-      "特に"
+      "巨大な"
     ],
     "answer": 2,
     "explanation": "expert は『専門家』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2747,10 +2747,10 @@ const QUESTIONS = [
     "title": "重要単語: reduce",
     "question": "reduce の意味として最も近いものは？",
     "choices": [
-      "秒",
-      "（卓球・テニスなどの）ラリー",
+      "〜によれば",
+      "〜に重なる",
       "～を減らす",
-      "性、ジェンダー"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "reduce は『～を減らす』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2772,10 +2772,10 @@ const QUESTIONS = [
     "title": "重要単語: focus … on 〜",
     "question": "focus … on 〜 の意味として最も近いものは？",
     "choices": [
-      "最新の",
+      "〜で満たされている",
       "…を〜に集中させる",
-      "確かに、確実に（は）",
-      "純粋さ"
+      "（卓球の）ラケット",
+      "～から転がり落ちる"
     ],
     "answer": 1,
     "explanation": "focus … on 〜 は『…を〜に集中させる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2797,10 +2797,10 @@ const QUESTIONS = [
     "title": "重要単語: task",
     "question": "task の意味として最も近いものは？",
     "choices": [
-      "～を許す",
-      "～を付け加える、～と言い添える",
+      "〜によれば",
+      "〜に重なる",
       "作業、課題",
-      "宇宙飛行士"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "task は『作業、課題』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2822,10 +2822,10 @@ const QUESTIONS = [
     "title": "重要単語: focus on 〜",
     "question": "focus on 〜 の意味として最も近いものは？",
     "choices": [
-      "一緒になる、集まる",
-      "さらに、加えて",
+      "〜に参加する",
+      "〜に取り組む",
       "〜に集中する",
-      "～を含む、～が入っている"
+      "〜を引き出す"
     ],
     "answer": 2,
     "explanation": "focus on 〜 は『〜に集中する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2847,10 +2847,10 @@ const QUESTIONS = [
     "title": "重要単語: trouble",
     "question": "trouble の意味として最も近いものは？",
     "choices": [
-      "物質",
+      "（〜の）大きさがある",
       "問題、悩み事、心配事",
-      "右利きの",
-      "正しい、正確な"
+      "～ではないかと恐れる",
+      "～に仕える、奉仕する"
     ],
     "answer": 1,
     "explanation": "trouble は『問題、悩み事、心配事』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2872,9 +2872,9 @@ const QUESTIONS = [
     "title": "重要単語: in addition",
     "question": "in addition の意味として最も近いものは？",
     "choices": [
-      "～を受け入れる、容認する",
-      "トーナメント、勝ち抜き戦",
-      "実際に、実は",
+      "〜に対する需要",
+      "4分の1（の）",
+      "AかあるいはB",
       "さらに、加えて"
     ],
     "answer": 3,
@@ -2897,10 +2897,10 @@ const QUESTIONS = [
     "title": "重要単語: bring out 〜",
     "question": "bring out 〜 の意味として最も近いものは？",
     "choices": [
-      "ロボット工学",
-      "（ある目的のための）行為、活動、練習課題",
+      "〜に参加する",
+      "〜に取り組む",
       "〜を引き出す",
-      "～を付け加える、～と言い添える"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "bring out 〜 は『〜を引き出す』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2923,9 +2923,9 @@ const QUESTIONS = [
     "question": "take … back to 〜 の意味として最も近いものは？",
     "choices": [
       "…を〜に連れ戻す",
-      "～に直面する",
-      "違い",
-      "大喜び、歓喜"
+      "〜する傾向がある",
+      "〜だろうかと思う",
+      "〜に基づいている"
     ],
     "answer": 0,
     "explanation": "take … back to 〜 は『…を〜に連れ戻す』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2947,10 +2947,10 @@ const QUESTIONS = [
     "title": "重要単語: childhood",
     "question": "childhood の意味として最も近いものは？",
     "choices": [
-      "実際に、実は",
-      "（ある目的のための）行為、活動、練習課題",
+      "〜によれば",
+      "〜に重なる",
       "子ども時代",
-      "変化をもたらす、影響を与える、状況を変える"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "childhood は『子ども時代』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2972,10 +2972,10 @@ const QUESTIONS = [
     "title": "重要単語: add",
     "question": "add の意味として最も近いものは？",
     "choices": [
-      "近隣、地域",
-      "～に挨拶する",
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
       "付け加えて言う、言い足す",
-      "活動"
+      "〔形〕限られた、わずかな"
     ],
     "answer": 2,
     "explanation": "add は『付け加えて言う、言い足す』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -2997,10 +2997,10 @@ const QUESTIONS = [
     "title": "重要単語: brain",
     "question": "brain の意味として最も近いものは？",
     "choices": [
-      "〜と共同する、提携する",
+      "客",
       "脳",
-      "…を〜に集中させる",
-      "薬を飲む"
+      "形",
+      "剣"
     ],
     "answer": 1,
     "explanation": "brain は『脳』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3022,10 +3022,10 @@ const QUESTIONS = [
     "title": "重要単語: active",
     "question": "active の意味として最も近いものは？",
     "choices": [
-      "右利きの",
-      "ほこり、ちり",
+      "〜する傾向がある",
+      "〜だろうかと思う",
       "活発な、活動的な",
-      "滑らかな、すべすべした"
+      "〜に基づいている"
     ],
     "answer": 2,
     "explanation": "active は『活発な、活動的な』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3047,10 +3047,10 @@ const QUESTIONS = [
     "title": "重要単語: healthy",
     "question": "healthy の意味として最も近いものは？",
     "choices": [
-      "店員",
-      "〜によれば",
+      "～を許す",
+      "～を選ぶ",
       "健康的な",
-      "物体"
+      "クレヨン"
     ],
     "answer": 2,
     "explanation": "healthy は『健康的な』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3072,10 +3072,10 @@ const QUESTIONS = [
     "title": "重要単語: shape",
     "question": "shape の意味として最も近いものは？",
     "choices": [
-      "一緒になる、集まる",
+      "客",
       "形",
-      "日常の",
-      "～に挨拶する"
+      "剣",
+      "敵"
     ],
     "answer": 1,
     "explanation": "shape は『形』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3097,9 +3097,9 @@ const QUESTIONS = [
     "title": "重要単語: material",
     "question": "material の意味として最も近いものは？",
     "choices": [
-      "治療法",
-      "推測",
-      "昔は、過去に",
+      "〜によれば",
+      "〜に重なる",
+      "～をまねる",
       "材料、素材"
     ],
     "answer": 3,
@@ -3122,10 +3122,10 @@ const QUESTIONS = [
     "title": "重要単語: look through 〜",
     "question": "look through 〜 の意味として最も近いものは？",
     "choices": [
-      "理論",
-      "実際に、実は",
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
       "〜に（さっと）目を通す",
-      "裕福な"
+      "〜を埋める、塗りつぶす"
     ],
     "answer": 2,
     "explanation": "look through 〜 は『〜に（さっと）目を通す』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3148,9 +3148,9 @@ const QUESTIONS = [
     "question": "purity の意味として最も近いものは？",
     "choices": [
       "純粋さ",
-      "巨大な",
-      "確かに、確実に",
-      "現代の"
+      "ボタン",
+      "外側の",
+      "巨大な"
     ],
     "answer": 0,
     "explanation": "purity は『純粋さ』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3173,9 +3173,9 @@ const QUESTIONS = [
     "question": "relax の意味として最も近いものは？",
     "choices": [
       "〔動〕～をリラックスさせる",
-      "その結果",
-      "～から転がり落ちる",
-      "～を続ける"
+      "～（ということ）を証明する",
+      "～を滑らせる、さっと動かす",
+      "決定する、強い影響を与える"
     ],
     "answer": 0,
     "explanation": "relax は『〔動〕～をリラックスさせる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3198,9 +3198,9 @@ const QUESTIONS = [
     "question": "relaxing の意味として最も近いものは？",
     "choices": [
       "〔形〕リラックスさせる",
-      "住まい",
-      "世の中には、どこかに",
-      "今のところ"
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
+      "〜に（さっと）目を通す"
     ],
     "answer": 0,
     "explanation": "relaxing は『〔形〕リラックスさせる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3223,9 +3223,9 @@ const QUESTIONS = [
     "question": "fall away の意味として最も近いものは？",
     "choices": [
       "（感情・音などが）弱まる、なくなる",
-      "〜だろうかと思う",
-      "クレヨン",
-      "群衆、観衆、聴衆"
+      "〜から形成される、〜からできている",
+      "～ということを探り出す、～だと知る",
+      "〜の形で手に入る［売られている］"
     ],
     "answer": 0,
     "explanation": "fall away は『（感情・音などが）弱まる、なくなる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3248,9 +3248,9 @@ const QUESTIONS = [
     "question": "blank の意味として最も近いものは？",
     "choices": [
       "白紙の、何も書［描］いていない",
-      "～を滑らせる、さっと動かす",
-      "健康的な",
-      "正しい、正確な"
+      "（規模が）大きくなる、拡大する",
+      "（物の一部が）はがれる、取れる",
+      "～だと確信している、自信がある"
     ],
     "answer": 0,
     "explanation": "blank は『白紙の、何も書［描］いていない』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3273,9 +3273,9 @@ const QUESTIONS = [
     "question": "to the very end の意味として最も近いものは？",
     "choices": [
       "最後の最後まで",
-      "進歩した、先進の",
-      "〜だろうかと思う",
-      "確かに、確実に（は）"
+      "〜に対する需要",
+      "4分の1（の）",
+      "AかあるいはB"
     ],
     "answer": 0,
     "explanation": "to the very end は『最後の最後まで』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3297,10 +3297,10 @@ const QUESTIONS = [
     "title": "重要単語: for now",
     "question": "for now の意味として最も近いものは？",
     "choices": [
-      "さらに、加えて",
-      "普通の、通常の",
+      "〜によれば",
+      "〜に重なる",
       "今のところ",
-      "材料、素材"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "for now は『今のところ』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3323,9 +3323,9 @@ const QUESTIONS = [
     "question": "demand for 〜 の意味として最も近いものは？",
     "choices": [
       "〜に対する需要",
-      "大量生産する",
-      "所有地、土地",
-      "住宅建設"
+      "4分の1（の）",
+      "AかあるいはB",
+      "さらに、加えて"
     ],
     "answer": 0,
     "explanation": "demand for 〜 は『〜に対する需要』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y03 重要単語",
@@ -3347,10 +3347,10 @@ const QUESTIONS = [
     "title": "重要単語: wonder",
     "question": "wonder の意味として最も近いものは？",
     "choices": [
-      "起源",
-      "現代の",
+      "〜する傾向がある",
+      "〜に基づいている",
       "〜だろうかと思う",
-      "脳"
+      "〜を干上がらせる"
     ],
     "answer": 2,
     "explanation": "wonder は『〜だろうかと思う』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3372,10 +3372,10 @@ const QUESTIONS = [
     "title": "重要単語: far away",
     "question": "far away の意味として最も近いものは？",
     "choices": [
-      "競争力のある",
+      "〜によれば",
       "遠く離れて",
-      "普通の、通常の",
-      "マーカー（ペン）"
+      "〜に重なる",
+      "～をまねる"
     ],
     "answer": 1,
     "explanation": "far away は『遠く離れて』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3397,10 +3397,10 @@ const QUESTIONS = [
     "title": "重要単語: for sure",
     "question": "for sure の意味として最も近いものは？",
     "choices": [
-      "滑る",
-      "宇宙飛行士",
+      "（〜の）大きさがある",
+      "～ではないかと恐れる",
       "確かに、確実に（は）",
-      "〜を構成する"
+      "～に仕える、奉仕する"
     ],
     "answer": 2,
     "explanation": "for sure は『確かに、確実に（は）』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3422,10 +3422,10 @@ const QUESTIONS = [
     "title": "重要単語: theory",
     "question": "theory の意味として最も近いものは？",
     "choices": [
-      "群衆、観衆、聴衆",
-      "衝突、衝撃",
+      "違い",
+      "活動",
       "理論",
-      "～を投げる"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "theory は『理論』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3448,9 +3448,9 @@ const QUESTIONS = [
     "question": "guess の意味として最も近いものは？",
     "choices": [
       "推測",
-      "競争力のある",
-      "〜だろうかと思う",
-      "〜に取り組む"
+      "違い",
+      "活動",
+      "滑る"
     ],
     "answer": 0,
     "explanation": "guess は『推測』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3473,9 +3473,9 @@ const QUESTIONS = [
     "question": "prove の意味として最も近いものは？",
     "choices": [
       "～（ということ）を証明する",
-      "適切に",
-      "同時に",
-      "呼吸困難"
+      "〔動〕～をリラックスさせる",
+      "～を滑らせる、さっと動かす",
+      "決定する、強い影響を与える"
     ],
     "answer": 0,
     "explanation": "prove は『～（ということ）を証明する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3498,9 +3498,9 @@ const QUESTIONS = [
     "question": "correct の意味として最も近いものは？",
     "choices": [
       "正しい、正確な",
-      "～に直面する",
-      "〜する傾向がある",
-      "宇宙飛行士"
+      "〜に対する需要",
+      "4分の1（の）",
+      "AかあるいはB"
     ],
     "answer": 0,
     "explanation": "correct は『正しい、正確な』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3522,10 +3522,10 @@ const QUESTIONS = [
     "title": "重要単語: astronaut",
     "question": "astronaut の意味として最も近いものは？",
     "choices": [
-      "繰り返しの多い",
-      "秒",
+      "〜によれば",
+      "〜に重なる",
       "宇宙飛行士",
-      "～から落ちる"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "astronaut は『宇宙飛行士』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3548,9 +3548,9 @@ const QUESTIONS = [
     "question": "a piece of ～ の意味として最も近いものは？",
     "choices": [
       "ひとかけらの〜、〜の一片",
-      "使用人、召使い",
-      "大喜び、歓喜",
-      "〜に参加する"
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
+      "〔形〕限られた、わずかな"
     ],
     "answer": 0,
     "explanation": "a piece of ～ は『ひとかけらの〜、〜の一片』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3572,10 +3572,10 @@ const QUESTIONS = [
     "title": "重要単語: finally",
     "question": "finally の意味として最も近いものは？",
     "choices": [
-      "さらに、加えて",
-      "特に",
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
       "最後に、ついに、ようやく",
-      "素材、材料"
+      "〔形〕限られた、わずかな"
     ],
     "answer": 2,
     "explanation": "finally は『最後に、ついに、ようやく』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3597,10 +3597,10 @@ const QUESTIONS = [
     "title": "重要単語: origin",
     "question": "origin の意味として最も近いものは？",
     "choices": [
-      "軌道",
+      "違い",
       "起源",
-      "変化をもたらす、影響を与える、状況を変える",
-      "確かに、確実に（は）"
+      "活動",
+      "滑る"
     ],
     "answer": 1,
     "explanation": "origin は『起源』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3622,10 +3622,10 @@ const QUESTIONS = [
     "title": "重要単語: be formed from ～",
     "question": "be formed from ～ の意味として最も近いものは？",
     "choices": [
-      "記者、レポーター",
-      "成功",
+      "（感情・音などが）弱まる、なくなる",
+      "～ということを探り出す、～だと知る",
       "〜から形成される、〜からできている",
-      "軽量の"
+      "〜の形で手に入る［売られている］"
     ],
     "answer": 2,
     "explanation": "be formed from ～ は『〜から形成される、〜からできている』。授業プリント本文では the moon was formed from lighter materials の形で出ている。参照：Cutting Edge Y04 重要単語",
@@ -3647,10 +3647,10 @@ const QUESTIONS = [
     "title": "重要単語: object",
     "question": "object の意味として最も近いものは？",
     "choices": [
-      "群衆、観衆、聴衆",
-      "〜しようとする、企てる",
+      "違い",
+      "活動",
       "物体",
-      "（〜の）大きさがある"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "object は『物体』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3672,10 +3672,10 @@ const QUESTIONS = [
     "title": "重要単語: huge",
     "question": "huge の意味として最も近いものは？",
     "choices": [
-      "～を続ける",
+      "ボタン",
       "巨大な",
-      "右利きの",
-      "4分の1（の）"
+      "外側の",
+      "極端な"
     ],
     "answer": 1,
     "explanation": "huge は『巨大な』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3698,9 +3698,9 @@ const QUESTIONS = [
     "question": "break off の意味として最も近いものは？",
     "choices": [
       "（物の一部が）はがれる、取れる",
-      "～に直面する",
-      "〜を干上がらせる",
-      "～を説明する"
+      "（規模が）大きくなる、拡大する",
+      "～だと確信している、自信がある",
+      "～を打ち負かす、～に勝る、勝つ"
     ],
     "answer": 0,
     "explanation": "break off は『（物の一部が）はがれる、取れる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3723,9 +3723,9 @@ const QUESTIONS = [
     "question": "orbit の意味として最も近いものは？",
     "choices": [
       "軌道",
-      "作業、課題",
-      "～を生み出す",
-      "フェアプレーで勝負する"
+      "違い",
+      "活動",
+      "滑る"
     ],
     "answer": 0,
     "explanation": "orbit は『軌道』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3747,10 +3747,10 @@ const QUESTIONS = [
     "title": "重要単語: brief",
     "question": "brief の意味として最も近いものは？",
     "choices": [
-      "（病気による）熱、発熱",
-      "形",
+      "違い",
+      "活動",
       "短い",
-      "伝統的な"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "brief は『短い』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3773,9 +3773,9 @@ const QUESTIONS = [
     "question": "come together の意味として最も近いものは？",
     "choices": [
       "一緒になる、集まる",
-      "～を強調する",
-      "～を後ろめたいと感じる",
-      "開催される"
+      "〜で満たされている",
+      "…を〜に集中させる",
+      "（卓球の）ラケット"
     ],
     "answer": 0,
     "explanation": "come together は『一緒になる、集まる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3797,10 +3797,10 @@ const QUESTIONS = [
     "title": "重要単語: impact",
     "question": "impact の意味として最も近いものは？",
     "choices": [
-      "～ということを探り出す、～だと知る",
-      "敵",
+      "〜によれば",
+      "〜に重なる",
       "衝突、衝撃",
-      "～ではないかと恐れる"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "impact は『衝突、衝撃』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3822,10 +3822,10 @@ const QUESTIONS = [
     "title": "重要単語: explain",
     "question": "explain の意味として最も近いものは？",
     "choices": [
-      "今のところ（は）",
+      "〜に参加する",
       "～を説明する",
-      "彗（すい）星、ほうき星",
-      "～を投げる"
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 1,
     "explanation": "explain は『～を説明する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3847,10 +3847,10 @@ const QUESTIONS = [
     "title": "重要単語: create",
     "question": "create の意味として最も近いものは？",
     "choices": [
-      "～を受け入れる、容認する",
-      "呼吸する",
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
       "～を作り出す、生み出す",
-      "実は、実際は"
+      "〜に（さっと）目を通す"
     ],
     "answer": 2,
     "explanation": "create は『～を作り出す、生み出す』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3872,8 +3872,8 @@ const QUESTIONS = [
     "title": "重要単語: dry up ～",
     "question": "dry up ～ の意味として最も近いものは？",
     "choices": [
-      "～を持続させる、継続する",
-      "～から落ちる",
+      "〜する傾向がある",
+      "〜だろうかと思う",
       "〜を干上がらせる",
       "〜に基づいている"
     ],
@@ -3897,10 +3897,10 @@ const QUESTIONS = [
     "title": "重要単語: iron",
     "question": "iron の意味として最も近いものは？",
     "choices": [
-      "世界中で［の］",
+      "客",
       "鉄",
-      "変化をもたらす、影響を与える、状況を変える",
-      "（ゴルフの）ホールインワン（ゴルフ競技において1打目でカップにボールを入れること）"
+      "形",
+      "剣"
     ],
     "answer": 1,
     "explanation": "iron は『鉄』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3922,10 +3922,10 @@ const QUESTIONS = [
     "title": "重要単語: material",
     "question": "material の意味として最も近いものは？",
     "choices": [
-      "確かに、確実に（は）",
-      "実は、実際は",
+      "違い",
+      "活動",
       "物質",
-      "道順、経路"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "material は『物質』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3948,9 +3948,9 @@ const QUESTIONS = [
     "question": "make up ～ の意味として最も近いものは？",
     "choices": [
       "〜を構成する",
-      "即座に、瞬時に",
-      "出てくる、現れる",
-      "～を作り上げる、生み出す"
+      "〜に参加する",
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 0,
     "explanation": "make up ～ は『〜を構成する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3972,10 +3972,10 @@ const QUESTIONS = [
     "title": "重要単語: outer",
     "question": "outer の意味として最も近いものは？",
     "choices": [
-      "示唆する",
-      "〜を干上がらせる",
+      "ボタン",
+      "巨大な",
       "外側の",
-      "…を〜に集中させる"
+      "極端な"
     ],
     "answer": 2,
     "explanation": "outer は『外側の』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -3998,9 +3998,9 @@ const QUESTIONS = [
     "question": "billion の意味として最も近いものは？",
     "choices": [
       "10億（の）",
-      "静かに、目立たないように",
-      "薬を飲む",
-      "競争力のある"
+      "〜に参加する",
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 0,
     "explanation": "billion は『10億（の）』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -4022,10 +4022,10 @@ const QUESTIONS = [
     "title": "重要単語: either A or B",
     "question": "either A or B の意味として最も近いものは？",
     "choices": [
-      "確かに、確実に",
-      "～を続ける",
+      "〜に対する需要",
+      "4分の1（の）",
       "AかあるいはB",
-      "…を〜に集中させる"
+      "さらに、加えて"
     ],
     "answer": 2,
     "explanation": "either A or B は『AかあるいはB』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -4047,10 +4047,10 @@ const QUESTIONS = [
     "title": "重要単語: support",
     "question": "support の意味として最も近いものは？",
     "choices": [
-      "起源",
+      "〜に参加する",
       "～を裏づける",
-      "確かに、確実に",
-      "開催される"
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 1,
     "explanation": "support は『～を裏づける』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -4072,10 +4072,10 @@ const QUESTIONS = [
     "title": "重要単語: for now",
     "question": "for now の意味として最も近いものは？",
     "choices": [
-      "進歩した、先進の",
-      "呼吸困難",
+      "〜する傾向がある",
+      "〜だろうかと思う",
       "今のところ（は）",
-      "〜を干上がらせる"
+      "〜に基づいている"
     ],
     "answer": 2,
     "explanation": "for now は『今のところ（は）』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -4097,10 +4097,10 @@ const QUESTIONS = [
     "title": "重要単語: accept",
     "question": "accept の意味として最も近いものは？",
     "choices": [
-      "汗をかく",
-      "最後に",
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
       "～を受け入れる、容認する",
-      "最高経営責任者（CEO）"
+      "〔形〕限られた、わずかな"
     ],
     "answer": 2,
     "explanation": "accept は『～を受け入れる、容認する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y04 重要単語",
@@ -4122,10 +4122,10 @@ const QUESTIONS = [
     "title": "重要単語: complete",
     "question": "complete の意味として最も近いものは？",
     "choices": [
-      "平等な",
+      "〜に参加する",
       "～を完成する",
-      "～を説明する",
-      "手描きの"
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 1,
     "explanation": "complete は『～を完成する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4147,10 +4147,10 @@ const QUESTIONS = [
     "title": "重要単語: permit",
     "question": "permit の意味として最も近いものは？",
     "choices": [
-      "決定する、強い影響を与える",
-      "裕福な",
+      "〜に参加する",
+      "〜に取り組む",
       "～を許可する",
-      "（卓球・テニスなどの）ラリー"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "permit は『～を許可する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4172,10 +4172,10 @@ const QUESTIONS = [
     "title": "重要単語: reporter",
     "question": "reporter の意味として最も近いものは？",
     "choices": [
-      "現代の",
-      "〜に取り組む",
+      "〜する傾向がある",
+      "〜だろうかと思う",
       "記者、レポーター",
-      "～するたびに"
+      "〜に基づいている"
     ],
     "answer": 2,
     "explanation": "reporter は『記者、レポーター』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4197,10 +4197,10 @@ const QUESTIONS = [
     "title": "重要単語: conference",
     "question": "conference の意味として最も近いものは？",
     "choices": [
-      "右利きの",
-      "示唆する",
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
       "会議、（定期的な）大会",
-      "出てくる、現れる"
+      "〜に（さっと）目を通す"
     ],
     "answer": 2,
     "explanation": "conference は『会議、（定期的な）大会』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4223,9 +4223,9 @@ const QUESTIONS = [
     "question": "take place の意味として最も近いものは？",
     "choices": [
       "開催される",
-      "作動する、機能する",
-      "呼吸困難",
-      "確かに、確実に"
+      "〜によれば",
+      "〜に重なる",
+      "～をまねる"
     ],
     "answer": 0,
     "explanation": "take place は『開催される』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4247,10 +4247,10 @@ const QUESTIONS = [
     "title": "重要単語: develop",
     "question": "develop の意味として最も近いものは？",
     "choices": [
-      "～に直面する",
-      "高齢の",
+      "〜に参加する",
+      "〜に取り組む",
       "～を開発する",
-      "剣"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "develop は『～を開発する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4272,10 +4272,10 @@ const QUESTIONS = [
     "title": "重要単語: mortar",
     "question": "mortar の意味として最も近いものは？",
     "choices": [
-      "形",
+      "～を許す",
       "モルタル",
-      "決定する、強い影響を与える",
-      "共同創設者"
+      "～を選ぶ",
+      "クレヨン"
     ],
     "answer": 1,
     "explanation": "mortar は『モルタル』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4297,10 +4297,10 @@ const QUESTIONS = [
     "title": "重要単語: material",
     "question": "material の意味として最も近いものは？",
     "choices": [
-      "変化をもたらす、影響を与える、状況を変える",
-      "～に挨拶する",
+      "〜によれば",
+      "〜に重なる",
       "素材、材料",
-      "ストレス"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "material は『素材、材料』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4322,10 +4322,10 @@ const QUESTIONS = [
     "title": "重要単語: robotics",
     "question": "robotics の意味として最も近いものは？",
     "choices": [
-      "物体",
-      "封筒",
+      "〜に参加する",
+      "〜に取り組む",
       "ロボット工学",
-      "一緒になる、集まる"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "robotics は『ロボット工学』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4347,10 +4347,10 @@ const QUESTIONS = [
     "title": "重要単語: advanced",
     "question": "advanced の意味として最も近いものは？",
     "choices": [
-      "10億（の）",
+      "〜する傾向がある",
       "進歩した、先進の",
-      "近隣、地域",
-      "～を許す"
+      "〜だろうかと思う",
+      "〜に基づいている"
     ],
     "answer": 1,
     "explanation": "advanced は『進歩した、先進の』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4372,10 +4372,10 @@ const QUESTIONS = [
     "title": "重要単語: co-founder",
     "question": "co-founder の意味として最も近いものは？",
     "choices": [
-      "～を作り出す、生み出す",
-      "密度",
+      "〜によれば",
+      "〜に重なる",
       "共同創設者",
-      "ほこり、ちり"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "co-founder は『共同創設者』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4397,10 +4397,10 @@ const QUESTIONS = [
     "title": "重要単語: actually",
     "question": "actually の意味として最も近いものは？",
     "choices": [
-      "痛み",
-      "宇宙飛行士",
+      "〜に参加する",
+      "〜に取り組む",
       "実際に、実は",
-      "裏口"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "actually は『実際に、実は』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4422,10 +4422,10 @@ const QUESTIONS = [
     "title": "重要単語: blow",
     "question": "blow の意味として最も近いものは？",
     "choices": [
-      "日常の",
+      "〜する傾向がある",
       "吹く、吹きつける",
-      "適切に",
-      "普通の、通常の"
+      "〜だろうかと思う",
+      "〜に基づいている"
     ],
     "answer": 1,
     "explanation": "blow は『吹く、吹きつける』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4448,9 +4448,9 @@ const QUESTIONS = [
     "question": "dust の意味として最も近いものは？",
     "choices": [
       "ほこり、ちり",
-      "教え、教訓",
-      "〜によれば",
-      "組み合わせ"
+      "〜に参加する",
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 0,
     "explanation": "dust は『ほこり、ちり』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4472,10 +4472,10 @@ const QUESTIONS = [
     "title": "重要単語: operate",
     "question": "operate の意味として最も近いものは？",
     "choices": [
-      "今のところ（は）",
-      "軌道",
+      "〜で満たされている",
+      "…を〜に集中させる",
       "作動する、機能する",
-      "地域社会"
+      "（卓球の）ラケット"
     ],
     "answer": 2,
     "explanation": "operate は『作動する、機能する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4497,10 +4497,10 @@ const QUESTIONS = [
     "title": "重要単語: extreme",
     "question": "extreme の意味として最も近いものは？",
     "choices": [
-      "服を着る",
+      "ボタン",
       "極端な",
-      "フェアプレーで勝負する",
-      "AをBに提供する"
+      "外側の",
+      "巨大な"
     ],
     "answer": 1,
     "explanation": "extreme は『極端な』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4522,10 +4522,10 @@ const QUESTIONS = [
     "title": "重要単語: disaster",
     "question": "disaster の意味として最も近いものは？",
     "choices": [
-      "モルタル",
-      "～を投げる",
+      "違い",
+      "活動",
       "災害",
-      "（規模が）大きくなる、拡大する"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "disaster は『災害』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4547,10 +4547,10 @@ const QUESTIONS = [
     "title": "重要単語: developing country",
     "question": "developing country の意味として最も近いものは？",
     "choices": [
-      "示唆する",
-      "敵",
+      "〜によれば",
+      "〜に重なる",
       "発展途上国",
-      "健康的な"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "developing country は『発展途上国』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4572,10 +4572,10 @@ const QUESTIONS = [
     "title": "重要単語: lightweight",
     "question": "lightweight の意味として最も近いものは？",
     "choices": [
-      "メモ、短い手紙",
+      "ボタン",
       "軽量の",
-      "〔形〕リラックスさせる",
-      "脳"
+      "外側の",
+      "巨大な"
     ],
     "answer": 1,
     "explanation": "lightweight は『軽量の』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4597,10 +4597,10 @@ const QUESTIONS = [
     "title": "重要単語: aluminum",
     "question": "aluminum の意味として最も近いものは？",
     "choices": [
-      "風呂に入る",
-      "世界中で［の］",
+      "〜に参加する",
+      "〜に取り組む",
       "アルミニウム",
-      "～を後ろめたいと感じる"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "aluminum は『アルミニウム』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4622,10 +4622,10 @@ const QUESTIONS = [
     "title": "重要単語: measure",
     "question": "measure の意味として最も近いものは？",
     "choices": [
-      "様々な〜",
-      "～をまねる",
+      "～ではないかと恐れる",
+      "～に仕える、奉仕する",
       "（〜の）大きさがある",
-      "〜で満たされている"
+      "お気に入りの、好きな"
     ],
     "answer": 2,
     "explanation": "measure は『（〜の）大きさがある』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4647,10 +4647,10 @@ const QUESTIONS = [
     "title": "重要単語: on-site",
     "question": "on-site の意味として最も近いものは？",
     "choices": [
-      "最高経営責任者（CEO）",
+      "〜に対する需要",
       "現地で、現場で",
-      "普通の、通常の",
-      "最後に"
+      "4分の1（の）",
+      "AかあるいはB"
     ],
     "answer": 1,
     "explanation": "on-site は『現地で、現場で』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4672,9 +4672,9 @@ const QUESTIONS = [
     "title": "重要単語: equipment",
     "question": "equipment の意味として最も近いものは？",
     "choices": [
-      "進歩",
-      "成功",
-      "メモ、短い手紙",
+      "〜によれば",
+      "〜に重なる",
+      "～をまねる",
       "装置、機材"
     ],
     "answer": 3,
@@ -4697,10 +4697,10 @@ const QUESTIONS = [
     "title": "重要単語: property",
     "question": "property の意味として最も近いものは？",
     "choices": [
-      "性、ジェンダー",
-      "説、学説、理論",
+      "〜に参加する",
+      "〜に取り組む",
       "所有地、土地",
-      "問題、悩み事、心配事"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "property は『所有地、土地』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4722,10 +4722,10 @@ const QUESTIONS = [
     "title": "重要単語: quarter",
     "question": "quarter の意味として最も近いものは？",
     "choices": [
-      "同時に",
+      "〜に対する需要",
       "4分の1（の）",
-      "説、学説、理論",
-      "実は、実際は"
+      "AかあるいはB",
+      "さらに、加えて"
     ],
     "answer": 1,
     "explanation": "quarter は『4分の1（の）』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4747,10 +4747,10 @@ const QUESTIONS = [
     "title": "重要単語: team up with ～",
     "question": "team up with ～ の意味として最も近いものは？",
     "choices": [
-      "形",
-      "理由",
+      "〜しようとする、企てる",
+      "〜に（さっと）目を通す",
       "〜と共同する、提携する",
-      "実は、実際は"
+      "〜を埋める、塗りつぶす"
     ],
     "answer": 2,
     "explanation": "team up with ～ は『〜と共同する、提携する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4772,10 +4772,10 @@ const QUESTIONS = [
     "title": "重要単語: attempt to do",
     "question": "attempt to do の意味として最も近いものは？",
     "choices": [
-      "武器",
-      "〜のボタンを留める［掛ける］",
+      "〜と共同する、提携する",
+      "〜に（さっと）目を通す",
       "〜しようとする、企てる",
-      "〜の形で手に入る［売られている］"
+      "〜を埋める、塗りつぶす"
     ],
     "answer": 2,
     "explanation": "attempt to do は『〜しようとする、企てる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4797,10 +4797,10 @@ const QUESTIONS = [
     "title": "重要単語: provide A for B",
     "question": "provide A for B の意味として最も近いものは？",
     "choices": [
-      "純粋さ",
+      "〜する傾向がある",
       "AをBに提供する",
-      "正しい、正確な",
-      "現代の"
+      "〜だろうかと思う",
+      "〜に基づいている"
     ],
     "answer": 1,
     "explanation": "provide A for B は『AをBに提供する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4822,10 +4822,10 @@ const QUESTIONS = [
     "title": "重要単語: solution",
     "question": "solution の意味として最も近いものは？",
     "choices": [
-      "驚くべき",
-      "日常の",
+      "〜に対する需要",
+      "4分の1（の）",
       "解決法、解決策",
-      "衝突、衝撃"
+      "AかあるいはB"
     ],
     "answer": 2,
     "explanation": "solution は『解決法、解決策』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4847,10 +4847,10 @@ const QUESTIONS = [
     "title": "重要単語: chief executive officer",
     "question": "chief executive officer の意味として最も近いものは？",
     "choices": [
-      "滑る",
-      "～を強調する",
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
       "最高経営責任者（CEO）",
-      "敵"
+      "〔形〕限られた、わずかな"
     ],
     "answer": 2,
     "explanation": "chief executive officer は『最高経営責任者（CEO）』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4872,10 +4872,10 @@ const QUESTIONS = [
     "title": "重要単語: magnitude",
     "question": "magnitude の意味として最も近いものは？",
     "choices": [
-      "～を続ける",
+      "（〜の）大きさがある",
       "大きさ、規模、重要性",
-      "地域社会",
-      "純粋さ"
+      "～ではないかと恐れる",
+      "～に仕える、奉仕する"
     ],
     "answer": 1,
     "explanation": "magnitude は『大きさ、規模、重要性』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4897,9 +4897,9 @@ const QUESTIONS = [
     "title": "重要単語: face",
     "question": "face の意味として最も近いものは？",
     "choices": [
-      "～（ということ）を証明する",
-      "平等な",
-      "決定する、強い影響を与える",
+      "〜に参加する",
+      "〜に取り組む",
+      "〜に集中する",
       "～に直面する"
     ],
     "answer": 3,
@@ -4922,10 +4922,10 @@ const QUESTIONS = [
     "title": "重要単語: shelter",
     "question": "shelter の意味として最も近いものは？",
     "choices": [
-      "～を許す",
-      "10億（の）",
+      "ボタン",
+      "外側の",
       "住まい",
-      "所有地、土地"
+      "巨大な"
     ],
     "answer": 2,
     "explanation": "shelter は『住まい』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4947,10 +4947,10 @@ const QUESTIONS = [
     "title": "重要単語: organization",
     "question": "organization の意味として最も近いものは？",
     "choices": [
-      "残り",
+      "〜によれば",
       "組織、団体",
-      "10億（の）",
-      "滑らかな、すべすべした"
+      "〜に重なる",
+      "～をまねる"
     ],
     "answer": 1,
     "explanation": "organization は『組織、団体』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4972,10 +4972,10 @@ const QUESTIONS = [
     "title": "重要単語: work on ～",
     "question": "work on ～ の意味として最も近いものは？",
     "choices": [
-      "実際に、実は",
-      "巨大な",
+      "〜に参加する",
+      "〜に集中する",
       "〜に取り組む",
-      "装置、機材"
+      "〜を引き出す"
     ],
     "answer": 2,
     "explanation": "work on ～ は『〜に取り組む』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -4997,10 +4997,10 @@ const QUESTIONS = [
     "title": "重要単語: neighborhood",
     "question": "neighborhood の意味として最も近いものは？",
     "choices": [
-      "普通の、通常の",
-      "ロボットの",
+      "〜によれば",
+      "〜に重なる",
       "近隣、地域",
-      "（卓球の）ラケット"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "neighborhood は『近隣、地域』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -5022,10 +5022,10 @@ const QUESTIONS = [
     "title": "重要単語: make a difference",
     "question": "make a difference の意味として最も近いものは？",
     "choices": [
-      "大量生産する",
+      "（ある目的のための）行為、活動、練習課題",
       "変化をもたらす、影響を与える、状況を変える",
-      "4分の1（の）",
-      "（ゴルフの）ホールインワン（ゴルフ競技において1打目でカップにボールを入れること）"
+      "〜から形成される、〜からできている",
+      "（感情・音などが）弱まる、なくなる"
     ],
     "answer": 1,
     "explanation": "make a difference は『変化をもたらす、影響を与える、状況を変える』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -5047,10 +5047,10 @@ const QUESTIONS = [
     "title": "重要単語: expand",
     "question": "expand の意味として最も近いものは？",
     "choices": [
-      "確かに、確実に（は）",
-      "付け加えて言う、言い足す",
+      "（物の一部が）はがれる、取れる",
+      "～だと確信している、自信がある",
       "（規模が）大きくなる、拡大する",
-      "宇宙飛行士"
+      "～を打ち負かす、～に勝る、勝つ"
     ],
     "answer": 2,
     "explanation": "expand は『（規模が）大きくなる、拡大する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -5072,10 +5072,10 @@ const QUESTIONS = [
     "title": "重要単語: add",
     "question": "add の意味として最も近いものは？",
     "choices": [
-      "…を〜に連れ戻す",
-      "発展途上国",
+      "（規模が）大きくなる、拡大する",
+      "（物の一部が）はがれる、取れる",
       "～を付け加える、～と言い添える",
-      "産業用ロボット"
+      "～だと確信している、自信がある"
     ],
     "answer": 2,
     "explanation": "add は『～を付け加える、～と言い添える』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -5097,10 +5097,10 @@ const QUESTIONS = [
     "title": "重要単語: traditional",
     "question": "traditional の意味として最も近いものは？",
     "choices": [
-      "熱、熱さ",
+      "～を許す",
       "伝統的な",
-      "平等な",
-      "戦略"
+      "～を選ぶ",
+      "クレヨン"
     ],
     "answer": 1,
     "explanation": "traditional は『伝統的な』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -5122,9 +5122,9 @@ const QUESTIONS = [
     "title": "重要単語: homebuilding",
     "question": "homebuilding の意味として最も近いものは？",
     "choices": [
-      "汗をかく",
-      "塗り絵",
-      "〜しようとする、企てる",
+      "～を許す",
+      "～を選ぶ",
+      "クレヨン",
       "住宅建設"
     ],
     "answer": 3,
@@ -5147,10 +5147,10 @@ const QUESTIONS = [
     "title": "重要単語: community",
     "question": "community の意味として最も近いものは？",
     "choices": [
-      "住宅建設",
-      "同時に",
+      "～を許す",
+      "～を選ぶ",
       "地域社会",
-      "決定する、強い影響を与える"
+      "クレヨン"
     ],
     "answer": 2,
     "explanation": "community は『地域社会』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y05 重要単語",
@@ -5173,9 +5173,9 @@ const QUESTIONS = [
     "question": "modern の意味として最も近いものは？",
     "choices": [
       "現代の",
-      "身分の高い",
-      "地域社会",
-      "成功"
+      "ボタン",
+      "外側の",
+      "巨大な"
     ],
     "answer": 0,
     "explanation": "modern は『現代の』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5197,10 +5197,10 @@ const QUESTIONS = [
     "title": "重要単語: equal",
     "question": "equal の意味として最も近いものは？",
     "choices": [
-      "実際に、実は",
-      "～だと確信している、自信がある",
+      "ボタン",
+      "外側の",
       "平等な",
-      "呼吸困難"
+      "巨大な"
     ],
     "answer": 2,
     "explanation": "equal は『平等な』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5222,10 +5222,10 @@ const QUESTIONS = [
     "title": "重要単語: difference",
     "question": "difference の意味として最も近いものは？",
     "choices": [
-      "出てくる、現れる",
-      "進歩した、先進の",
+      "活動",
+      "滑る",
       "違い",
-      "治療法"
+      "起源"
     ],
     "answer": 2,
     "explanation": "difference は『違い』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5247,10 +5247,10 @@ const QUESTIONS = [
     "title": "重要単語: button",
     "question": "button の意味として最も近いものは？",
     "choices": [
-      "右利きの",
+      "外側の",
       "ボタン",
-      "〜しようとする、企てる",
-      "血液"
+      "巨大な",
+      "極端な"
     ],
     "answer": 1,
     "explanation": "button は『ボタン』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5272,10 +5272,10 @@ const QUESTIONS = [
     "title": "重要単語: button up ～",
     "question": "button up ～ の意味として最も近いものは？",
     "choices": [
-      "～を許す",
-      "〜に基づいている",
+      "（卓球・テニスなどの）ラリー",
+      "（規模が）大きくなる、拡大する",
       "〜のボタンを留める［掛ける］",
-      "即座に、瞬時に"
+      "（物の一部が）はがれる、取れる"
     ],
     "answer": 2,
     "explanation": "button up ～ は『〜のボタンを留める［掛ける］』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5297,10 +5297,10 @@ const QUESTIONS = [
     "title": "重要単語: for sure",
     "question": "for sure の意味として最も近いものは？",
     "choices": [
-      "さらに、加えて",
-      "発展途上国",
+      "〜に対する需要",
+      "4分の1（の）",
       "確かに、確実に",
-      "独力で、一人で"
+      "AかあるいはB"
     ],
     "answer": 2,
     "explanation": "for sure は『確かに、確実に』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5322,10 +5322,10 @@ const QUESTIONS = [
     "title": "重要単語: theory",
     "question": "theory の意味として最も近いものは？",
     "choices": [
-      "驚くべき",
+      "〜に対する需要",
       "説、学説、理論",
-      "風邪をひく",
-      "剣"
+      "4分の1（の）",
+      "AかあるいはB"
     ],
     "answer": 1,
     "explanation": "theory は『説、学説、理論』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5347,9 +5347,9 @@ const QUESTIONS = [
     "title": "重要単語: be based on ～",
     "question": "be based on ～ の意味として最も近いものは？",
     "choices": [
-      "武器",
-      "秒",
-      "実際に、実は",
+      "〜する傾向がある",
+      "〜だろうかと思う",
+      "〜を干上がらせる",
       "〜に基づいている"
     ],
     "answer": 3,
@@ -5372,10 +5372,10 @@ const QUESTIONS = [
     "title": "重要単語: right-handed",
     "question": "right-handed の意味として最も近いものは？",
     "choices": [
-      "近隣、地域",
-      "物体",
+      "～を許す",
+      "～を選ぶ",
       "右利きの",
-      "～に直面する"
+      "クレヨン"
     ],
     "answer": 2,
     "explanation": "right-handed は『右利きの』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5398,9 +5398,9 @@ const QUESTIONS = [
     "question": "in the past の意味として最も近いものは？",
     "choices": [
       "昔は、過去に",
-      "（卓球の）ラケット",
-      "〔動〕～をリラックスさせる",
-      "～に直面する"
+      "〜に参加する",
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 0,
     "explanation": "in the past は『昔は、過去に』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5423,9 +5423,9 @@ const QUESTIONS = [
     "question": "weapon の意味として最も近いものは？",
     "choices": [
       "武器",
-      "～に挨拶する",
-      "AをBに提供する",
-      "最新の"
+      "違い",
+      "活動",
+      "滑る"
     ],
     "answer": 0,
     "explanation": "weapon は『武器』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5447,10 +5447,10 @@ const QUESTIONS = [
     "title": "重要単語: sword",
     "question": "sword の意味として最も近いものは？",
     "choices": [
-      "道順、経路",
-      "～から落ちる",
+      "客",
+      "形",
       "剣",
-      "進歩"
+      "敵"
     ],
     "answer": 2,
     "explanation": "sword は『剣』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5472,10 +5472,10 @@ const QUESTIONS = [
     "title": "重要単語: wealthy",
     "question": "wealthy の意味として最も近いものは？",
     "choices": [
-      "近隣、地域",
+      "ボタン",
       "裕福な",
-      "地域社会",
-      "～（ということ）を証明する"
+      "外側の",
+      "巨大な"
     ],
     "answer": 1,
     "explanation": "wealthy は『裕福な』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5497,10 +5497,10 @@ const QUESTIONS = [
     "title": "重要単語: slide",
     "question": "slide の意味として最も近いものは？",
     "choices": [
-      "発展途上国",
-      "熱、熱さ",
+      "〔動〕～をリラックスさせる",
+      "～（ということ）を証明する",
       "～を滑らせる、さっと動かす",
-      "裏庭"
+      "決定する、強い影響を与える"
     ],
     "answer": 2,
     "explanation": "slide は『～を滑らせる、さっと動かす』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5522,10 +5522,10 @@ const QUESTIONS = [
     "title": "重要単語: enemy",
     "question": "enemy の意味として最も近いものは？",
     "choices": [
-      "大多数の〜、大部分の～",
-      "フェアプレーで勝負する",
+      "客",
+      "形",
       "敵",
-      "開催される"
+      "剣"
     ],
     "answer": 2,
     "explanation": "enemy は『敵』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5547,10 +5547,10 @@ const QUESTIONS = [
     "title": "重要単語: overlap",
     "question": "overlap の意味として最も近いものは？",
     "choices": [
-      "卓球",
+      "〜によれば",
       "〜に重なる",
-      "〜する傾向がある",
-      "〜に参加する"
+      "～をまねる",
+      "～を減らす"
     ],
     "answer": 1,
     "explanation": "overlap は『〜に重なる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5572,9 +5572,9 @@ const QUESTIONS = [
     "title": "重要単語: tend to do",
     "question": "tend to do の意味として最も近いものは？",
     "choices": [
-      "～に仕える、奉仕する",
-      "身分の高い",
-      "呼吸する",
+      "〜だろうかと思う",
+      "〜に基づいている",
+      "〜を干上がらせる",
       "〜する傾向がある"
     ],
     "answer": 3,
@@ -5597,10 +5597,10 @@ const QUESTIONS = [
     "title": "重要単語: be free to do",
     "question": "be free to do の意味として最も近いものは？",
     "choices": [
-      "〜に対する需要",
-      "密度",
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
       "自由に〜する［できる］",
-      "〜と共同する、提携する"
+      "〜に（さっと）目を通す"
     ],
     "answer": 2,
     "explanation": "be free to do は『自由に〜する［できる］』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5623,9 +5623,9 @@ const QUESTIONS = [
     "question": "breast-feed の意味として最も近いものは？",
     "choices": [
       "（赤ん坊が）母乳を飲む",
-      "世界中で［の］",
-      "～を強調する",
-      "衝突、衝撃"
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
+      "〜に（さっと）目を通す"
     ],
     "answer": 0,
     "explanation": "breast-feed は『（赤ん坊が）母乳を飲む』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5648,9 +5648,9 @@ const QUESTIONS = [
     "question": "create の意味として最も近いものは？",
     "choices": [
       "～を作り上げる、生み出す",
-      "〜の形で手に入る［売られている］",
-      "～を裏づける",
-      "裕福な"
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
+      "〔形〕限られた、わずかな"
     ],
     "answer": 0,
     "explanation": "create は『～を作り上げる、生み出す』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5672,10 +5672,10 @@ const QUESTIONS = [
     "title": "重要単語: on purpose",
     "question": "on purpose の意味として最も近いものは？",
     "choices": [
-      "（線で描いた）絵、線画、デッサン",
+      "〜に対する需要",
       "わざと、故意に",
-      "進歩",
-      "高齢の"
+      "4分の1（の）",
+      "AかあるいはB"
     ],
     "answer": 1,
     "explanation": "on purpose は『わざと、故意に』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5698,9 +5698,9 @@ const QUESTIONS = [
     "question": "suggest の意味として最も近いものは？",
     "choices": [
       "示唆する",
-      "～を減らす",
-      "～を生み出す",
-      "鉄"
+      "～を許す",
+      "～を選ぶ",
+      "クレヨン"
     ],
     "answer": 0,
     "explanation": "suggest は『示唆する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5723,9 +5723,9 @@ const QUESTIONS = [
     "question": "industrialization の意味として最も近いものは？",
     "choices": [
       "産業化、工業化",
-      "子ども時代",
-      "推測",
-      "～を完成する"
+      "〜に対する需要",
+      "4分の1（の）",
+      "AかあるいはB"
     ],
     "answer": 0,
     "explanation": "industrialization は『産業化、工業化』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5748,9 +5748,9 @@ const QUESTIONS = [
     "question": "clothing の意味として最も近いものは？",
     "choices": [
       "衣類、衣料品",
-      "最後に、ついに、ようやく",
-      "軽量の",
-      "出てくる、現れる"
+      "〜に参加する",
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 0,
     "explanation": "clothing は『衣類、衣料品』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5772,10 +5772,10 @@ const QUESTIONS = [
     "title": "重要単語: mass-produce",
     "question": "mass-produce の意味として最も近いものは？",
     "choices": [
-      "その結果",
-      "～を強調する",
+      "〜に参加する",
+      "〜に取り組む",
       "大量生産する",
-      "裏庭"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "mass-produce は『大量生産する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5798,9 +5798,9 @@ const QUESTIONS = [
     "question": "emphasize の意味として最も近いものは？",
     "choices": [
       "～を強調する",
-      "決定する、強い影響を与える",
-      "裕福な",
-      "変化をもたらす、影響を与える、状況を変える"
+      "〜に参加する",
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 0,
     "explanation": "emphasize は『～を強調する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5822,10 +5822,10 @@ const QUESTIONS = [
     "title": "重要単語: especially",
     "question": "especially の意味として最も近いものは？",
     "choices": [
-      "宇宙飛行士",
-      "極端な",
+      "違い",
+      "活動",
       "特に",
-      "メモ、短い手紙"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "especially は『特に』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5847,10 +5847,10 @@ const QUESTIONS = [
     "title": "重要単語: noble",
     "question": "noble の意味として最も近いものは？",
     "choices": [
-      "～を作り上げる、生み出す",
+      "〜によれば",
       "身分の高い",
-      "精度、正確さ",
-      "～を滑らせる、さっと動かす"
+      "〜に重なる",
+      "～をまねる"
     ],
     "answer": 1,
     "explanation": "noble は『身分の高い』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5872,10 +5872,10 @@ const QUESTIONS = [
     "title": "重要単語: dress oneself",
     "question": "dress oneself の意味として最も近いものは？",
     "choices": [
-      "～に仕える、奉仕する",
-      "遠く離れて",
+      "～を許す",
+      "～を選ぶ",
       "服を着る",
-      "活動"
+      "クレヨン"
     ],
     "answer": 2,
     "explanation": "dress oneself は『服を着る』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5897,10 +5897,10 @@ const QUESTIONS = [
     "title": "重要単語: servant",
     "question": "servant の意味として最も近いものは？",
     "choices": [
-      "店員",
-      "昔は、過去に",
+      "〜に対する需要",
+      "4分の1（の）",
       "使用人、召使い",
-      "〔形〕リラックスさせる"
+      "AかあるいはB"
     ],
     "answer": 2,
     "explanation": "servant は『使用人、召使い』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5922,10 +5922,10 @@ const QUESTIONS = [
     "title": "重要単語: mostly",
     "question": "mostly の意味として最も近いものは？",
     "choices": [
-      "理由",
+      "〜で満たされている",
       "たいてい、大部分は",
-      "～を選ぶ",
-      "10億（の）"
+      "…を〜に集中させる",
+      "（卓球の）ラケット"
     ],
     "answer": 1,
     "explanation": "mostly は『たいてい、大部分は』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5948,9 +5948,9 @@ const QUESTIONS = [
     "question": "make sense の意味として最も近いものは？",
     "choices": [
       "理にかなう、筋が通っている",
-      "推測",
-      "平等",
-      "段階"
+      "〔動〕～をリラックスさせる",
+      "～（ということ）を証明する",
+      "～を滑らせる、さっと動かす"
     ],
     "answer": 0,
     "explanation": "make sense は『理にかなう、筋が通っている』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5973,9 +5973,9 @@ const QUESTIONS = [
     "question": "determine の意味として最も近いものは？",
     "choices": [
       "決定する、強い影響を与える",
-      "記者、レポーター",
-      "理由",
-      "〜に基づいている"
+      "〔動〕～をリラックスさせる",
+      "～（ということ）を証明する",
+      "～を滑らせる、さっと動かす"
     ],
     "answer": 0,
     "explanation": "determine は『決定する、強い影響を与える』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -5997,10 +5997,10 @@ const QUESTIONS = [
     "title": "重要単語: copy",
     "question": "copy の意味として最も近いものは？",
     "choices": [
-      "現地で、現場で",
-      "ロボットの",
+      "〜によれば",
+      "〜に重なる",
       "～をまねる",
-      "群衆、観衆、聴衆"
+      "～を減らす"
     ],
     "answer": 2,
     "explanation": "copy は『～をまねる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6023,9 +6023,9 @@ const QUESTIONS = [
     "question": "the rest の意味として最も近いものは？",
     "choices": [
       "残り",
-      "熱、熱さ",
-      "武器",
-      "4分の1（の）"
+      "違い",
+      "活動",
+      "滑る"
     ],
     "answer": 0,
     "explanation": "the rest は『残り』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6047,10 +6047,10 @@ const QUESTIONS = [
     "title": "重要単語: combination",
     "question": "combination の意味として最も近いものは？",
     "choices": [
-      "最後に",
-      "～を選ぶ",
+      "〜によれば",
+      "〜に重なる",
       "組み合わせ",
-      "〜する傾向がある"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "combination は『組み合わせ』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6072,10 +6072,10 @@ const QUESTIONS = [
     "title": "重要単語: factor",
     "question": "factor の意味として最も近いものは？",
     "choices": [
-      "～ではないかと恐れる",
+      "違い",
       "要因",
-      "滑る",
-      "解決法、解決策"
+      "活動",
+      "滑る"
     ],
     "answer": 1,
     "explanation": "factor は『要因』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6097,10 +6097,10 @@ const QUESTIONS = [
     "title": "重要単語: advance",
     "question": "advance の意味として最も近いものは？",
     "choices": [
-      "その結果",
-      "現代の",
+      "違い",
+      "活動",
       "進歩",
-      "昔は、過去に"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "advance は『進歩』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6122,10 +6122,10 @@ const QUESTIONS = [
     "title": "重要単語: equality",
     "question": "equality の意味として最も近いものは？",
     "choices": [
-      "最新の",
-      "〜に集中する",
+      "違い",
+      "活動",
       "平等",
-      "素材、材料"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "equality は『平等』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6147,10 +6147,10 @@ const QUESTIONS = [
     "title": "重要単語: gender",
     "question": "gender の意味として最も近いものは？",
     "choices": [
-      "呼吸困難",
+      "〜に対する需要",
       "性、ジェンダー",
-      "成功",
-      "群衆、観衆、聴衆"
+      "4分の1（の）",
+      "AかあるいはB"
     ],
     "answer": 1,
     "explanation": "gender は『性、ジェンダー』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6172,10 +6172,10 @@ const QUESTIONS = [
     "title": "重要単語: industrial robot",
     "question": "industrial robot の意味として最も近いものは？",
     "choices": [
-      "痛み",
-      "ひとかけらの〜、〜の一片",
+      "〜に対する需要",
+      "4分の1（の）",
       "産業用ロボット",
-      "4分の1（の）"
+      "AかあるいはB"
     ],
     "answer": 2,
     "explanation": "industrial robot は『産業用ロボット』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6198,9 +6198,9 @@ const QUESTIONS = [
     "question": "per ～ の意味として最も近いものは？",
     "choices": [
       "〜につき、〜あたり（の）",
-      "確かに、確実に（は）",
-      "驚くべき",
-      "群衆、観衆、聴衆"
+      "（試合・競技の）相手、敵",
+      "〔形〕限られた、わずかな",
+      "～を含む、～が入っている"
     ],
     "answer": 0,
     "explanation": "per ～ は『〜につき、〜あたり（の）』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6222,10 +6222,10 @@ const QUESTIONS = [
     "title": "重要単語: density",
     "question": "density の意味として最も近いものは？",
     "choices": [
-      "封筒",
-      "汗をかく",
+      "違い",
+      "活動",
       "密度",
-      "〜を構成する"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "density は『密度』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6248,9 +6248,9 @@ const QUESTIONS = [
     "question": "repetitive の意味として最も近いものは？",
     "choices": [
       "繰り返しの多い",
-      "進歩",
-      "産業用ロボット",
-      "みじめな"
+      "〜に対する需要",
+      "4分の1（の）",
+      "AかあるいはB"
     ],
     "answer": 0,
     "explanation": "repetitive は『繰り返しの多い』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6272,10 +6272,10 @@ const QUESTIONS = [
     "title": "重要単語: emerge",
     "question": "emerge の意味として最も近いものは？",
     "choices": [
-      "活発な、活動的な",
-      "要因",
+      "〜する傾向がある",
+      "〜だろうかと思う",
       "出てくる、現れる",
-      "～を投げる"
+      "〜に基づいている"
     ],
     "answer": 2,
     "explanation": "emerge は『出てくる、現れる』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6297,10 +6297,10 @@ const QUESTIONS = [
     "title": "重要単語: daily",
     "question": "daily の意味として最も近いものは？",
     "choices": [
-      "裕福な",
+      "ボタン",
       "日常の",
-      "マーカー（ペン）",
-      "〜する傾向がある"
+      "外側の",
+      "巨大な"
     ],
     "answer": 1,
     "explanation": "daily は『日常の』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6322,10 +6322,10 @@ const QUESTIONS = [
     "title": "重要単語: robotic",
     "question": "robotic の意味として最も近いものは？",
     "choices": [
-      "独力で、一人で",
-      "身分の高い",
+      "〜によれば",
+      "〜に重なる",
       "ロボットの",
-      "発展途上国"
+      "～をまねる"
     ],
     "answer": 2,
     "explanation": "robotic は『ロボットの』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6347,10 +6347,10 @@ const QUESTIONS = [
     "title": "重要単語: clerk",
     "question": "clerk の意味として最も近いものは？",
     "choices": [
-      "（赤ん坊が）母乳を飲む",
-      "住宅建設",
+      "違い",
+      "活動",
       "店員",
-      "裏庭"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "clerk は『店員』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6372,10 +6372,10 @@ const QUESTIONS = [
     "title": "重要単語: elderly",
     "question": "elderly の意味として最も近いものは？",
     "choices": [
-      "お気に入りの、好きな",
+      "ボタン",
       "高齢の",
-      "さらに、加えて",
-      "秒"
+      "外側の",
+      "巨大な"
     ],
     "answer": 1,
     "explanation": "elderly は『高齢の』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6397,10 +6397,10 @@ const QUESTIONS = [
     "title": "重要単語: stage",
     "question": "stage の意味として最も近いものは？",
     "choices": [
-      "～を投げる",
-      "～を完成する",
+      "違い",
+      "活動",
       "段階",
-      "所有地、土地"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "stage は『段階』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6422,10 +6422,10 @@ const QUESTIONS = [
     "title": "重要単語: serve",
     "question": "serve の意味として最も近いものは？",
     "choices": [
-      "～だと確信している、自信がある",
-      "～から転がり落ちる",
+      "（〜の）大きさがある",
+      "～ではないかと恐れる",
       "～に仕える、奉仕する",
-      "形"
+      "お気に入りの、好きな"
     ],
     "answer": 2,
     "explanation": "serve は『～に仕える、奉仕する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6447,10 +6447,10 @@ const QUESTIONS = [
     "title": "重要単語: beat",
     "question": "beat の意味として最も近いものは？",
     "choices": [
-      "〜しようとする、企てる",
-      "理由",
+      "（規模が）大きくなる、拡大する",
+      "（物の一部が）はがれる、取れる",
       "～を打ち負かす、～に勝る、勝つ",
-      "高齢の"
+      "～だと確信している、自信がある"
     ],
     "answer": 2,
     "explanation": "beat は『～を打ち負かす、～に勝る、勝つ』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6473,9 +6473,9 @@ const QUESTIONS = [
     "question": "rock-paper-scissors の意味として最も近いものは？",
     "choices": [
       "ジャンケン",
-      "服を着る",
-      "ほこり、ちり",
-      "物質"
+      "〜によれば",
+      "〜に重なる",
+      "～をまねる"
     ],
     "answer": 0,
     "explanation": "rock-paper-scissors は『ジャンケン』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6497,10 +6497,10 @@ const QUESTIONS = [
     "title": "重要単語: play fair",
     "question": "play fair の意味として最も近いものは？",
     "choices": [
-      "ストレス",
-      "ほこり、ちり",
+      "〜しようとする、企てる",
+      "〜と共同する、提携する",
       "フェアプレーで勝負する",
-      "～を持続させる、継続する"
+      "〜に（さっと）目を通す"
     ],
     "answer": 2,
     "explanation": "play fair は『フェアプレーで勝負する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6522,10 +6522,10 @@ const QUESTIONS = [
     "title": "重要単語: sense",
     "question": "sense の意味として最も近いものは？",
     "choices": [
-      "プロ（選手）",
+      "〜に参加する",
       "～を感知する",
-      "～を裏づける",
-      "薬"
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 1,
     "explanation": "sense は『～を感知する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6547,10 +6547,10 @@ const QUESTIONS = [
     "title": "重要単語: shape",
     "question": "shape の意味として最も近いものは？",
     "choices": [
-      "問題、悩み事、心配事",
-      "平等な",
+      "客",
+      "剣",
       "形",
-      "4分の1（の）"
+      "敵"
     ],
     "answer": 2,
     "explanation": "shape は『形』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6572,10 +6572,10 @@ const QUESTIONS = [
     "title": "重要単語: instantaneously",
     "question": "instantaneously の意味として最も近いものは？",
     "choices": [
-      "〜のボタンを留める［掛ける］",
-      "専門家",
+      "〜に対する需要",
+      "4分の1（の）",
       "即座に、瞬時に",
-      "（卓球・テニスなどの）ラリー"
+      "AかあるいはB"
     ],
     "answer": 2,
     "explanation": "instantaneously は『即座に、瞬時に』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6597,10 +6597,10 @@ const QUESTIONS = [
     "title": "重要単語: strategy",
     "question": "strategy の意味として最も近いものは？",
     "choices": [
-      "〜を引き出す",
+      "違い",
       "戦略",
-      "〜を埋める、塗りつぶす",
-      "〔形〕リラックスさせる"
+      "活動",
+      "滑る"
     ],
     "answer": 1,
     "explanation": "strategy は『戦略』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6622,10 +6622,10 @@ const QUESTIONS = [
     "title": "重要単語: table tennis",
     "question": "table tennis の意味として最も近いものは？",
     "choices": [
-      "要因",
-      "隠れた、人目につかない",
+      "違い",
+      "活動",
       "卓球",
-      "薬を飲む"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "table tennis は『卓球』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6647,10 +6647,10 @@ const QUESTIONS = [
     "title": "重要単語: professional",
     "question": "professional の意味として最も近いものは？",
     "choices": [
-      "脳",
-      "要因",
+      "〜に参加する",
+      "〜に取り組む",
       "プロ（選手）",
-      "（規模が）大きくなる、拡大する"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "professional は『プロ（選手）』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6672,10 +6672,10 @@ const QUESTIONS = [
     "title": "重要単語: imagine",
     "question": "imagine の意味として最も近いものは？",
     "choices": [
-      "（物の一部が）はがれる、取れる",
+      "〜に参加する",
       "～を想像する",
-      "（規模が）大きくなる、拡大する",
-      "使用人、召使い"
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 1,
     "explanation": "imagine は『～を想像する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6698,9 +6698,9 @@ const QUESTIONS = [
     "question": "participate in ～ の意味として最も近いものは？",
     "choices": [
       "〜に参加する",
-      "～から転がり落ちる",
-      "居心地の悪い",
-      "（病気による）熱、発熱"
+      "〜に取り組む",
+      "〜に集中する",
+      "〜を引き出す"
     ],
     "answer": 0,
     "explanation": "participate in ～ は『〜に参加する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6722,10 +6722,10 @@ const QUESTIONS = [
     "title": "重要単語: tournament",
     "question": "tournament の意味として最も近いものは？",
     "choices": [
-      "戦略",
-      "痛み",
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
       "トーナメント、勝ち抜き戦",
-      "～をまねる"
+      "〔形〕限られた、わずかな"
     ],
     "answer": 2,
     "explanation": "tournament は『トーナメント、勝ち抜き戦』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6747,10 +6747,10 @@ const QUESTIONS = [
     "title": "重要単語: opponent",
     "question": "opponent の意味として最も近いものは？",
     "choices": [
-      "店員",
+      "〜につき、〜あたり（の）",
       "（試合・競技の）相手、敵",
-      "独力で、一人で",
-      "（病気による）熱、発熱"
+      "〔形〕限られた、わずかな",
+      "～を含む、～が入っている"
     ],
     "answer": 1,
     "explanation": "opponent は『（試合・競技の）相手、敵』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6772,10 +6772,10 @@ const QUESTIONS = [
     "title": "重要単語: second",
     "question": "second の意味として最も近いものは？",
     "choices": [
-      "〜に取り組む",
-      "鉄",
+      "客",
+      "形",
       "秒",
-      "世界中で［の］"
+      "剣"
     ],
     "answer": 2,
     "explanation": "second は『秒』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6797,10 +6797,10 @@ const QUESTIONS = [
     "title": "重要単語: accuracy",
     "question": "accuracy の意味として最も近いものは？",
     "choices": [
-      "吹く、吹きつける",
-      "滑る",
+      "〜に参加する",
+      "〜に取り組む",
       "精度、正確さ",
-      "大きさ、規模、重要性"
+      "〜に集中する"
     ],
     "answer": 2,
     "explanation": "accuracy は『精度、正確さ』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6822,10 +6822,10 @@ const QUESTIONS = [
     "title": "重要単語: paddle",
     "question": "paddle の意味として最も近いものは？",
     "choices": [
-      "〜に参加する",
+      "〜で満たされている",
       "（卓球の）ラケット",
-      "近隣、地域",
-      "実際に、実は"
+      "…を〜に集中させる",
+      "～から転がり落ちる"
     ],
     "answer": 1,
     "explanation": "paddle は『（卓球の）ラケット』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6847,10 +6847,10 @@ const QUESTIONS = [
     "title": "重要単語: sustain",
     "question": "sustain の意味として最も近いものは？",
     "choices": [
-      "風呂に入る",
-      "形",
+      "〜につき、〜あたり（の）",
+      "（試合・競技の）相手、敵",
       "～を持続させる、継続する",
-      "卓球"
+      "〔形〕限られた、わずかな"
     ],
     "answer": 2,
     "explanation": "sustain は『～を持続させる、継続する』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6872,10 +6872,10 @@ const QUESTIONS = [
     "title": "重要単語: rally",
     "question": "rally の意味として最も近いものは？",
     "choices": [
-      "クレヨン",
-      "メモ、短い手紙",
+      "〜のボタンを留める［掛ける］",
+      "（規模が）大きくなる、拡大する",
       "（卓球・テニスなどの）ラリー",
-      "性、ジェンダー"
+      "（物の一部が）はがれる、取れる"
     ],
     "answer": 2,
     "explanation": "rally は『（卓球・テニスなどの）ラリー』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6897,10 +6897,10 @@ const QUESTIONS = [
     "title": "重要単語: competitive",
     "question": "competitive の意味として最も近いものは？",
     "choices": [
-      "記者、レポーター",
+      "〜に参加する",
       "競争力のある",
-      "滑らかな、すべすべした",
-      "～を許可する"
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 1,
     "explanation": "competitive は『競争力のある』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6922,9 +6922,9 @@ const QUESTIONS = [
     "title": "重要単語: version",
     "question": "version の意味として最も近いものは？",
     "choices": [
-      "産業化、工業化",
-      "クレヨン",
-      "装置、機材",
+      "ボタン",
+      "外側の",
+      "巨大な",
       "型、版"
     ],
     "answer": 3,
@@ -6947,10 +6947,10 @@ const QUESTIONS = [
     "title": "重要単語: tee",
     "question": "tee の意味として最も近いものは？",
     "choices": [
-      "産業化、工業化",
-      "変化をもたらす、影響を与える、状況を変える",
+      "〜の形で手に入る［売られている］",
+      "（線で描いた）絵、線画、デッサン",
       "（ゴルフの）ティー、球をのせる台",
-      "衣類、衣料品"
+      "〜から形成される、〜からできている"
     ],
     "answer": 2,
     "explanation": "tee は『（ゴルフの）ティー、球をのせる台』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6972,10 +6972,10 @@ const QUESTIONS = [
     "title": "重要単語: hole-in-one",
     "question": "hole-in-one の意味として最も近いものは？",
     "choices": [
-      "形",
-      "（ゴルフの）ホールインワン（ゴルフ競技において1打目でカップにボールを入れること）",
-      "群衆、観衆、聴衆",
-      "～を修理する"
+      "変化をもたらす、影響を与える",
+      "ホールインワン",
+      "目的のための行為、活動、練習課題",
+      "〜から形成される、〜からできている"
     ],
     "answer": 1,
     "explanation": "hole-in-one は『（ゴルフの）ホールインワン（ゴルフ競技において1打目でカップにボールを入れること）』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -6997,10 +6997,10 @@ const QUESTIONS = [
     "title": "重要単語: crowd",
     "question": "crowd の意味として最も近いものは？",
     "choices": [
-      "剣",
-      "塗り絵",
+      "〜する傾向がある",
+      "〜だろうかと思う",
       "群衆、観衆、聴衆",
-      "一緒になる、集まる"
+      "〜に基づいている"
     ],
     "answer": 2,
     "explanation": "crowd は『群衆、観衆、聴衆』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -7022,10 +7022,10 @@ const QUESTIONS = [
     "title": "重要単語: reaction",
     "question": "reaction の意味として最も近いものは？",
     "choices": [
-      "～ではないかと恐れる",
-      "～ということを探り出す、～だと知る",
+      "違い",
+      "活動",
       "反応",
-      "〜に対する需要"
+      "滑る"
     ],
     "answer": 2,
     "explanation": "reaction は『反応』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -7047,10 +7047,10 @@ const QUESTIONS = [
     "title": "重要単語: delight",
     "question": "delight の意味として最も近いものは？",
     "choices": [
-      "大多数の〜、大部分の～",
+      "〜に参加する",
       "大喜び、歓喜",
-      "～を作り上げる、生み出す",
-      "～に挨拶する"
+      "〜に取り組む",
+      "〜に集中する"
     ],
     "answer": 1,
     "explanation": "delight は『大喜び、歓喜』。先生指定の1学期重要単語として確認。参照：Cutting Edge Y06 重要単語",
@@ -7073,9 +7073,9 @@ const QUESTIONS = [
     "question": "Despite our dependence on it, or perhaps because of it の it が指すものは？（it は「水」）この or perhaps because of it の意味として正しいものは？",
     "choices": [
       "水に依存できないにもかかわらず",
-      "あるいはひょっとすると水に依存しているせいで",
+      "水に依存しているせいで、という意味",
       "水に依存しているのだから当然",
-      "水に依存しないようにして"
+      "水に依存しないようにして、という意味"
     ],
     "answer": 1,
     "explanation": "because of X で「Xのせいで・Xが原因で」。or perhaps は「あるいはひょっとすると」。前の Despite（〜にもかかわらず）と対比になっている。参照：FOCUS 1",
@@ -7118,10 +7118,10 @@ const QUESTIONS = [
     "title": "One of the effects of A on B",
     "question": "One of the effects of the growth of the human population on the earth is the high level of water pollution. の on the earth は何にかかるか？",
     "choices": [
-      "One（地球上の一つ）",
-      "the growth of the human population（地球上での人口増加）",
-      "the effects（地球への影響）",
-      "water pollution（地球上の水質汚染）"
+      "One（効果の一つ）",
+      "the growth（人口増加）",
+      "the effects（影響）",
+      "water pollution（水質汚染）"
     ],
     "answer": 1,
     "explanation": "the growth of the human population on the earth で「地球上での人口増加」。effect of A on B「AがBに及ぼす影響」の形も意識。「人口増加が及ぼす影響の一つが高レベルの水質汚染である」。参照：FOCUS 1",
@@ -7210,10 +7210,10 @@ const QUESTIONS = [
     "title": "vital to ~ の後置修飾",
     "question": "He invented many of the technologies vital to the modern world. の vital to the modern world は何を修飾しているか？",
     "choices": [
-      "invented（重要に発明した）",
-      "technologies（現代世界にとって重要な技術）",
-      "He（重要な彼）",
-      "many（重要な多く）"
+      "invented（発明された、という動作）",
+      "technologies（現代世界に重要な技術）",
+      "He（重要な彼、という意味）",
+      "many（多くの、という数量表現）"
     ],
     "answer": 1,
     "explanation": "形容詞句 vital to the modern world「現代世界にとってきわめて重要な」が直前の technologies を後ろから修飾している。「彼は現代世界にとってきわめて重要な技術の多くを発明した」。参照：FOCUS 3",
@@ -7489,9 +7489,9 @@ const QUESTIONS = [
     "question": "次の英文を読んで、選択肢『人は春にだけ風邪をひく』が英文内容と合わない理由として最も近いものは？\n\n英文：\nA majority of people catch colds during the spring or winter.",
     "choices": [
       "英文では spring or winter とあり、春だけに限定していないから",
-      "英文では風邪ではなく月についてだけ述べているから",
-      "英文では人ではなく科学者だけが主語だから",
-      "英文では誰も風邪をひかないと述べているから"
+      "英文では cold ではなく、月の乾燥だけを説明しているから",
+      "英文では people ではなく、科学者だけが主語になっているから",
+      "英文では、誰も風邪をひかないと反対の内容を述べているから"
     ],
     "answer": 0,
     "explanation": "英文は during the spring or winter なので、『春または冬の間に』という意味。『春にだけ』とすると条件を狭くしすぎている。",
@@ -7515,9 +7515,9 @@ const QUESTIONS = [
     "question": "次の英文を読んで、『体が風邪を止めようと働く』ことの具体例として最も近いものはどれ？\n\n英文：\nWhen a cold attacks your body, your body works hard to stop it. For example, blood flows quickly to your nose and as a result, you can’t breathe very well.",
     "choices": [
       "血液が急速に鼻に流れ、その結果、呼吸しにくくなること",
-      "大多数の人が春や冬に風邪をひくこと",
+      "大多数の人が春や冬に風邪をひく、と述べていること",
       "科学者が普通の風邪の治療法を探していること",
-      "風邪薬がすぐに効くこと"
+      "風邪薬がすぐに効く、と本文で説明していること"
     ],
     "answer": 0,
     "explanation": "For example の後が具体例。blood flows quickly to your nose と you can’t breathe very well が、体が風邪に反応している例になっている。",
@@ -7617,9 +7617,9 @@ const QUESTIONS = [
     "question": "次の英文の2文目の It が指す内容として最も自然なものは？\n\n英文：\nIt also has spaces to write about what you’re doing or thinking. It is called journaling.",
     "choices": [
       "自分がしていることや考えていることについて書くこと",
-      "spaces という空白そのもの",
-      "紫色の花をぬること",
-      "ストレスを減らす専門家"
+      "ノートにある spaces という空白そのもの",
+      "紫色の花を選んでぬることそのもの",
+      "ストレスを減らす専門家の説明そのもの"
     ],
     "answer": 0,
     "explanation": "It is called journaling. の It は、前の文の『自分の行動や考えについて書くこと』を受けている。空白そのものではなく、書く行為が journaling と呼ばれる。",
@@ -7641,10 +7641,10 @@ const QUESTIONS = [
     "title": "追加の流れを読む",
     "question": "次の英文の空所に From now on が合いにくい理由として最も近いものは？\n\n英文：\nColoring can reduce stress. ______, coloring can bring out your imagination.",
     "choices": [
-      "後ろの文は別の効果を追加しているので、『これからは』では流れが合わないから",
-      "後ろの文は前の文と完全に逆の内容だから",
-      "前後の文はどちらも過去の出来事だけを述べているから",
-      "Coloring は人の名前として使われているから"
+      "後ろの文は別の効果を追加しているので、「これからは」では流れが合わないから",
+      "後ろの文は前の文と完全に逆の内容だけを述べているから",
+      "前後の文はどちらも過去の出来事だけを説明しているから",
+      "Coloring は人の名前として使われ、人物紹介になっているから"
     ],
     "answer": 0,
     "explanation": "前文は『ストレスを減らす』、後文は『想像力を引き出す』という別の効果の追加。したがって In addition のような追加表現が合う。From now on は『これからは』なので流れがズレる。",
@@ -7668,9 +7668,9 @@ const QUESTIONS = [
     "question": "次の英文を読んで、at full speed の場合について最も自然に言えることはどれ？\n\n英文：\nWe ran this printer at about a quarter speed to print this house, and we were able to complete the house in less than 48 hours of print time.\nAt full speed, the printing process could take as little as (4) hours.",
     "choices": [
       "4分の1のスピードより、さらに短い時間で印刷できる可能性がある",
-      "4分の1のスピードより、必ず4倍長い時間がかかる",
-      "48時間ちょうどかかるという意味である",
-      "48日以上かかるという意味である"
+      "4分の1のスピードより、必ず4倍長い時間がかかるとわかる",
+      "全速力でも48時間ちょうどかかる、という意味である",
+      "全速力なら48日以上かかる、という意味である"
     ],
     "answer": 0,
     "explanation": "at full speed は『全速力で』。英文では、約4分の1のスピードで48時間未満だった後に、At full speed, the printing process could take as little as (4) hours. と続く。したがって、全速力ならさらに短い時間で印刷できる可能性があると読む。参照：Cutting Edge Y05 問題4",
@@ -7694,9 +7694,9 @@ const QUESTIONS = [
     "question": "次の英文を読んで、選択肢『できるだけ早く完成することが重要』が最適ではない理由として最も近いものは？\n\n英文：\nThis house was actually printed in high winds, blowing dust and rain. It is important for the printing process to operate in extreme conditions.",
     "choices": [
       "直前では悪天候の中で印刷した話をしており、極端な状況で作動することが焦点だから",
-      "直前では完成までの日数だけを説明しているから",
-      "直前では訪問者に見せる予定だけを説明しているから",
-      "直前ではコンピュータソフトの名前だけを説明しているから"
+      "直前では完成までの日数だけを説明していて、天候には触れていないから",
+      "直前では訪問者に見せる予定だけを説明していて、印刷には触れていないから",
+      "直前ではコンピュータソフトの名前だけを説明していて、家には触れていないから"
     ],
     "answer": 0,
     "explanation": "high winds, blowing dust and rain という悪条件が示されている。文脈の焦点は『速さ』ではなく、『極端な状況で作動できること』。",
