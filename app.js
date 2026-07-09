@@ -857,11 +857,29 @@
     return counts;
   }
 
+  function getHomeProgressStats() {
+    const today = getAppTodayDate();
+    const attempts = getAllAttemptsWithQuestionId();
+    const todayAttempts = attempts.filter(a => (a.appDate || toAppDate(a.answeredAt)) === today);
+    const todaySummaries = buildLearningSummaries(todayAttempts);
+    const learnedIds = new Set();
+
+    Object.values(state.records).forEach(r => {
+      if ((r.attempts || []).length) learnedIds.add(r.questionId);
+    });
+
+    return {
+      todayChallenge: todaySummaries.length,
+      todayClear: todaySummaries.filter(item => item.status === "clean-clear" || item.status === "retry-clear").length,
+      totalLearned: learnedIds.size
+    };
+  }
+
   function renderHomeStats() {
-    const counts = countStatuses();
-    el("statCleared").textContent = counts.cleared;
-    el("statReview").textContent = counts.review;
-    el("statWeak").textContent = counts.weak;
+    const progress = getHomeProgressStats();
+    el("statTodayChallenge").textContent = progress.todayChallenge;
+    el("statTodayClear").textContent = progress.todayClear;
+    el("statTotalLearned").textContent = progress.totalLearned;
     renderContinueSlots();
   }
 
