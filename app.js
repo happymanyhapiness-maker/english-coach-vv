@@ -1772,10 +1772,21 @@
   }
 
   async function getByMaterialId(storeName, materialId) {
+    const normalizedId = String(materialId ?? "").trim();
     const db = await openMaterialDb();
     try {
       const tx = db.transaction(storeName, "readonly");
-      return await idbRequest(tx.objectStore(storeName).index("materialId").getAll(materialId));
+      const store = tx.objectStore(storeName);
+      let indexedRows = [];
+      if (store.indexNames.contains("materialId")) {
+        indexedRows = await idbRequest(store.index("materialId").getAll(normalizedId));
+      }
+      if (indexedRows.length) return indexedRows;
+
+      // Fallback: older / inconsistent IndexedDB states may fail exact index lookup.
+      // Scan the store and compare normalized materialId values instead.
+      const allRows = await idbRequest(store.getAll());
+      return allRows.filter(row => String(row?.materialId ?? "").trim() === normalizedId);
     } finally {
       db.close();
     }
@@ -2023,7 +2034,20 @@
 
       const materialId = materialIds[0];
       await replaceMaterialData(materialId, materials, guides);
-      setCsvStatus(`${materialId} を保存しました。本文 ${materials.length}文 / 文ガイド ${guides.length}文`, "success");
+
+      // Round-trip verification: do not report success until the saved rows can be read back.
+      const [savedMaterials, savedGuides] = await Promise.all([
+        getByMaterialId(MATERIAL_STORE, materialId),
+        getByMaterialId(GUIDE_STORE, materialId)
+      ]);
+      if (savedMaterials.length !== materials.length) {
+        throw new Error(`保存確認に失敗しました。本文 ${materials.length}文のうち ${savedMaterials.length}文しか読み戻せません。`);
+      }
+      if (savedGuides.length !== guides.length) {
+        throw new Error(`保存確認に失敗しました。文ガイド ${guides.length}文のうち ${savedGuides.length}文しか読み戻せません。`);
+      }
+
+      setCsvStatus(`${materialId} を保存しました。本文 ${savedMaterials.length}文 / 文ガイド ${savedGuides.length}文（保存確認済み）`, "success");
       if (el("materialsCsvInput")) el("materialsCsvInput").value = "";
       if (el("guidesCsvInput")) el("guidesCsvInput").value = "";
       updateCsvFileNames();
