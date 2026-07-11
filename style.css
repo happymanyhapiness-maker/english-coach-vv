@@ -1273,3 +1273,21 @@ h2, h3, p { margin-top: 0; }
   .material-row-wrap { grid-template-columns: 1fr; }
   .material-text-button { width: 100%; }
 }
+
+
+/* Phase2-1.9.6: saved material actions */
+.material-library-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.material-library-copy { min-width: 0; }
+.material-library-copy small { display: block; margin: 3px 0 6px; color: var(--muted); }
+.material-library-actions { display: flex; gap: 8px; flex: 0 0 auto; }
+.danger-button { color: #a64b43; border-color: rgba(166, 75, 67, 0.28); }
+@media (max-width: 640px) {
+  .material-library-item { align-items: stretch; flex-direction: column; }
+  .material-library-actions { width: 100%; }
+  .material-library-actions button { flex: 1; }
+}

@@ -1801,10 +1801,23 @@
   }
 
   async function getKeysByMaterialId(storeName, materialId) {
+    const normalizedId = String(materialId ?? "").trim();
     const db = await openMaterialDb();
     try {
       const tx = db.transaction(storeName, "readonly");
-      return await idbRequest(tx.objectStore(storeName).index("materialId").getAllKeys(materialId));
+      const store = tx.objectStore(storeName);
+      let keys = [];
+      if (store.indexNames.contains("materialId")) {
+        keys = await idbRequest(store.index("materialId").getAllKeys(normalizedId));
+      }
+      if (keys.length) return keys;
+
+      // Fallback for older/inconsistent stores: scan rows and return their primary keys.
+      const rows = await idbRequest(store.getAll());
+      return rows
+        .filter(row => String(row?.materialId ?? "").trim() === normalizedId)
+        .map(row => row.key)
+        .filter(Boolean);
     } finally {
       db.close();
     }
@@ -1845,6 +1858,29 @@
       await transactionDone(tx);
     } finally {
       db.close();
+    }
+  }
+
+  // Unified material repository API. UI code should use these helpers instead of touching IndexedDB directly.
+  async function getMaterialBundle(materialId) {
+    const normalizedId = String(materialId ?? "").trim();
+    if (!normalizedId) throw new Error("教材IDが指定されていません。");
+    const [materials, guides] = await Promise.all([
+      getByMaterialId(MATERIAL_STORE, normalizedId),
+      getByMaterialId(GUIDE_STORE, normalizedId)
+    ]);
+    materials.sort((a, b) => Number(a.sentenceNo) - Number(b.sentenceNo));
+    guides.sort((a, b) => Number(a.sentenceNo) - Number(b.sentenceNo));
+    return { materialId: normalizedId, materials, guides };
+  }
+
+  async function removeMaterialBundle(materialId) {
+    const normalizedId = String(materialId ?? "").trim();
+    if (!normalizedId) throw new Error("教材IDが指定されていません。");
+    await deleteMaterialData(normalizedId);
+    const verify = await getMaterialBundle(normalizedId);
+    if (verify.materials.length || verify.guides.length) {
+      throw new Error("教材データを完全に削除できませんでした。もう一度お試しください。");
     }
   }
 
@@ -2089,19 +2125,29 @@
       }
       list.innerHTML = groups.map(group => {
         const paragraphs = new Set(group.sentences.map(row => row.paragraphNo).filter(Boolean));
+        const displayTitle = materialDisplayTitle(group.materialId);
         return `
-          <button class="review-item material-library-item" type="button" data-open-material="${escapeHtml(group.materialId)}">
-            <div>
-              <strong>${escapeHtml(group.materialId)}</strong>
+          <article class="review-item material-library-item">
+            <div class="material-library-copy">
+              <strong>${escapeHtml(displayTitle)}</strong>
+              <small>${escapeHtml(group.materialId)}</small>
               <p>本文 ${group.sentences.length}文${paragraphs.size ? ` / 段落情報 ${paragraphs.size}件` : ""} / 文ガイド ${group.guides}文</p>
             </div>
-            <span class="review-badge">開く</span>
-          </button>`;
+            <div class="material-library-actions">
+              <button class="secondary-button" type="button" data-open-saved-material="${escapeHtml(group.materialId)}">開く</button>
+              <button class="ghost-button danger-button" type="button" data-delete-saved-material="${escapeHtml(group.materialId)}">削除</button>
+            </div>
+          </article>`;
       }).join("");
     } catch (error) {
       console.error(error);
       list.innerHTML = `<p class="empty-text">教材データを読み込めませんでした。</p>`;
     }
+  }
+
+  function materialDisplayTitle(materialId) {
+    const titleMatch = String(materialId || "").match(/^T\d+_CE_Y(\d+)$/i);
+    return titleMatch ? `Cutting Edge Y${String(Number(titleMatch[1])).padStart(2, "0")}` : String(materialId || "教材");
   }
 
   function hasInteractiveChunkGuide(guide) {
@@ -2245,27 +2291,24 @@
     }, 350);
   }
 
-  async function openMaterialReader(materialId, returnView = "materialView") {
+  async function renderMaterialReader(bundle, returnView = "materialView") {
     const reader = el("materialReader");
     const listHead = document.querySelector(".text-study-list-head");
     const savedList = el("savedMaterialsList");
-    if (!reader) return;
+    if (!reader) throw new Error("本文表示エリアが見つかりません。");
+
+    const { materialId, materials, guides } = bundle;
+    if (!materials.length) throw new Error(`教材データが見つかりません: ${materialId}`);
+
     state.currentReaderMaterialId = materialId;
     state.currentReaderReturnView = returnView;
-    const [materials, guides] = await Promise.all([
-      getByMaterialId(MATERIAL_STORE, materialId),
-      getByMaterialId(GUIDE_STORE, materialId)
-    ]);
-    if (!materials.length) throw new Error(`No material data: ${materialId}`);
-    materials.sort((a, b) => a.sentenceNo - b.sentenceNo);
-    const guideMap = new Map(guides.map(guide => [guide.sentenceNo, guide]));
-    const titleMatch = String(materialId).match(/^T\d+_CE_Y(\d+)$/i);
-    const displayTitle = titleMatch ? `Cutting Edge Y${String(Number(titleMatch[1])).padStart(2, "0")}` : materialId;
-    if (el("readerMaterialTitle")) el("readerMaterialTitle").textContent = displayTitle;
+    const guideMap = new Map(guides.map(guide => [Number(guide.sentenceNo), guide]));
+    if (el("readerMaterialTitle")) el("readerMaterialTitle").textContent = materialDisplayTitle(materialId);
     if (el("readerMaterialSummary")) el("readerMaterialSummary").textContent = `本文 ${materials.length}文 / 文ガイド ${guides.filter(g => g.validationStatus !== "hold").length}文`;
     const sentenceList = el("materialSentenceList");
+    if (!sentenceList) throw new Error("本文一覧エリアが見つかりません。");
     sentenceList.innerHTML = materials.map(row => {
-      const guide = guideMap.get(row.sentenceNo);
+      const guide = guideMap.get(Number(row.sentenceNo));
       const label = row.paragraphNo ? `第${row.paragraphNo}段落・第${row.sentenceNo}文` : `第${row.sentenceNo}文`;
       return `
         <article class="sentence-card">
@@ -2282,22 +2325,32 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  async function openSavedMaterial(materialId, returnView = "materialView") {
+    const bundle = await getMaterialBundle(materialId);
+    if (!bundle.materials.length) {
+      throw new Error(`この端末に ${materialDisplayTitle(materialId)} の本文データがありません。設定からCSVを読み込んでください。`);
+    }
+    await renderMaterialReader(bundle, returnView);
+  }
+
   function closeMaterialReader() {
     const returnView = state.currentReaderReturnView || "materialView";
     state.currentReaderMaterialId = null;
     state.currentReaderReturnView = null;
     document.querySelector(".text-study-list-head")?.classList.remove("hidden");
     el("savedMaterialsList")?.classList.remove("hidden");
+    el("materialReader")?.classList.add("hidden");
     showView(returnView);
   }
 
-  async function removeCurrentMaterial() {
-    const materialId = state.currentReaderMaterialId;
-    if (!materialId) return;
-    if (!confirm(`${materialId} の教材本文をこの端末から削除しますか？\n学習ログやquestions.jsは削除されません。`)) return;
-    await deleteMaterialData(materialId);
-    closeMaterialReader();
-    setCsvStatus(`${materialId} をこの端末から削除しました。`, "success");
+  async function deleteSavedMaterial(materialId) {
+    const normalizedId = String(materialId ?? "").trim();
+    if (!normalizedId) return;
+    const title = materialDisplayTitle(normalizedId);
+    if (!confirm(`${title} の保存済み教材データを削除しますか？\n本文・文ガイドだけをこの端末から削除します。\n学習ログやSRSは削除されません。`)) return;
+    await removeMaterialBundle(normalizedId);
+    if (state.currentReaderMaterialId === normalizedId) closeMaterialReader();
+    setCsvStatus(`${title} の教材データをこの端末から削除しました。`, "success");
     await renderSavedMaterials();
   }
 
@@ -2320,14 +2373,13 @@
       const originalText = textMaterialBtn.textContent;
       textMaterialBtn.disabled = true;
       textMaterialBtn.textContent = "読み込み中…";
-      openMaterialReader(materialId, "materialView")
-        .catch(error => {
+      openSavedMaterial(materialId, "materialView")
+        .catch(async error => {
           console.error(error);
-          alert("この教材の本文CSVはまだ読み込まれていません。設定から教材CSVを読み込んでください。");
+          alert(error?.message || "教材を開けませんでした。");
           showView("settingsView");
-          return renderSavedMaterials();
+          await renderSavedMaterials();
         })
-        .catch(error => console.error(error))
         .finally(() => {
           textMaterialBtn.disabled = false;
           textMaterialBtn.textContent = originalText;
@@ -2415,12 +2467,29 @@
       return;
     }
 
-    const openMaterialBtn = e.target.closest("[data-open-material]");
-    if (openMaterialBtn) {
-      openMaterialReader(openMaterialBtn.dataset.openMaterial, "settingsView").catch(error => {
-        console.error(error);
-        setCsvStatus("教材を開けませんでした。", "error");
-      });
+    const openSavedBtn = e.target.closest("[data-open-saved-material]");
+    if (openSavedBtn) {
+      const materialId = openSavedBtn.dataset.openSavedMaterial;
+      openSavedBtn.disabled = true;
+      openSavedMaterial(materialId, "settingsView")
+        .catch(error => {
+          console.error(error);
+          setCsvStatus(error?.message || "教材を開けませんでした。", "error");
+        })
+        .finally(() => { openSavedBtn.disabled = false; });
+      return;
+    }
+
+    const deleteSavedBtn = e.target.closest("[data-delete-saved-material]");
+    if (deleteSavedBtn) {
+      const materialId = deleteSavedBtn.dataset.deleteSavedMaterial;
+      deleteSavedBtn.disabled = true;
+      deleteSavedMaterial(materialId)
+        .catch(error => {
+          console.error(error);
+          setCsvStatus(error?.message || "教材を削除できませんでした。", "error");
+        })
+        .finally(() => { deleteSavedBtn.disabled = false; });
       return;
     }
 
@@ -2495,12 +2564,6 @@
   el("guidesCsvInput")?.addEventListener("change", updateCsvFileNames);
   el("importMaterialCsvBtn")?.addEventListener("click", importSelectedCsvFiles);
   el("closeMaterialReaderBtn")?.addEventListener("click", closeMaterialReader);
-  el("deleteMaterialBtn")?.addEventListener("click", () => {
-    removeCurrentMaterial().catch(error => {
-      console.error(error);
-      setCsvStatus("教材を削除できませんでした。", "error");
-    });
-  });
   el("resetBtn").addEventListener("click", () => {
     if (!confirm("試作版v0.4 Phase2-1の学習ログを初期化しますか？")) return;
     state.records = {};
