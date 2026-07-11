@@ -4,15 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>英コミュCoach</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20260711-2194" />
 </head>
 <body>
   <div class="app-shell">
     <header class="app-header">
       <div>
-        <h1>英コミュCoach <span class="version-badge">v0.4 Phase2-1.5</span></h1>
+        <h1>英コミュCoach <span class="version-badge">v0.4 Phase2-1.9.4</span></h1>
       </div>
-      <button class="ghost-button" id="resetBtn" type="button" title="この試作版の学習ログを消します">ログ初期化</button>
+      <div class="header-actions">
+        <button class="ghost-button" id="settingsBtn" type="button">設定</button>
+        <button class="ghost-button" id="resetBtn" type="button" title="この試作版の学習ログを消します">ログ初期化</button>
+      </div>
     </header>
 
     <main>
@@ -173,6 +176,56 @@
         </div>
       </section>
 
+      <section id="textStudyView" class="view" aria-label="本文学習">
+        <div class="quiz-topbar">
+          <button id="closeMaterialReaderBtn" class="back-button" type="button">← Cutting Edge</button>
+        </div>
+        <section id="materialReader" class="material-reader">
+          <div class="section-head">
+            <p class="eyebrow">Text Study</p>
+            <h2 id="readerMaterialTitle">教材本文</h2>
+            <p id="readerMaterialSummary"></p>
+          </div>
+          <div id="materialSentenceList" class="sentence-list"></div>
+        </section>
+      </section>
+
+      <section id="settingsView" class="view" aria-label="設定">
+        <div class="quiz-topbar">
+          <button class="back-button" data-nav="homeView" type="button">← ホーム</button>
+        </div>
+        <div class="section-head">
+          <p class="eyebrow">Settings</p>
+          <h2>設定</h2>
+          <p>教材CSVの読み込みや、この端末に保存した教材の管理を行います。</p>
+        </div>
+
+        <article class="analysis-card full csv-import-card">
+          <h3>教材CSVを読み込む</h3>
+          <p class="csv-help">同じ教材の <code>materials.csv</code> と <code>sentence_guides.csv</code> を選んでください。ガイドCSVはなくても本文だけ読み込めます。</p>
+          <div class="csv-file-grid">
+            <label class="csv-file-label">
+              <span>本文CSV</span>
+              <input id="materialsCsvInput" type="file" accept=".csv,text/csv" />
+              <small id="materialsCsvName">未選択</small>
+            </label>
+            <label class="csv-file-label">
+              <span>文ガイドCSV（任意）</span>
+              <input id="guidesCsvInput" type="file" accept=".csv,text/csv" />
+              <small id="guidesCsvName">未選択</small>
+            </label>
+          </div>
+          <button id="importMaterialCsvBtn" class="primary-button wide" type="button">選んだCSVを読み込む</button>
+          <div id="csvImportStatus" class="csv-status" aria-live="polite"></div>
+        </article>
+
+        <div class="section-label compact text-study-list-head">
+          <h2>この端末の教材</h2>
+          <p>読み込み済みの教材を確認・削除できます。</p>
+        </div>
+        <div id="savedMaterialsList" class="review-list"></div>
+      </section>
+
       <section id="reviewView" class="view" aria-label="復習">
         <div class="section-head">
           <h2>復習</h2>
@@ -237,7 +290,7 @@
     </nav>
   </div>
 
-  <script src="questions.js"></script>
-  <script src="app.js"></script>
+  <script src="questions.js?v=20260711-2194"></script>
+  <script src="app.js?v=20260711-2194"></script>
 </body>
 </html>
