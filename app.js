@@ -250,6 +250,8 @@
   }
 
   function showView(viewId) {
+    const leavingRulesListen = viewId !== "rulesListenView" && document.getElementById("rulesListenView")?.classList.contains("active");
+    if (leavingRulesListen) window.RulesApp?.stopListen?.(false);
     state.view = viewId;
     views.forEach(v => v.classList.toggle("active", v.id === viewId));
     navItems.forEach(n => n.classList.toggle("active", n.dataset.nav === viewId));
@@ -311,7 +313,28 @@
     return picked;
   }
 
+  function loadTodaySession() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(TODAY_SESSION_KEY));
+      if (!saved || saved.appDate !== getAppTodayDate() || !Array.isArray(saved.questionIds)) return null;
+      const restored = saved.questionIds.map(id => questions.find(q => q.id === id)).filter(Boolean);
+      return restored.length === saved.questionIds.length && restored.length ? restored : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function saveTodaySession(session) {
+    localStorage.setItem(TODAY_SESSION_KEY, JSON.stringify({
+      appDate: getAppTodayDate(),
+      questionIds: session.map(q => q.id)
+    }));
+  }
+
   function buildTodaySession() {
+    const saved = loadTodaySession();
+    if (saved) return saved;
+
     const selected = new Set();
     const todayTypes = q => focusTypes.has(q.type) || readingTypes.has(q.type);
     const focusNew = shuffle(byType(focusTypes).filter(isNew));
@@ -332,7 +355,9 @@
       result.push(...takeUnique(due, 10 - result.length, selected));
     }
 
-    return shuffle(result).slice(0, 10);
+    const session = shuffle(result).slice(0, 10);
+    if (session.length) saveTodaySession(session);
+    return session;
   }
 
   function newAndDueFirst(list) {
@@ -2815,10 +2840,13 @@
     state.records = {};
     saveRecords();
     saveActiveSession(null);
+    localStorage.removeItem(TODAY_SESSION_KEY);
     renderHomeStats();
     renderAnalysis();
     renderReview();
   });
+
+  window.EikomiApp = { ...(window.EikomiApp || {}), showView };
 
   Object.keys(state.records).forEach(getRecord);
   saveRecords();
