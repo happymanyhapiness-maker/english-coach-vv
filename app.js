@@ -3,6 +3,8 @@
   const SESSION_KEY = "eikomiCoachPrototypeActiveSession.v03";
   const TODAY_SESSION_KEY = "eikomiCoachPrototypeTodaySession.v03";
   const RECOMMENDED_DRILL_KEY = "eikomiCoachPrototypeRecommendedDrill.v04";
+  const TEXT_STUDY_PROGRESS_KEY = "eikomiCoachTextStudyProgress.v01";
+  const SELF_REVIEW_KEY = "eikomiCoachSelfReview.v01";
 
   const questions = (typeof QUESTIONS !== "undefined" ? QUESTIONS : [])
     .filter(q => q && q.id && q.choices && q.choices.length === 4)
@@ -108,7 +110,11 @@
     learningPages: { today: 0, previous: 0 },
     showTodayLearning: false,
     showPreviousLearning: false,
-    resultAction: null
+    resultAction: null,
+    currentReaderBundle: null,
+    currentReaderIndex: 0,
+    currentReaderMode: null,
+    replaceMaterialId: null
   };
 
   const el = (id) => document.getElementById(id);
@@ -118,6 +124,60 @@
   function loadRecords() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
     catch { return {}; }
+  }
+
+  function loadJsonStorage(key, fallback = {}) {
+    try {
+      const value = JSON.parse(localStorage.getItem(key));
+      return value && typeof value === "object" ? value : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  function saveJsonStorage(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function getTextStudyProgress(materialId) {
+    const all = loadJsonStorage(TEXT_STUDY_PROGRESS_KEY, {});
+    const item = all[String(materialId || "").trim()];
+    if (!item || !Number.isInteger(item.sentenceIndex) || item.sentenceIndex < 0) return null;
+    return item;
+  }
+
+  function saveTextStudyProgress(materialId, sentenceIndex) {
+    const id = String(materialId || "").trim();
+    if (!id) return;
+    const all = loadJsonStorage(TEXT_STUDY_PROGRESS_KEY, {});
+    all[id] = { sentenceIndex, updatedAt: new Date().toISOString() };
+    saveJsonStorage(TEXT_STUDY_PROGRESS_KEY, all);
+  }
+
+  function clearTextStudyProgress(materialId) {
+    const id = String(materialId || "").trim();
+    const all = loadJsonStorage(TEXT_STUDY_PROGRESS_KEY, {});
+    delete all[id];
+    saveJsonStorage(TEXT_STUDY_PROGRESS_KEY, all);
+  }
+
+  function selfReviewKey(materialId, sentenceNo) {
+    return `${String(materialId || "").trim()}::${Number(sentenceNo)}`;
+  }
+
+  function getSelfReviewMap() {
+    return loadJsonStorage(SELF_REVIEW_KEY, {});
+  }
+
+  function setSelfReviewStatus(materialId, sentenceNo, status) {
+    const all = getSelfReviewMap();
+    const key = selfReviewKey(materialId, sentenceNo);
+    all[key] = { materialId, sentenceNo: Number(sentenceNo), status, updatedAt: new Date().toISOString() };
+    saveJsonStorage(SELF_REVIEW_KEY, all);
+  }
+
+  function getSelfReviewStatus(materialId, sentenceNo) {
+    return getSelfReviewMap()[selfReviewKey(materialId, sentenceNo)]?.status || null;
   }
 
   function saveRecords() {
@@ -195,13 +255,10 @@
     navItems.forEach(n => n.classList.toggle("active", n.dataset.nav === viewId));
     if (viewId === "reviewView") renderReview();
     if (viewId === "analysisView") renderAnalysis();
-    if (viewId === "textStudyView") {
-      closeMaterialReader();
-      renderSavedMaterials();
-    }
     if (viewId === "homeView") renderHomeStats();
     if (viewId === "materialView" && state.currentMaterial) renderMaterialPicker(state.currentMaterial);
     if (viewId === "testPrepView") renderTestPrepView();
+    if (viewId === "settingsView") renderSavedMaterials();
     renderContinueSlots();
   }
 
@@ -1069,23 +1126,41 @@
     `;
   }
 
-  function renderReview() {
-    if (state.reviewPanel === "print") return renderPrintPicker();
-
+  async function renderReview() {
     const box = el("reviewList");
-    const g = reviewGroups();
-    box.innerHTML = "";
+    if (!box) return;
+    box.innerHTML = `<p class="empty-text">本人が「要復習」にした文を確認しています…</p>`;
 
-    if (!g.allItems.length) {
-      box.innerHTML = `<div class="review-item"><strong>復習リストは空です</strong><p>今はスッキリ。新規問題でミスしたものがここに入ります。</p></div>`;
+    const items = Object.values(getSelfReviewMap())
+      .filter(item => item?.status === "needs_review")
+      .sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")));
+
+    if (!items.length) {
+      box.innerHTML = `<div class="review-item"><strong>自分で選んだ復習はありません</strong><p>本文学習で「要復習」にした文だけ、ここに残ります。HOMEの「今日やる復習」はシステムが自動で選びます。</p></div>`;
       return;
     }
 
-    addReviewButton(box, "今日やる復習", g.todaySet.length, "reviewToday", "まずはここだけでOK");
-    addReviewButton(box, "昨日の復習分", g.yesterdayItems.length, "reviewDate", "余裕があれば追加", { date: g.yesterday });
-    addReviewButton(box, "一昨日の復習分", g.dayBeforeItems.length, "reviewDate", "さらに余裕があれば", { date: g.dayBefore });
-    addReviewButton(box, "それ以前の復習分", g.olderItems.length, "reviewOlder", "古いものから整理", {});
-    addReviewButton(box, "すべての復習", g.allItems.length, "reviewAll", "まとめて確認", {});
+    const materialIds = [...new Set(items.map(item => item.materialId))];
+    const bundles = new Map();
+    await Promise.all(materialIds.map(async id => {
+      try { bundles.set(id, await getMaterialBundle(id)); } catch {}
+    }));
+
+    box.innerHTML = items.map(item => {
+      const bundle = bundles.get(item.materialId);
+      const row = bundle?.materials?.find(r => Number(r.sentenceNo) === Number(item.sentenceNo));
+      const preview = row?.english || "教材本文を読み込むと、この文をもう一度確認できます。";
+      return `
+        <article class="review-item self-review-item">
+          <div class="review-item-top">
+            <span>${escapeHtml(materialDisplayTitle(item.materialId))}</span>
+            <span class="review-badge">第${Number(item.sentenceNo)}文</span>
+          </div>
+          <strong>要復習にした文</strong>
+          <p>${escapeHtml(preview)}</p>
+          <button type="button" class="secondary-button" data-open-self-review="${escapeHtml(item.materialId)}" data-sentence-no="${Number(item.sentenceNo)}">この文をもう一度</button>
+        </article>`;
+    }).join("");
   }
 
   function addReviewButton(box, title, count, mode, note, options = {}) {
@@ -2006,6 +2081,23 @@
         }
       }
 
+      const analysisChunksRaw = String(row.analysisChunks ?? "").trim();
+      const analysisTranslationsRaw = String(row.analysisChunkTranslations ?? "").trim();
+      const analysisParts = analysisChunksRaw ? analysisChunksRaw.split("|||").map(part => part.trim()).filter(Boolean) : [];
+      const analysisTranslationParts = analysisTranslationsRaw ? analysisTranslationsRaw.split("|||").map(part => part.trim()) : [];
+      if (analysisParts.length && analysisTranslationParts.length !== analysisParts.length) {
+        throw new Error(`文ガイドCSV ${rowNo}行目のanalysisChunksとanalysisChunkTranslationsの個数が一致しません。`);
+      }
+      const subjectTarget = String(row.subjectTarget ?? row.subject ?? "").trim();
+      const verbTarget = String(row.verbTarget ?? row.verb ?? "").trim();
+      const materialRow = materialRows.find(item => item.key === key);
+      if (subjectTarget && materialRow && !materialRow.english.includes(subjectTarget)) {
+        throw new Error(`文ガイドCSV ${rowNo}行目のsubjectTargetが英文内に見つかりません。`);
+      }
+      if (verbTarget && materialRow && !materialRow.english.includes(verbTarget)) {
+        throw new Error(`文ガイドCSV ${rowNo}行目のverbTargetが英文内に見つかりません。`);
+      }
+
       return {
         key,
         materialId,
@@ -2021,6 +2113,10 @@
         verbChunkIndex,
         chunkTranslations,
         finalTranslation: String(row.finalTranslation ?? "").trim(),
+        analysisChunks: String(row.analysisChunks ?? "").trim(),
+        analysisChunkTranslations: String(row.analysisChunkTranslations ?? "").trim(),
+        subjectTarget,
+        verbTarget,
         validationStatus,
         importedAt: new Date().toISOString()
       };
@@ -2069,6 +2165,9 @@
       }
 
       const materialId = materialIds[0];
+      if (state.replaceMaterialId && state.replaceMaterialId !== materialId) {
+        throw new Error(`${materialDisplayTitle(state.replaceMaterialId)} の差し替え中です。同じ materialId（${state.replaceMaterialId}）のCSVを選んでください。`);
+      }
       await replaceMaterialData(materialId, materials, guides);
 
       // Round-trip verification: do not report success until the saved rows can be read back.
@@ -2083,7 +2182,11 @@
         throw new Error(`保存確認に失敗しました。文ガイド ${guides.length}文のうち ${savedGuides.length}文しか読み戻せません。`);
       }
 
-      setCsvStatus(`${materialId} を保存しました。本文 ${savedMaterials.length}文 / 文ガイド ${savedGuides.length}文（保存確認済み）`, "success");
+      setCsvStatus(`${materialDisplayTitle(materialId)} を保存しました。本文 ${savedMaterials.length}文 / 文ガイド ${savedGuides.length}文`, "success");
+      state.replaceMaterialId = null;
+      const details = el("csvImportDetails");
+      if (details) details.open = false;
+      if (el("csvImportModeTitle")) el("csvImportModeTitle").textContent = "教材を追加・差し替える";
       if (el("materialsCsvInput")) el("materialsCsvInput").value = "";
       if (el("guidesCsvInput")) el("guidesCsvInput").value = "";
       updateCsvFileNames();
@@ -2099,8 +2202,8 @@
   function updateCsvFileNames() {
     const materialsFile = el("materialsCsvInput")?.files?.[0];
     const guidesFile = el("guidesCsvInput")?.files?.[0];
-    if (el("materialsCsvName")) el("materialsCsvName").textContent = materialsFile?.name || "未選択";
-    if (el("guidesCsvName")) el("guidesCsvName").textContent = guidesFile?.name || "未選択";
+    if (el("materialsCsvName")) el("materialsCsvName").textContent = materialsFile?.name || "選ぶとファイル名が表示されます";
+    if (el("guidesCsvName")) el("guidesCsvName").textContent = guidesFile?.name || "必要な場合だけ選択";
   }
 
   async function renderSavedMaterials() {
@@ -2112,29 +2215,39 @@
       const guides = await getAllFromStore(GUIDE_STORE);
       const map = new Map();
       materials.forEach(row => {
-        if (!map.has(row.materialId)) map.set(row.materialId, { materialId: row.materialId, sentences: [], guides: 0 });
-        map.get(row.materialId).sentences.push(row);
+        if (!map.has(row.materialId)) map.set(row.materialId, { materialId: row.materialId, sentences: [], guides: 0, updatedAt: null });
+        const group = map.get(row.materialId);
+        group.sentences.push(row);
+        if (!group.updatedAt || String(row.importedAt || "") > String(group.updatedAt || "")) group.updatedAt = row.importedAt;
       });
       guides.forEach(row => {
         if (map.has(row.materialId)) map.get(row.materialId).guides += 1;
       });
       const groups = [...map.values()].sort((a, b) => a.materialId.localeCompare(b.materialId, "ja", { numeric: true }));
+      const details = el("csvImportDetails");
+      if (details && !groups.length) details.open = true;
+
       if (!groups.length) {
-        list.innerHTML = `<p class="empty-text">まだ教材CSVは読み込まれていません。</p>`;
+        list.innerHTML = `<div class="review-item"><strong>まだ教材はありません</strong><p>下の「教材を追加・差し替える」からCSVを読み込んでください。</p></div>`;
         return;
       }
+
       list.innerHTML = groups.map(group => {
         const paragraphs = new Set(group.sentences.map(row => row.paragraphNo).filter(Boolean));
         const displayTitle = materialDisplayTitle(group.materialId);
+        const updated = group.updatedAt ? new Date(group.updatedAt) : null;
+        const updatedText = updated && !Number.isNaN(updated.getTime()) ? `${updated.getMonth()+1}/${updated.getDate()} ${String(updated.getHours()).padStart(2,"0")}:${String(updated.getMinutes()).padStart(2,"0")}` : "保存済み";
         return `
           <article class="review-item material-library-item">
             <div class="material-library-copy">
               <strong>${escapeHtml(displayTitle)}</strong>
               <small>${escapeHtml(group.materialId)}</small>
               <p>本文 ${group.sentences.length}文${paragraphs.size ? ` / 段落情報 ${paragraphs.size}件` : ""} / 文ガイド ${group.guides}文</p>
+              <small>最終更新：${escapeHtml(updatedText)}</small>
             </div>
             <div class="material-library-actions">
               <button class="secondary-button" type="button" data-open-saved-material="${escapeHtml(group.materialId)}">開く</button>
+              <button class="ghost-button" type="button" data-replace-saved-material="${escapeHtml(group.materialId)}">差し替える</button>
               <button class="ghost-button danger-button" type="button" data-delete-saved-material="${escapeHtml(group.materialId)}">削除</button>
             </div>
           </article>`;
@@ -2152,10 +2265,12 @@
 
   function hasInteractiveChunkGuide(guide) {
     if (!guide || guide.validationStatus === "hold") return false;
-    const chunks = String(guide.chunkText || "").split("|||").map(part => part.trim()).filter(Boolean);
-    const translations = String(guide.chunkTranslations || "").split("|||").map(part => part.trim());
-    return chunks.length > 0 &&
-      translations.length === chunks.length &&
+    const tapChunks = String(guide.chunkText || "").split("|||").map(part => part.trim()).filter(Boolean);
+    const analysisChunks = String(guide.analysisChunks || guide.chunkText || "").split("|||").map(part => part.trim()).filter(Boolean);
+    const analysisTranslations = String(guide.analysisChunkTranslations || guide.chunkTranslations || "").split("|||").map(part => part.trim());
+    return tapChunks.length > 0 &&
+      analysisChunks.length > 0 &&
+      analysisTranslations.length === analysisChunks.length &&
       Number.isInteger(guide.subjectChunkIndex) &&
       Number.isInteger(guide.verbChunkIndex);
   }
@@ -2185,27 +2300,30 @@
   }
 
   function interactiveGuideHtml(guide) {
-    const chunks = String(guide.chunkText || "").split("|||").map(part => part.trim()).filter(Boolean);
-    const translations = String(guide.chunkTranslations || "").split("|||").map(part => part.trim());
+    const tapChunks = String(guide.chunkText || "").split("|||").map(part => part.trim()).filter(Boolean);
+    const analysisChunks = String(guide.analysisChunks || guide.chunkText || "").split("|||").map(part => part.trim()).filter(Boolean);
+    const analysisTranslations = String(guide.analysisChunkTranslations || guide.chunkTranslations || "").split("|||").map(part => part.trim());
     const guideKey = `${guide.materialId}::${guide.sentenceNo}`;
+    const subjectTarget = guide.subjectTarget || guide.subject || "";
+    const verbTarget = guide.verbTarget || guide.verb || "";
     return `
-      <details class="sentence-guide interactive-guide" data-guide-key="${escapeHtml(guideKey)}">
+      <details class="sentence-guide interactive-guide" data-guide-key="${escapeHtml(guideKey)}" open>
         <summary>文をほどく</summary>
         <div class="guide-body sentence-breakdown" data-stage="subject" data-subject-index="${guide.subjectChunkIndex}" data-verb-index="${guide.verbChunkIndex}" data-subject-misses="0" data-verb-misses="0">
           <div class="breakdown-step" data-breakdown-step="subject">
             <div class="breakdown-step-head"><span>STEP 1</span><strong>文の中心の「主語」はどのかたまり？</strong></div>
             <p class="breakdown-help">主節の「だれが・なにが」にあたるかたまりを1つタップ。</p>
             <div class="chunk-choice-grid">
-              ${chunks.map((chunk, index) => `<button type="button" class="chunk-choice" data-chunk-answer="subject" data-chunk-index="${index}">${escapeHtml(chunk)}</button>`).join("")}
+              ${tapChunks.map((chunk, index) => `<button type="button" class="chunk-choice" data-chunk-answer="subject" data-chunk-index="${index}">${escapeHtml(chunk)}</button>`).join("")}
             </div>
             <p class="breakdown-feedback" data-feedback="subject" aria-live="polite"></p>
           </div>
 
           <div class="breakdown-step hidden" data-breakdown-step="verb">
             <div class="breakdown-step-head"><span>STEP 2</span><strong>「どうする・どうなる」の中心があるかたまりは？</strong></div>
-            <p class="breakdown-help">動詞そのものではなく、動詞の中心を含むかたまりを1つタップ。</p>
+            <p class="breakdown-help">中心になる動詞を含むかたまりを1つタップ。</p>
             <div class="chunk-choice-grid">
-              ${chunks.map((chunk, index) => `<button type="button" class="chunk-choice" data-chunk-answer="verb" data-chunk-index="${index}">${escapeHtml(chunk)}</button>`).join("")}
+              ${tapChunks.map((chunk, index) => `<button type="button" class="chunk-choice" data-chunk-answer="verb" data-chunk-index="${index}">${escapeHtml(chunk)}</button>`).join("")}
             </div>
             <p class="breakdown-feedback" data-feedback="verb" aria-live="polite"></p>
           </div>
@@ -2213,24 +2331,24 @@
           <div class="breakdown-step hidden" data-breakdown-step="structure">
             <div class="breakdown-step-head"><span>STEP 3</span><strong>骨組みを確認</strong></div>
             <div class="guide-facts breakdown-facts">
-              ${guide.subject ? `<span><small>主語</small>${escapeHtml(guide.subject)}</span>` : ""}
-              ${guide.verb ? `<span><small>動詞の中心</small>${escapeHtml(guide.verb)}</span>` : ""}
+              ${subjectTarget ? `<span><small>主語</small>${escapeHtml(subjectTarget)}</span>` : ""}
+              ${verbTarget ? `<span><small>動詞の中心</small>${escapeHtml(verbTarget)}</span>` : ""}
               ${guide.pattern ? `<span><small>文の型</small>${escapeHtml(guide.pattern)}</span>` : ""}
             </div>
             ${guide.structureNote ? `<p><b>文の見方：</b>${escapeHtml(guide.structureNote)}</p>` : ""}
             ${guide.translationPoint ? `<p><b>訳すポイント：</b>${escapeHtml(guide.translationPoint)}</p>` : ""}
-            <button type="button" class="secondary-button breakdown-next" data-breakdown-next="translation">かたまりごとに訳してみる</button>
+            <button type="button" class="secondary-button breakdown-next" data-breakdown-next="translation">授業プリントの区切りで訳してみる</button>
           </div>
 
           <div class="breakdown-step hidden" data-breakdown-step="translation">
-            <div class="breakdown-step-head"><span>STEP 4</span><strong>かたまりごとに意味をつなぐ</strong></div>
-            <p class="breakdown-help">まず英語だけ見て、自分ならどう訳すか考えてから「意味を見る」を押そう。</p>
+            <div class="breakdown-step-head"><span>STEP 4</span><strong>授業プリントの区切りで意味をつなぐ</strong></div>
+            <p class="breakdown-help">英語の区切りごとに自分で訳してから、意味を確認しよう。</p>
             <div class="translation-chunk-list">
-              ${chunks.map((chunk, index) => `
+              ${analysisChunks.map((chunk, index) => `
                 <div class="translation-chunk" data-translation-chunk="${index}">
                   <div class="translation-chunk-english">${escapeHtml(chunk)}</div>
                   <button type="button" class="translation-reveal" data-reveal-chunk="${index}">意味を見る</button>
-                  <div class="translation-chunk-ja hidden">→ ${escapeHtml(translations[index] || "")}</div>
+                  <div class="translation-chunk-ja hidden">→ ${escapeHtml(analysisTranslations[index] || "")}</div>
                 </div>`).join("")}
             </div>
             <button type="button" class="primary-button wide hidden" data-show-final-translation>最後に自然な一文へつなぐ</button>
@@ -2291,54 +2409,125 @@
     }, 350);
   }
 
-  async function renderMaterialReader(bundle, returnView = "materialView") {
+  function currentReaderRow() {
+    return state.currentReaderBundle?.materials?.[state.currentReaderIndex] || null;
+  }
+
+  function renderReaderStartChoice(bundle, returnView) {
     const reader = el("materialReader");
-    const listHead = document.querySelector(".text-study-list-head");
-    const savedList = el("savedMaterialsList");
     if (!reader) throw new Error("本文表示エリアが見つかりません。");
-
-    const { materialId, materials, guides } = bundle;
-    if (!materials.length) throw new Error(`教材データが見つかりません: ${materialId}`);
-
-    state.currentReaderMaterialId = materialId;
+    state.currentReaderMaterialId = bundle.materialId;
     state.currentReaderReturnView = returnView;
-    const guideMap = new Map(guides.map(guide => [Number(guide.sentenceNo), guide]));
-    if (el("readerMaterialTitle")) el("readerMaterialTitle").textContent = materialDisplayTitle(materialId);
-    if (el("readerMaterialSummary")) el("readerMaterialSummary").textContent = `本文 ${materials.length}文 / 文ガイド ${guides.filter(g => g.validationStatus !== "hold").length}文`;
+    state.currentReaderBundle = bundle;
+    state.currentReaderMode = "choice";
+    const progress = getTextStudyProgress(bundle.materialId);
+    const hasProgress = progress && progress.sentenceIndex < bundle.materials.length;
+    if (el("readerMaterialTitle")) el("readerMaterialTitle").textContent = materialDisplayTitle(bundle.materialId);
+    if (el("readerMaterialSummary")) el("readerMaterialSummary").textContent = `本文 ${bundle.materials.length}文 / 文ガイド ${bundle.guides.filter(g => g.validationStatus !== "hold").length}文`;
     const sentenceList = el("materialSentenceList");
-    if (!sentenceList) throw new Error("本文一覧エリアが見つかりません。");
-    sentenceList.innerHTML = materials.map(row => {
-      const guide = guideMap.get(Number(row.sentenceNo));
-      const label = row.paragraphNo ? `第${row.paragraphNo}段落・第${row.sentenceNo}文` : `第${row.sentenceNo}文`;
-      return `
-        <article class="sentence-card">
-          <div class="sentence-meta">${escapeHtml(label)}</div>
-          <p class="sentence-english">${escapeHtml(row.english)}</p>
-          ${guideDetailsHtml(guide)}
-          ${row.translation && !hasInteractiveChunkGuide(guide) ? `<details class="translation-toggle"><summary>和訳を考える / 訳を見る</summary><p>${escapeHtml(row.translation)}</p></details>` : ""}
-        </article>`;
-    }).join("");
-    listHead?.classList.add("hidden");
-    savedList?.classList.add("hidden");
+    sentenceList.innerHTML = `
+      <article class="text-start-card">
+        <span class="mode-icon">📖</span>
+        <h3>${escapeHtml(materialDisplayTitle(bundle.materialId))}</h3>
+        <p>1文ずつ、文の形と訳し方を確認します。</p>
+        ${hasProgress ? `<button type="button" class="primary-button wide" data-text-start="resume">第${progress.sentenceIndex + 1}文から続ける</button>` : ""}
+        <button type="button" class="${hasProgress ? "secondary-button" : "primary-button"} wide" data-text-start="restart">最初から始める</button>
+      </article>`;
     reader.classList.remove("hidden");
     showView("textStudyView");
+    window.scrollTo({ top: 0 });
+  }
+
+  function startTextStudyAt(index) {
+    const bundle = state.currentReaderBundle;
+    if (!bundle?.materials?.length) return;
+    state.currentReaderMode = "study";
+    state.currentReaderIndex = Math.max(0, Math.min(Number(index) || 0, bundle.materials.length - 1));
+    renderCurrentSentence();
+  }
+
+  function renderCurrentSentence() {
+    const bundle = state.currentReaderBundle;
+    const row = currentReaderRow();
+    const list = el("materialSentenceList");
+    if (!bundle || !row || !list) return;
+    const guide = bundle.guides.find(g => Number(g.sentenceNo) === Number(row.sentenceNo));
+    const label = row.paragraphNo ? `第${row.paragraphNo}段落・第${row.sentenceNo}文` : `第${row.sentenceNo}文`;
+    const status = getSelfReviewStatus(bundle.materialId, row.sentenceNo);
+    const isLast = state.currentReaderIndex === bundle.materials.length - 1;
+    if (el("readerMaterialSummary")) el("readerMaterialSummary").textContent = `${state.currentReaderIndex + 1} / ${bundle.materials.length}文`;
+    list.innerHTML = `
+      <article class="sentence-card single-sentence-card">
+        <div class="sentence-progress-row">
+          <span class="sentence-meta">${escapeHtml(label)}</span>
+          <button type="button" class="ghost-button" data-text-pause>一時中断</button>
+        </div>
+        <p class="sentence-english">${escapeHtml(row.english)}</p>
+        ${guideDetailsHtml(guide)}
+        ${row.translation && !hasInteractiveChunkGuide(guide) ? `<details class="translation-toggle"><summary>和訳を考える / 訳を見る</summary><p>${escapeHtml(row.translation)}</p></details>` : ""}
+        <div class="sentence-self-check">
+          <p><strong>この文はどうだった？</strong></p>
+          <div class="self-check-buttons">
+            <button type="button" class="self-check-button ${status === "understood" ? "selected" : ""}" data-self-check="understood">理解した</button>
+            <button type="button" class="self-check-button needs-review ${status === "needs_review" ? "selected" : ""}" data-self-check="needs_review">要復習</button>
+          </div>
+          <small>「要復習」は下の「復習」タブに残ります。HOMEの「今日やる復習」とは別管理です。</small>
+        </div>
+        <p class="self-check-required ${status ? "hidden" : ""}" data-self-check-required>「理解した」か「要復習」を選ぶと次へ進めます。</p>
+        <button type="button" class="primary-button wide" data-text-next ${status ? "" : "disabled"}>${isLast ? "この教材を終える" : "次へ"}</button>
+      </article>`;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  async function openSavedMaterial(materialId, returnView = "materialView") {
+  async function openSavedMaterial(materialId, returnView = "materialView", options = {}) {
     const bundle = await getMaterialBundle(materialId);
-    if (!bundle.materials.length) {
-      throw new Error(`この端末に ${materialDisplayTitle(materialId)} の本文データがありません。設定からCSVを読み込んでください。`);
+    if (!bundle.materials.length) throw new Error(`この端末に ${materialDisplayTitle(materialId)} の本文データがありません。設定からCSVを読み込んでください。`);
+    state.currentReaderBundle = bundle;
+    state.currentReaderMaterialId = bundle.materialId;
+    state.currentReaderReturnView = returnView;
+    if (Number.isInteger(options.sentenceNo)) {
+      const index = bundle.materials.findIndex(row => Number(row.sentenceNo) === Number(options.sentenceNo));
+      startTextStudyAt(index >= 0 ? index : 0);
+      showView("textStudyView");
+      return;
     }
-    await renderMaterialReader(bundle, returnView);
+    renderReaderStartChoice(bundle, returnView);
+  }
+
+  function pauseTextStudy() {
+    const bundle = state.currentReaderBundle;
+    if (!bundle) return;
+    saveTextStudyProgress(bundle.materialId, state.currentReaderIndex);
+    const title = materialDisplayTitle(bundle.materialId);
+    alert(`${title} は第${state.currentReaderIndex + 1}文から再開できます。`);
+    closeMaterialReader();
+  }
+
+  function nextTextSentence() {
+    const bundle = state.currentReaderBundle;
+    if (!bundle) return;
+    const row = currentReaderRow();
+    if (!row || !getSelfReviewStatus(bundle.materialId, row.sentenceNo)) {
+      el("materialSentenceList")?.querySelector("[data-self-check-required]")?.classList.remove("hidden");
+      return;
+    }
+    if (row) saveTextStudyProgress(bundle.materialId, state.currentReaderIndex + 1);
+    if (state.currentReaderIndex >= bundle.materials.length - 1) {
+      clearTextStudyProgress(bundle.materialId);
+      alert(`${materialDisplayTitle(bundle.materialId)} の本文学習はここまでです。`);
+      closeMaterialReader();
+      return;
+    }
+    state.currentReaderIndex += 1;
+    renderCurrentSentence();
   }
 
   function closeMaterialReader() {
     const returnView = state.currentReaderReturnView || "materialView";
     state.currentReaderMaterialId = null;
     state.currentReaderReturnView = null;
-    document.querySelector(".text-study-list-head")?.classList.remove("hidden");
-    el("savedMaterialsList")?.classList.remove("hidden");
+    state.currentReaderBundle = null;
+    state.currentReaderMode = null;
     el("materialReader")?.classList.add("hidden");
     showView(returnView);
   }
@@ -2490,6 +2679,63 @@
           setCsvStatus(error?.message || "教材を削除できませんでした。", "error");
         })
         .finally(() => { deleteSavedBtn.disabled = false; });
+      return;
+    }
+
+    const replaceSavedBtn = e.target.closest("[data-replace-saved-material]");
+    if (replaceSavedBtn) {
+      const materialId = replaceSavedBtn.dataset.replaceSavedMaterial;
+      state.replaceMaterialId = materialId;
+      const details = el("csvImportDetails");
+      if (details) details.open = true;
+      if (el("csvImportModeTitle")) el("csvImportModeTitle").textContent = `${materialDisplayTitle(materialId)} を差し替える`;
+      setCsvStatus(`同じ materialId（${materialId}）の新しいCSVを選んでください。`);
+      el("csvImportDetails")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    const textStartBtn = e.target.closest("[data-text-start]");
+    if (textStartBtn) {
+      const mode = textStartBtn.dataset.textStart;
+      if (mode === "resume") {
+        const progress = getTextStudyProgress(state.currentReaderMaterialId);
+        startTextStudyAt(progress?.sentenceIndex || 0);
+      } else {
+        clearTextStudyProgress(state.currentReaderMaterialId);
+        startTextStudyAt(0);
+      }
+      return;
+    }
+
+    const textPauseBtn = e.target.closest("[data-text-pause]");
+    if (textPauseBtn) {
+      pauseTextStudy();
+      return;
+    }
+
+    const selfCheckBtn = e.target.closest("[data-self-check]");
+    if (selfCheckBtn) {
+      const row = currentReaderRow();
+      const bundle = state.currentReaderBundle;
+      if (!row || !bundle) return;
+      setSelfReviewStatus(bundle.materialId, row.sentenceNo, selfCheckBtn.dataset.selfCheck);
+      const panel = selfCheckBtn.closest(".sentence-self-check");
+      panel?.querySelectorAll("[data-self-check]").forEach(btn => btn.classList.toggle("selected", btn === selfCheckBtn));
+      el("materialSentenceList")?.querySelector("[data-text-next]")?.removeAttribute("disabled");
+      el("materialSentenceList")?.querySelector("[data-self-check-required]")?.classList.add("hidden");
+      return;
+    }
+
+    const textNextBtn = e.target.closest("[data-text-next]");
+    if (textNextBtn) {
+      nextTextSentence();
+      return;
+    }
+
+    const selfReviewBtn = e.target.closest("[data-open-self-review]");
+    if (selfReviewBtn) {
+      openSavedMaterial(selfReviewBtn.dataset.openSelfReview, "reviewView", { sentenceNo: Number(selfReviewBtn.dataset.sentenceNo) })
+        .catch(error => { console.error(error); alert(error?.message || "この文を開けませんでした。"); });
       return;
     }
 
