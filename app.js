@@ -3642,11 +3642,12 @@
   el("importMaterialCsvBtn")?.addEventListener("click", importSelectedCsvFiles);
   el("closeMaterialReaderBtn")?.addEventListener("click", closeMaterialReader);
   el("resetBtn").addEventListener("click", () => {
-    if (!confirm("試作版v0.4 Phase2-1の学習ログを初期化しますか？")) return;
+    if (!confirm("学習ログと今日の音読完了状態を初期化しますか？")) return;
     state.records = {};
     saveRecords();
     saveActiveSession(null);
     localStorage.removeItem(TODAY_SESSION_KEY);
+    localStorage.removeItem(DAILY_READING_COMPLETION_KEY);
     renderHomeStats();
     renderAnalysis();
     renderReview();
