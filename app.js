@@ -4,13 +4,20 @@
   const TODAY_SESSION_KEY = "eikomiCoachPrototypeTodaySession.v03";
   const RECOMMENDED_DRILL_KEY = "eikomiCoachPrototypeRecommendedDrill.v04";
   const TEXT_STUDY_PROGRESS_KEY = "eikomiCoachTextStudyProgress.v01";
+  const DAILY_READING_COMPLETION_KEY = "eikomiCoachDailyReadingCompletion.v01";
   const SELF_REVIEW_KEY = "eikomiCoachSelfReview.v01";
 
   const questions = (typeof QUESTIONS !== "undefined" ? QUESTIONS : [])
     .filter(q => q && q.id && q.choices && q.choices.length === 4)
     .filter(q => !["hold", "retired"].includes(q.status));
 
-  const focusTypes = new Set(["grammar_focus", "translation_point"]);
+  const focusTypes = new Set([
+    "grammar_focus", "translation_point",
+    // Phase2-1.38: 定期テスト形式の少数試作
+    "test_full_translation", "test_japanese_to_english", "test_phrase_build",
+    "self_translation", "self_japanese_to_english"
+  ]);
+  const writingTypes = new Set(["mini_test"]);
   const readingTypes = new Set([
     "reading_reference",
     "reading_reason",
@@ -26,7 +33,11 @@
     "fact_opinion",
     "story_sequence",
     "character_change",
-    "story_outline"
+    "story_outline",
+    // Phase2-1.38: 定期テスト形式の少数試作
+    "test_word_form",
+    "test_phrase_completion",
+    "test_sentence_insertion"
   ]);
 
   const mistakeTagLabels = {
@@ -55,25 +66,25 @@
   const materialConfigs = {
     focus: {
       title: "FOCUS構文",
-      lead: "構文だけランダムに確認するか、FOCUS番号ごとに選べます。",
-      randomMode: "focus",
-      randomLabel: "FOCUS構文 ランダム10問",
+      lead: "FOCUS番号を選び、本文・構文・問題を教材ごとに確認します。",
       printLabel: "FOCUS別に選ぶ",
       icon: "🔎"
     },
     reading: {
       title: "Cutting Edge読解",
-      lead: "読解問題をランダムに確認するか、Y番号ごとに選べます。",
-      randomMode: "reading",
-      randomLabel: "Cutting Edge読解 ランダム10問",
+      lead: "Y番号を選び、音読・文の分析・問題演習を教材ごとに進めます。",
       printLabel: "Y番号別に選ぶ",
       icon: "📘"
     },
+    writing: {
+      title: "Insight Writing",
+      lead: "プリント番号を選び、英作文・語法問題を確認します。",
+      printLabel: "プリント別に選ぶ",
+      icon: "✍️"
+    },
     vocab: {
       title: "重要単語",
-      lead: "先生指定語句をランダムに確認するか、プリント別に選べます。",
-      randomMode: "vocab",
-      randomLabel: "重要単語 ランダム10問",
+      lead: "テスト回・日付・セットから範囲を選んで確認します。",
       printLabel: "プリント別に選ぶ",
       icon: "🧩"
     }
@@ -83,6 +94,7 @@
     today: "今日の10問",
     focus: "FOCUS構文",
     reading: "Cutting Edge読解",
+    writing: "Insight Writing",
     vocab: "重要単語",
     mistakes: "今日やる復習",
     reviewToday: "今日やる復習",
@@ -114,6 +126,7 @@
     currentReaderBundle: null,
     currentReaderIndex: 0,
     currentReaderMode: null,
+    currentReaderStudyType: "breakdown",
     replaceMaterialId: null
   };
 
@@ -159,6 +172,23 @@
     const all = loadJsonStorage(TEXT_STUDY_PROGRESS_KEY, {});
     delete all[id];
     saveJsonStorage(TEXT_STUDY_PROGRESS_KEY, all);
+  }
+
+  function getTodayReadingCompletion() {
+    const item = loadJsonStorage(DAILY_READING_COMPLETION_KEY, {});
+    return item?.appDate === getAppTodayDate() ? item : null;
+  }
+
+  function markTodayReadingComplete(materialId) {
+    saveJsonStorage(DAILY_READING_COMPLETION_KEY, {
+      appDate: getAppTodayDate(),
+      materialId: String(materialId || "").trim(),
+      completedAt: new Date().toISOString()
+    });
+  }
+
+  function stopSpeechSynthesis() {
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
   }
 
   function selfReviewKey(materialId, sentenceNo) {
@@ -252,6 +282,8 @@
   function showView(viewId) {
     const leavingRulesListen = viewId !== "rulesListenView" && document.getElementById("rulesListenView")?.classList.contains("active");
     if (leavingRulesListen) window.RulesApp?.stopListen?.(false);
+    const leavingTextStudy = viewId !== "textStudyView" && document.getElementById("textStudyView")?.classList.contains("active");
+    if (leavingTextStudy) stopSpeechSynthesis();
     state.view = viewId;
     views.forEach(v => v.classList.toggle("active", v.id === viewId));
     navItems.forEach(n => n.classList.toggle("active", n.dataset.nav === viewId));
@@ -391,7 +423,7 @@
   function getPrintNames() {
     const names = new Set();
     questions.forEach(q => {
-      const matches = getHaystack(q).match(/Cutting Edge Y\d+|FOCUS \d+/g) || [];
+      const matches = getHaystack(q).match(/Cutting Edge Y\d+|FOCUS \d+|Insight Writing \d+/g) || [];
       matches.forEach(name => names.add(name));
     });
     return [...names].sort((a, b) => a.localeCompare(b, "ja"));
@@ -402,6 +434,8 @@
     if (focus) return Number(focus[1]);
     const ce = String(label).match(/Y(\d+)/);
     if (ce) return Number(ce[1]);
+    const writing = String(label).match(/Insight Writing (\d+)/);
+    if (writing) return Number(writing[1]);
     const date = String(label).match(/(\d{4})-(\d{2})-(\d{2})/);
     if (date) return Number(`${date[1]}${date[2]}${date[3]}`);
     return Number.MAX_SAFE_INTEGER;
@@ -433,6 +467,7 @@
   function materialMatchesGroup(q, material, key) {
     if (material === "focus") return focusTypes.has(q.type) && getHaystack(q).includes(key);
     if (material === "reading") return readingTypes.has(q.type) && getHaystack(q).includes(key);
+    if (material === "writing") return writingTypes.has(q.type) && getHaystack(q).includes(key);
     if (material === "vocab") return q.type === "teacher_vocab" && getVocabGroupKey(q, state.vocabAxis) === key;
     return false;
   }
@@ -444,6 +479,7 @@
       const haystack = getHaystack(q);
       if (material === "focus" && focusTypes.has(q.type)) keys = haystack.match(/FOCUS \d+/g) || [];
       if (material === "reading" && readingTypes.has(q.type)) keys = haystack.match(/Cutting Edge Y\d+/g) || [];
+      if (material === "writing" && writingTypes.has(q.type)) keys = haystack.match(/Insight Writing \d+/g) || [];
       if (material === "vocab" && q.type === "teacher_vocab") keys = [getVocabGroupKey(q, state.vocabAxis)];
 
       keys.forEach(key => {
@@ -481,8 +517,34 @@
     return questions.filter(q => getHaystack(q).includes(printName));
   }
 
-  function questionsForMaterialPrint(material, printName) {
-    return questions.filter(q => materialMatchesGroup(q, material, printName));
+  function getMaterialProblemCategory(material, question) {
+    if (material === "reading") {
+      if (["vocab_context", "discourse_marker", "mini_context"].includes(question.type)) return "language";
+      if (["reading_evidence", "choice_elimination", "number_compare", "fact_opinion", "story_sequence", "character_change", "story_outline"].includes(question.type)) return "readingSkill";
+      if (["test_word_form", "test_phrase_completion", "test_sentence_insertion"].includes(question.type)) return "testStyle";
+      return "content";
+    }
+    if (material === "focus") {
+      if (["test_japanese_to_english", "test_phrase_build", "self_japanese_to_english"].includes(question.type)) return "production";
+      if (["translation_point", "test_full_translation", "self_translation"].includes(question.type)) return "translation";
+      return "structure";
+    }
+    return "all";
+  }
+
+  function materialProblemCategoryLabel(material, category) {
+    const labels = material === "reading"
+      ? { content: "本文を確認", language: "語句・文法を確認", readingSkill: "読み方を確認", testStyle: "テスト形式で確認" }
+      : material === "focus"
+        ? { structure: "構文を確認", translation: "和訳を確認", production: "構文を使う" }
+        : { all: "まとめて確認" };
+    return labels[category] || "問題を解く";
+  }
+
+  function questionsForMaterialPrint(material, printName, category = "all") {
+    const list = questions.filter(q => materialMatchesGroup(q, material, printName));
+    if (!category || category === "all") return list;
+    return list.filter(q => getMaterialProblemCategory(material, q) === category);
   }
 
   function extractNumber(q, pattern) {
@@ -541,6 +603,7 @@
     if (mode === "today") return buildTodaySession();
     if (mode === "focus") return newAndDueFirst(byType(focusTypes)).slice(0, 10);
     if (mode === "reading") return newAndDueFirst(byType(readingTypes)).slice(0, 10);
+    if (mode === "writing") return newAndDueFirst(byType(writingTypes)).slice(0, 10);
     if (mode === "vocab") return newAndDueFirst(questions.filter(q => q.type === "teacher_vocab")).slice(0, 10);
     if (mode === "mistakes" || mode === "reviewToday") return getTodayReviewQuestions();
     if (mode === "reviewAll") return sortDueReview(getDueQuestions());
@@ -550,7 +613,26 @@
       return sortDueReview(getDueQuestions().filter(q => getRecord(q.id).nextReviewAt < border));
     }
     if (mode === "print") return shuffle(questionsForPrint(options.printName));
-    if (mode === "materialPrint") return shuffle(questionsForMaterialPrint(options.material, options.printName)).slice(0, 20);
+    if (mode === "materialPrint") {
+      const list = questionsForMaterialPrint(options.material, options.printName, options.category);
+      if (options.ordered) {
+        const categoryOrder = options.material === "reading"
+          ? ["language", "content", "readingSkill", "testStyle"]
+          : options.material === "focus"
+            ? ["structure", "translation", "production"]
+            : ["all"];
+        return list
+          .map((q, index) => ({ q, index, category: getMaterialProblemCategory(options.material, q) }))
+          .sort((a, b) => {
+            const ai = categoryOrder.indexOf(a.category);
+            const bi = categoryOrder.indexOf(b.category);
+            return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi) || a.index - b.index;
+          })
+          .map(item => item.q)
+          .slice(0, 20);
+      }
+      return shuffle(list).slice(0, 20);
+    }
     if (mode === "sessionMistakes") return (options.ids || []).map(id => questions.find(q => q.id === id)).filter(Boolean);
     if (mode === "testPrep") return prioritizedForTestPrep(questionsForTestPrep(options)).slice(0, 20);
     if (mode === "recommendedDrill") return buildRecommendedDrillSession(options);
@@ -568,6 +650,11 @@
   }
 
   function startQuiz(mode, options = {}) {
+    // クイズ開始元へ戻れるよう、直前の画面を記録する。
+    // 結果画面やクイズ画面からの再実行時は、既存の戻り先を維持する。
+    if (!["quizView", "resultView"].includes(state.view)) {
+      state.quizReturnView = state.view || "homeView";
+    }
     state.currentMode = mode;
     state.currentOptions = options;
     state.session = buildSession(mode, options);
@@ -594,7 +681,9 @@
     const mode = state.currentMode === "mistakes" ? "reviewToday" : state.currentMode;
     const session = {
       mode,
-      title: modeTitles[mode] || modeTitles[state.currentMode] || "クイズ",
+      title: mode === "materialPrint" && options.categoryLabel
+        ? options.categoryLabel
+        : modeTitles[mode] || modeTitles[state.currentMode] || "クイズ",
       questionIds: state.session.map(q => q.id),
       answeredIds: [],
       remainingIds: state.session.map(q => q.id),
@@ -683,6 +772,11 @@
     const box = el("choicesBox");
     box.innerHTML = "";
 
+    if (original.questionMode === "self_assessment") {
+      renderSelfAssessmentQuestion(original, box);
+      return;
+    }
+
     q.displayChoices.forEach((choice, displayIndex) => {
       const btn = document.createElement("button");
       btn.type = "button";
@@ -691,6 +785,77 @@
       btn.addEventListener("click", () => answerQuestion(displayIndex));
       box.appendChild(btn);
     });
+  }
+
+  function renderSelfAssessmentQuestion(q, box) {
+    const note = document.createElement("p");
+    note.className = "self-answer-instruction";
+    note.textContent = q.selfInstruction || "紙か頭の中で答えてから、模範解答を確認しよう。";
+    box.appendChild(note);
+
+    const reveal = document.createElement("button");
+    reveal.type = "button";
+    reveal.className = "primary-button wide self-answer-reveal";
+    reveal.textContent = "答えを見る";
+    box.appendChild(reveal);
+
+    const answerPanel = document.createElement("section");
+    answerPanel.className = "self-answer-panel hidden";
+    answerPanel.innerHTML = `
+      <p class="self-answer-label">模範解答</p>
+      <div class="self-answer-model">${escapeHtml(q.modelAnswer || "")}</div>
+      ${q.keyPoints ? `<div class="self-answer-points"><strong>確認ポイント</strong><p>${escapeHtml(q.keyPoints)}</p></div>` : ""}
+      <p class="self-answer-question">自分の答えはどうだった？</p>
+      <div class="self-answer-actions">
+        <button type="button" class="self-check-button" data-self-assessment="done">できた</button>
+        <button type="button" class="self-check-button needs-review" data-self-assessment="review">要復習</button>
+      </div>`;
+    box.appendChild(answerPanel);
+
+    reveal.addEventListener("click", () => {
+      reveal.classList.add("hidden");
+      answerPanel.classList.remove("hidden");
+    });
+    answerPanel.querySelector('[data-self-assessment="done"]')?.addEventListener("click", () => answerSelfAssessment(true));
+    answerPanel.querySelector('[data-self-assessment="review"]')?.addEventListener("click", () => answerSelfAssessment(false));
+  }
+
+  function answerSelfAssessment(correct) {
+    if (state.selected !== null) return;
+    state.selected = correct ? 0 : 1;
+
+    const originalQ = state.session[state.index];
+    const r = getRecord(originalQ.id);
+    const attemptMode = getAttemptMode(r);
+    const countedAsMistake = !correct && attemptMode !== "new";
+
+    document.querySelectorAll("[data-self-assessment]").forEach(btn => {
+      btn.disabled = true;
+      const isChosen = (correct && btn.dataset.selfAssessment === "done") || (!correct && btn.dataset.selfAssessment === "review");
+      if (isChosen) btn.classList.add("selected");
+    });
+
+    applyLearningRule(r, correct, attemptMode);
+    const attempt = {
+      mode: attemptMode,
+      selected: correct ? 0 : 1,
+      selectedDisplayIndex: correct ? 0 : 1,
+      correct,
+      countedAsMistake,
+      selfAssessed: true,
+      answeredAt: new Date().toISOString(),
+      appDate: getAppTodayDate()
+    };
+    r.attempts.push(attempt);
+    r.lastResult = correct ? "correct" : "wrong";
+    r.lastAnsweredAt = attempt.answeredAt;
+    r.lastMode = state.currentMode;
+
+    state.sessionResults.push({ question: originalQ, correct, countedAsMistake, attemptMode, selected: attempt.selected });
+    saveRecords();
+    updateActiveSessionAfterAnswer(originalQ.id);
+    if (state.currentMode === "recommendedDrill") updateRecommendedDrillProgress(originalQ.id);
+    renderFeedback(originalQ, correct, countedAsMistake, attemptMode, r);
   }
 
   function getAttemptMode(record) {
@@ -966,7 +1131,65 @@
     el("statTodayChallenge").textContent = progress.todayChallenge;
     el("statTodayClear").textContent = progress.todayClear;
     el("statTotalLearned").textContent = progress.totalLearned;
+    renderDailyReadingCard();
     renderContinueSlots();
+  }
+
+  function renderDailyReadingCard() {
+    const slot = el("dailyReadingSlot");
+    if (!slot) return;
+
+    const completed = getTodayReadingCompletion();
+    if (completed) {
+      slot.innerHTML = `
+        <section class="daily-reading-card daily-reading-complete" aria-label="今日の音読・完了">
+          <div class="daily-reading-icon" aria-hidden="true">✅</div>
+          <div class="daily-reading-copy">
+            <p class="eyebrow">Daily Reading</p>
+            <strong>今日の音読は完了！</strong>
+            <span>${escapeHtml(materialDisplayTitle(completed.materialId))}</span>
+            <small>今日はここまで。明日また少しずつ続けよう。</small>
+          </div>
+          <button type="button" class="secondary-button daily-reading-start daily-reading-finished" data-daily-reading-finished aria-disabled="true">今日は完了</button>
+        </section>`;
+      return;
+    }
+
+    const progressMap = loadJsonStorage(TEXT_STUDY_PROGRESS_KEY, {});
+    const recent = Object.entries(progressMap)
+      .filter(([materialId, item]) => materialId && Number.isInteger(item?.sentenceIndex) && item.sentenceIndex >= 0)
+      .sort((a, b) => String(b[1]?.updatedAt || "").localeCompare(String(a[1]?.updatedAt || "")))[0];
+
+    if (recent) {
+      const [materialId, item] = recent;
+      slot.innerHTML = `
+        <section class="daily-reading-card" aria-label="今日の音読">
+          <div class="daily-reading-icon" aria-hidden="true">🔊</div>
+          <div class="daily-reading-copy">
+            <p class="eyebrow">Daily Reading</p>
+            <strong>今日の音読</strong>
+            <span>${escapeHtml(materialDisplayTitle(materialId))}</span>
+            <small>${Number(item.sentenceIndex) + 1}文目から続けられます</small>
+          </div>
+          <button type="button" class="primary-button daily-reading-start" data-open-reading-material="${escapeHtml(materialId)}">続きから読む</button>
+        </section>`;
+      return;
+    }
+
+    slot.innerHTML = `
+      <section class="daily-reading-card daily-reading-empty" aria-label="今日の音読">
+        <div class="daily-reading-icon" aria-hidden="true">🔊</div>
+        <div class="daily-reading-copy">
+          <p class="eyebrow">Daily Reading</p>
+          <strong>今日の音読</strong>
+          <span>Cutting Edge または FOCUSから、読む教材を選ぼう</span>
+          <small>全文を少しずつ。読みにくい文は中で「文をほどく」で確認できます。</small>
+        </div>
+        <div class="daily-reading-actions">
+          <button type="button" class="secondary-button" data-material="reading">Cutting Edge</button>
+          <button type="button" class="secondary-button" data-material="focus">FOCUS</button>
+        </div>
+      </section>`;
   }
 
   function renderContinueSlots() {
@@ -1025,19 +1248,28 @@
     const box = el("materialActionBox");
     box.innerHTML = "";
 
-    const randomBtn = document.createElement("button");
-    randomBtn.type = "button";
-    randomBtn.className = "review-item review-action material-random-card";
-    randomBtn.dataset.startMode = config.randomMode;
-    randomBtn.innerHTML = `
-      <div class="review-item-top">
-        <span>ランダム10問</span>
-        <span class="review-badge">10問</span>
-      </div>
-      <strong>${config.icon} ${escapeHtml(config.randomLabel)}</strong>
-      <p>範囲を決めずに、この教材だけをサクッと確認。</p>
-    `;
-    box.appendChild(randomBtn);
+    if (material === "reading" || material === "focus") {
+      const guide = document.createElement("section");
+      guide.className = "material-learning-guide";
+      guide.innerHTML = material === "reading"
+        ? `
+          <strong>この教材でできること</strong>
+          <div class="material-learning-steps">
+            <span><b>1</b> 音読する</span>
+            <span><b>2</b> 文をほどく</span>
+            <span><b>3</b> 問題を解いて確認</span>
+          </div>
+          <small>音読は全文、文をほどくのは重要文・苦手文だけでOK。</small>`
+        : `
+          <strong>この教材でできること</strong>
+          <div class="material-learning-steps">
+            <span><b>1</b> 例文・中文を読む</span>
+            <span><b>2</b> 構文をほどいて理解</span>
+            <span><b>3</b> 訳・問題で確認</span>
+          </div>
+          <small>FOCUSは「構文が分かる・自分で訳せる」を目標にします。</small>`;
+      box.appendChild(guide);
+    }
 
     if (material === "vocab") {
       const axisRow = document.createElement("div");
@@ -1074,38 +1306,200 @@
       return;
     }
 
-    const list = document.createElement("div");
-    list.className = "material-range-list";
+    const roundMeta = {
+      "1st": { label: "第一回定期テスト", order: 1 },
+      "2nd": { label: "第二回定期テスト", order: 2 },
+      common: { label: "共通・回次未設定", order: 9 }
+    };
+    const groupedByRound = new Map();
     groups.forEach(group => {
-      const row = document.createElement("div");
-      row.className = "material-row-wrap";
-
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "material-row review-action";
-      btn.dataset.materialPrint = material;
-      btn.dataset.printName = group.key;
-      btn.innerHTML = `
-        <strong>${escapeHtml(group.label)}</strong>
-        <span>未習得${group.counts.new}・復習${group.reviewTotal}・全${group.total}問</span>
-      `;
-      row.appendChild(btn);
-
-      if (material === "reading") {
-        const match = String(group.key).match(/Cutting Edge Y(\d+)/i);
-        if (match) {
-          const textBtn = document.createElement("button");
-          textBtn.type = "button";
-          textBtn.className = "material-text-button";
-          const textMaterialId = `T1_CE_Y${String(Number(match[1])).padStart(2, "0")}`;
-          textBtn.dataset.openTextMaterial = textMaterialId;
-          textBtn.textContent = "📖 本文を読む";
-          row.appendChild(textBtn);
-        }
-      }
-
-      list.appendChild(row);
+      const rounds = [...new Set(group.items.map(q => q.testRound).filter(Boolean))];
+      const roundKey = rounds.length === 1 && (rounds[0] === "1st" || rounds[0] === "2nd") ? rounds[0] : "common";
+      if (!groupedByRound.has(roundKey)) groupedByRound.set(roundKey, []);
+      groupedByRound.get(roundKey).push(group);
     });
+
+    const list = document.createElement("div");
+    list.className = "material-round-list";
+
+    [...groupedByRound.entries()]
+      .sort((a, b) => (roundMeta[a[0]]?.order ?? 99) - (roundMeta[b[0]]?.order ?? 99))
+      .forEach(([roundKey, roundGroups]) => {
+        const details = document.createElement("details");
+        details.className = "material-round-card";
+
+        const totalQuestions = roundGroups.reduce((sum, group) => sum + group.total, 0);
+        const totalReview = roundGroups.reduce((sum, group) => sum + group.reviewTotal, 0);
+        const summary = document.createElement("summary");
+        summary.className = "material-round-summary";
+        summary.innerHTML = `
+          <span class="material-round-summary-main">
+            <strong>${escapeHtml(roundMeta[roundKey]?.label || roundKey)}</strong>
+            <small>${roundGroups.length}範囲・全${totalQuestions}問${totalReview ? `・復習${totalReview}` : ""}</small>
+          </span>
+          <span class="material-round-toggle" aria-hidden="true"></span>
+        `;
+        details.appendChild(summary);
+
+        const roundList = document.createElement("div");
+        roundList.className = "material-range-list material-round-content";
+
+        roundGroups.forEach(group => {
+          const card = document.createElement("article");
+          card.className = "material-study-card";
+
+          const header = document.createElement("div");
+          header.className = "material-study-card-header";
+          header.innerHTML = `
+            <div class="material-study-card-copy">
+              <strong>${escapeHtml(group.label)}</strong>
+              <small>未習得 ${group.counts.new}　復習 ${group.reviewTotal}　全 ${group.total}問</small>
+            </div>
+          `;
+          card.appendChild(header);
+
+          const mainActions = document.createElement("div");
+          mainActions.className = "material-study-main-actions";
+
+          const appendQuestionButton = target => {
+            const startAllBtn = document.createElement("button");
+            startAllBtn.type = "button";
+            startAllBtn.className = "material-primary-action material-start-all";
+            startAllBtn.dataset.materialPrint = material;
+            startAllBtn.dataset.printName = group.key;
+            startAllBtn.dataset.problemCategory = "all";
+            startAllBtn.dataset.problemOrdered = "true";
+            startAllBtn.textContent = "📝 問題を解く";
+            target.appendChild(startAllBtn);
+          };
+
+          const appendQuestionCategoryMenu = target => {
+            const problemMenu = document.createElement("details");
+            problemMenu.className = "material-problem-menu material-category-menu";
+            problemMenu.innerHTML = `<summary>問題を種類から選ぶ <span aria-hidden="true"></span></summary>`;
+            const problemBody = document.createElement("div");
+            problemBody.className = "material-problem-menu-body";
+
+            const categoryOrder = material === "reading"
+              ? ["content", "language", "readingSkill", "testStyle"]
+              : material === "focus"
+                ? ["structure", "translation", "production"]
+                : ["all"];
+
+            categoryOrder.forEach(category => {
+              const count = category === "all"
+                ? group.items.length
+                : group.items.filter(q => getMaterialProblemCategory(material, q) === category).length;
+              if (!count) return;
+              const btn = document.createElement("button");
+              btn.type = "button";
+              btn.className = "material-menu-action material-problem-category";
+              btn.dataset.materialPrint = material;
+              btn.dataset.printName = group.key;
+              btn.dataset.problemCategory = category;
+              btn.innerHTML = `<span>${escapeHtml(materialProblemCategoryLabel(material, category))}</span><small>${count}問</small>`;
+              problemBody.appendChild(btn);
+            });
+
+            problemMenu.appendChild(problemBody);
+            target.appendChild(problemMenu);
+          };
+
+          if (material === "reading") {
+            const match = String(group.key).match(/Cutting Edge Y(\d+)/i);
+            if (match) {
+              const hasSecondRound = group.items.some(q => q.testRound === "2nd");
+              const hasFirstRound = group.items.some(q => q.testRound === "1st");
+              const textRound = hasSecondRound && !hasFirstRound ? "T2" : "T1";
+              const textMaterialId = `${textRound}_CE_Y${String(Number(match[1])).padStart(2, "0")}`;
+
+              const readingBtn = document.createElement("button");
+              readingBtn.type = "button";
+              readingBtn.className = "material-primary-action";
+              readingBtn.dataset.openReadingMaterial = textMaterialId;
+              readingBtn.textContent = "🔊 音読する";
+              mainActions.appendChild(readingBtn);
+              appendQuestionButton(mainActions);
+
+              const menu = document.createElement("details");
+              menu.className = "material-study-menu material-secondary-menu";
+              menu.innerHTML = `<summary>学習メニュー <span aria-hidden="true"></span></summary>`;
+              const menuBody = document.createElement("div");
+              menuBody.className = "material-study-menu-body";
+              appendQuestionCategoryMenu(menuBody);
+
+              const breakdownBtn = document.createElement("button");
+              breakdownBtn.type = "button";
+              breakdownBtn.className = "material-menu-action";
+              breakdownBtn.dataset.openTextMaterial = textMaterialId;
+              breakdownBtn.textContent = "🧩 文をほどく";
+              menuBody.appendChild(breakdownBtn);
+              menu.appendChild(menuBody);
+              mainActions.appendChild(menu);
+            } else {
+              appendQuestionButton(mainActions);
+            }
+          } else if (material === "focus") {
+            const match = String(group.key).match(/FOCUS (\d+)/i);
+            if (match) {
+              const hasSecondRound = group.items.some(q => q.testRound === "2nd");
+              const hasFirstRound = group.items.some(q => q.testRound === "1st");
+              const textRound = hasSecondRound && !hasFirstRound ? "T2" : "T1";
+              const focusNo = String(Number(match[1])).padStart(2, "0");
+
+              const audioMenu = document.createElement("details");
+              audioMenu.className = "material-study-menu material-audio-menu";
+              audioMenu.innerHTML = `<summary>🔊 音読する <span aria-hidden="true"></span></summary>`;
+              const audioBody = document.createElement("div");
+              audioBody.className = "material-study-menu-body";
+              [
+                { kind: "EXAMPLE", label: "重要例文を音読" },
+                { kind: "PASSAGE", label: "中文を音読" }
+              ].forEach(item => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "material-menu-action";
+                btn.dataset.openReadingMaterial = `${textRound}_FOCUS_${focusNo}_${item.kind}`;
+                btn.textContent = `🔊 ${item.label}`;
+                audioBody.appendChild(btn);
+              });
+              audioMenu.appendChild(audioBody);
+              mainActions.appendChild(audioMenu);
+              appendQuestionButton(mainActions);
+
+              const menu = document.createElement("details");
+              menu.className = "material-study-menu material-secondary-menu";
+              menu.innerHTML = `<summary>学習メニュー <span aria-hidden="true"></span></summary>`;
+              const menuBody = document.createElement("div");
+              menuBody.className = "material-study-menu-body";
+              appendQuestionCategoryMenu(menuBody);
+              [
+                { kind: "EXAMPLE", label: "🧩 重要例文をほどく" },
+                { kind: "PASSAGE", label: "🧩 中文をほどく" }
+              ].forEach(item => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "material-menu-action";
+                btn.dataset.openTextMaterial = `${textRound}_FOCUS_${focusNo}_${item.kind}`;
+                btn.textContent = item.label;
+                menuBody.appendChild(btn);
+              });
+              menu.appendChild(menuBody);
+              mainActions.appendChild(menu);
+            } else {
+              appendQuestionButton(mainActions);
+            }
+          } else {
+            appendQuestionButton(mainActions);
+          }
+
+          card.appendChild(mainActions);
+          roundList.appendChild(card);
+        });
+
+        details.appendChild(roundList);
+        list.appendChild(details);
+      });
     box.appendChild(list);
   }
 
@@ -2065,6 +2459,11 @@
         sentenceNo,
         english,
         translation: String(row.translation ?? "").trim(),
+        readingTarget: /^(true|1|yes|対象)$/i.test(String(row.readingTarget ?? row.audioTarget ?? "").trim())
+          ? true
+          : /^(false|0|no|対象外)$/i.test(String(row.readingTarget ?? row.audioTarget ?? "").trim())
+            ? false
+            : undefined,
         importedAt: new Date().toISOString()
       };
     }).sort((a, b) => a.materialId.localeCompare(b.materialId) || a.sentenceNo - b.sentenceNo);
@@ -2115,13 +2514,11 @@
       }
       const subjectTarget = String(row.subjectTarget ?? row.subject ?? "").trim();
       const verbTarget = String(row.verbTarget ?? row.verb ?? "").trim();
-      const materialRow = materialRows.find(item => item.key === key);
-      if (subjectTarget && materialRow && !materialRow.english.includes(subjectTarget)) {
-        throw new Error(`文ガイドCSV ${rowNo}行目のsubjectTargetが英文内に見つかりません。`);
-      }
-      if (verbTarget && materialRow && !materialRow.english.includes(verbTarget)) {
-        throw new Error(`文ガイドCSV ${rowNo}行目のverbTargetが英文内に見つかりません。`);
-      }
+      // subjectTarget / verbTarget は、画面に表示する学習用ラベル。
+      // 複数の主語・動詞（"I / she / I"）、省略表示（"（省略）"）、
+      // 短縮形を展開した表記（"have been learning"）など、英文の連続文字列と
+      // 一致しない正当なデータがあるため、ここでは本文内の完全一致を必須にしない。
+      // 本文との対応は materialId + sentenceNo、チャンク範囲は index 検証で保証する。
 
       return {
         key,
@@ -2162,6 +2559,177 @@
     if (!box) return;
     box.textContent = message;
     box.className = `csv-status${kind ? ` ${kind}` : ""}`;
+  }
+
+  function setMaterialBundleStatus(message, kind = "") {
+    const box = el("materialBundleImportStatus");
+    if (!box) return;
+    box.textContent = message;
+    box.className = `csv-status${kind ? ` ${kind}` : ""}`;
+  }
+
+  function materialImportVersionScore(file) {
+    const source = `${file?.path || ""}/${file?.name || ""}`;
+    const version = source.match(/_v(\d+)(?:[_\.](\d+))?/i);
+    const versionScore = version ? Number(version[1]) * 1000 + Number(version[2] || 0) : 0;
+    const finalBonus = /最終|final|verified/i.test(source) ? 1000000 : 0;
+    return finalBonus + versionScore;
+  }
+
+  function isNormalMaterialCsv(file) {
+    const name = String(file?.name || "").toLowerCase();
+    const path = String(file?.path || file?.name || "").replace(/\\/g, "/").toLowerCase();
+    if (!name.endsWith(".csv")) return false;
+    if (path.includes("__macosx") || /(^|\/)sample(?:_csv)?\//i.test(path)) return false;
+    return /_materials(?:_v\d+(?:[_\.]\d+)?)?\.csv$/i.test(name) ||
+      /_sentence_guides(?:_v\d+(?:[_\.]\d+)?)?\.csv$/i.test(name);
+  }
+
+  function isMaterialsFilename(name) {
+    return /_materials(?:_v\d+(?:[_\.]\d+)?)?\.csv$/i.test(String(name || ""));
+  }
+
+  function isGuidesFilename(name) {
+    return /_sentence_guides(?:_v\d+(?:[_\.]\d+)?)?\.csv$/i.test(String(name || ""));
+  }
+
+  async function replaceMaterialBundles(packs) {
+    const oldKeys = await Promise.all(packs.map(async pack => ({
+      materialId: pack.materialId,
+      materialKeys: await getKeysByMaterialId(MATERIAL_STORE, pack.materialId),
+      guideKeys: pack.guidesProvided ? await getKeysByMaterialId(GUIDE_STORE, pack.materialId) : []
+    })));
+    const db = await openMaterialDb();
+    try {
+      const tx = db.transaction([MATERIAL_STORE, GUIDE_STORE], "readwrite");
+      const materialStore = tx.objectStore(MATERIAL_STORE);
+      const guideStore = tx.objectStore(GUIDE_STORE);
+      oldKeys.forEach(group => {
+        group.materialKeys.forEach(key => materialStore.delete(key));
+        group.guideKeys.forEach(key => guideStore.delete(key));
+      });
+      packs.forEach(pack => {
+        pack.materials.forEach(row => materialStore.put(row));
+        if (pack.guidesProvided) pack.guides.forEach(row => guideStore.put(row));
+      });
+      await transactionDone(tx);
+    } finally {
+      db.close();
+    }
+  }
+
+  async function buildNormalMaterialPacks(fileList) {
+    if (!window.RulesStore?.normalizeInputs) {
+      throw new Error("ZIP読込機能を初期化できませんでした。ページを再読み込みしてください。");
+    }
+    const expandedFiles = await window.RulesStore.normalizeInputs(fileList);
+    const candidates = expandedFiles.filter(isNormalMaterialCsv);
+    if (!candidates.length) {
+      throw new Error("materials.csv / sentence_guides.csv が見つかりませんでした。READMEや検査レポート、sample_csvは自動的に除外します。");
+    }
+
+    const materialCandidates = [];
+    const guideCandidates = [];
+    for (const file of candidates) {
+      const rows = parseCsv(await file.text());
+      const ids = [...new Set(rows.map(row => String(row.materialId ?? "").trim()).filter(Boolean))];
+      if (ids.length !== 1) throw new Error(`${file.name} のmaterialIdを1教材に統一してください。`);
+      const item = { file, rows, materialId: ids[0], score: materialImportVersionScore(file) };
+      if (isMaterialsFilename(file.name)) materialCandidates.push(item);
+      else if (isGuidesFilename(file.name)) guideCandidates.push(item);
+    }
+    if (!materialCandidates.length) throw new Error("本文CSV（*_materials.csv）が見つかりませんでした。");
+
+    const latestById = items => {
+      const map = new Map();
+      items.forEach(item => {
+        const current = map.get(item.materialId);
+        if (!current || item.score > current.score) map.set(item.materialId, item);
+      });
+      return map;
+    };
+    const materialsById = latestById(materialCandidates);
+    const guidesById = latestById(guideCandidates);
+    const orphanGuideIds = [...guidesById.keys()].filter(id => !materialsById.has(id));
+    if (orphanGuideIds.length) {
+      throw new Error(`本文CSVがない文ガイドがあります：${orphanGuideIds.join("、")}`);
+    }
+
+    const packs = [];
+    for (const [materialId, materialItem] of materialsById.entries()) {
+      const materials = validateMaterialsCsv(materialItem.rows);
+      const guideItem = guidesById.get(materialId);
+      const guides = guideItem ? validateGuidesCsv(guideItem.rows, materials) : [];
+      packs.push({
+        materialId,
+        materials,
+        guides,
+        guidesProvided: Boolean(guideItem),
+        materialFileName: materialItem.file.name,
+        guideFileName: guideItem?.file?.name || ""
+      });
+    }
+    return packs.sort((a, b) => a.materialId.localeCompare(b.materialId, "ja", { numeric: true }));
+  }
+
+  async function importMaterialBundleFiles() {
+    const files = el("materialBundleFilesInput")?.files;
+    if (!files?.length) {
+      setMaterialBundleStatus("英文教材ZIPまたはCSVを選んでください。", "error");
+      return;
+    }
+    const button = el("importMaterialBundleBtn");
+    if (button) button.disabled = true;
+    setMaterialBundleStatus("データパックを展開して確認しています…");
+    try {
+      const packs = await buildNormalMaterialPacks(files);
+      const existingRows = await getAllFromStore(MATERIAL_STORE);
+      const existingIds = new Set(existingRows.map(row => String(row.materialId || "").trim()));
+      const lines = packs.map(pack => {
+        const action = existingIds.has(pack.materialId) ? "差し替え" : "追加";
+        const guideText = pack.guidesProvided ? ` / 文ガイド ${pack.guides.length}文` : " / 文ガイドなし（既存ガイドは維持）";
+        return `${action}：${materialDisplayTitle(pack.materialId)}　本文 ${pack.materials.length}文${guideText}`;
+      });
+      const confirmed = confirm(`次の英文教材を保存します。\n\n${lines.join("\n")}\n\n別のmaterialIdの既存教材は削除されません。よろしいですか？`);
+      if (!confirmed) {
+        setMaterialBundleStatus("保存をキャンセルしました。");
+        return;
+      }
+
+      await replaceMaterialBundles(packs);
+      for (const pack of packs) {
+        const saved = await getMaterialBundle(pack.materialId);
+        if (saved.materials.length !== pack.materials.length) {
+          throw new Error(`${materialDisplayTitle(pack.materialId)} の保存確認に失敗しました。`);
+        }
+        if (pack.guidesProvided && saved.guides.length !== pack.guides.length) {
+          throw new Error(`${materialDisplayTitle(pack.materialId)} の文ガイド保存確認に失敗しました。`);
+        }
+      }
+      const totalMaterials = packs.reduce((sum, pack) => sum + pack.materials.length, 0);
+      const totalGuides = packs.reduce((sum, pack) => sum + (pack.guidesProvided ? pack.guides.length : 0), 0);
+      setMaterialBundleStatus(`${packs.length}教材を保存しました。本文 ${totalMaterials}文 / 文ガイド ${totalGuides}文`, "success");
+      if (el("materialBundleFilesInput")) el("materialBundleFilesInput").value = "";
+      updateMaterialBundleFileNames();
+      await renderSavedMaterials();
+    } catch (error) {
+      console.error(error);
+      setMaterialBundleStatus(error?.message || "データパックの読み込みに失敗しました。", "error");
+    } finally {
+      if (button) button.disabled = false;
+    }
+  }
+
+  function updateMaterialBundleFileNames() {
+    const files = [...(el("materialBundleFilesInput")?.files || [])];
+    if (!el("materialBundleFilesName")) return;
+    if (!files.length) {
+      el("materialBundleFilesName").textContent = "ZIPを1つ選ぶ（CSV複数選択も可）";
+    } else if (files.length === 1) {
+      el("materialBundleFilesName").textContent = files[0].name;
+    } else {
+      el("materialBundleFilesName").textContent = `${files.length}ファイルを選択中`;
+    }
   }
 
   async function importSelectedCsvFiles() {
@@ -2257,7 +2825,10 @@
         return;
       }
 
-      list.innerHTML = groups.map(group => {
+      const previousOpen = Boolean(list.querySelector(".saved-materials-group")?.open);
+      const totalSentences = groups.reduce((sum, group) => sum + group.sentences.length, 0);
+      const totalGuides = groups.reduce((sum, group) => sum + group.guides, 0);
+      const cardsHtml = groups.map(group => {
         const paragraphs = new Set(group.sentences.map(row => row.paragraphNo).filter(Boolean));
         const displayTitle = materialDisplayTitle(group.materialId);
         const updated = group.updatedAt ? new Date(group.updatedAt) : null;
@@ -2277,6 +2848,18 @@
             </div>
           </article>`;
       }).join("");
+
+      list.innerHTML = `
+        <details class="saved-materials-group"${previousOpen ? " open" : ""}>
+          <summary class="saved-materials-group-summary">
+            <span>
+              <strong>通常教材</strong>
+              <small>${groups.length}教材 / 本文 ${totalSentences}文 / 文ガイド ${totalGuides}文</small>
+            </span>
+            <span class="saved-materials-group-toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="saved-materials-group-content">${cardsHtml}</div>
+        </details>`;
     } catch (error) {
       console.error(error);
       list.innerHTML = `<p class="empty-text">教材データを読み込めませんでした。</p>`;
@@ -2284,8 +2867,16 @@
   }
 
   function materialDisplayTitle(materialId) {
-    const titleMatch = String(materialId || "").match(/^T\d+_CE_Y(\d+)$/i);
-    return titleMatch ? `Cutting Edge Y${String(Number(titleMatch[1])).padStart(2, "0")}` : String(materialId || "教材");
+    const id = String(materialId || "").trim();
+    const ceMatch = id.match(/^T(\d+)_CE_Y(\d+)$/i);
+    if (ceMatch) return `第${ceMatch[1]}回 / Cutting Edge Y${String(Number(ceMatch[2])).padStart(2, "0")}`;
+    const focusMatch = id.match(/^T(\d+)_FOCUS[_-]?(\d+)(?:[_-](.+))?$/i);
+    if (focusMatch) {
+      const kind = String(focusMatch[3] || "").toUpperCase();
+      const kindLabel = kind.includes("MODEL") || kind.includes("TEXT") || kind.includes("PASSAGE") ? " 中文" : kind.includes("EXAMPLE") ? " 重要例文" : "";
+      return `第${focusMatch[1]}回 / FOCUS ${Number(focusMatch[2])}${kindLabel}`;
+    }
+    return id || "教材";
   }
 
   function hasInteractiveChunkGuide(guide) {
@@ -2335,6 +2926,16 @@
       <details class="sentence-guide interactive-guide" data-guide-key="${escapeHtml(guideKey)}" open>
         <summary>文をほどく</summary>
         <div class="guide-body sentence-breakdown" data-stage="subject" data-subject-index="${guide.subjectChunkIndex}" data-verb-index="${guide.verbChunkIndex}" data-subject-misses="0" data-verb-misses="0">
+          <div class="breakdown-progress" aria-label="文をほどく進み具合">
+            <span class="active" data-breakdown-progress="subject">① 主語</span>
+            <i>→</i>
+            <span data-breakdown-progress="verb">② 動詞</span>
+            <i>→</i>
+            <span data-breakdown-progress="structure">③ 骨組み</span>
+            <i>→</i>
+            <span data-breakdown-progress="translation">④ 訳す</span>
+          </div>
+          <p class="breakdown-transition hidden" data-breakdown-transition aria-live="polite"></p>
           <div class="breakdown-step" data-breakdown-step="subject">
             <div class="breakdown-step-head"><span>STEP 1</span><strong>文の中心の「主語」はどのかたまり？</strong></div>
             <p class="breakdown-help">主節の「だれが・なにが」にあたるかたまりを1つタップ。</p>
@@ -2388,12 +2989,49 @@
 
   function advanceBreakdownStep(container, fromStage) {
     const order = ["subject", "verb", "structure", "translation"];
+    const labels = {
+      subject: "主語OK！ 次は動詞の中心を探そう。",
+      verb: "動詞OK！ 文の骨組みを確認しよう。",
+      structure: "骨組みOK！ 区切りごとに意味をつなごう。"
+    };
     const current = order.indexOf(fromStage);
     if (current < 0 || current >= order.length - 1) return;
     container.querySelector(`[data-breakdown-step="${fromStage}"]`)?.classList.add("hidden");
     const next = order[current + 1];
-    container.querySelector(`[data-breakdown-step="${next}"]`)?.classList.remove("hidden");
+    const nextStep = container.querySelector(`[data-breakdown-step="${next}"]`);
+    nextStep?.classList.remove("hidden");
+    nextStep?.classList.remove("step-enter");
+    void nextStep?.offsetWidth;
+    nextStep?.classList.add("step-enter");
     container.dataset.stage = next;
+
+    order.forEach((stage, index) => {
+      const marker = container.querySelector(`[data-breakdown-progress="${stage}"]`);
+      marker?.classList.toggle("done", index < order.indexOf(next));
+      marker?.classList.toggle("active", stage === next);
+    });
+
+    const transition = container.querySelector("[data-breakdown-transition]");
+    if (transition) {
+      transition.textContent = labels[fromStage] || "次のステップへ進みます。";
+      transition.classList.remove("hidden", "show");
+      void transition.offsetWidth;
+      transition.classList.add("show");
+      window.setTimeout(() => transition.classList.add("hidden"), 1200);
+    }
+
+    if (next === "structure" || next === "translation") {
+      const sentenceList = el("materialSentenceList");
+      const selfCheck = sentenceList?.querySelector("[data-self-check-panel]");
+      const selected = selfCheck?.querySelector("[data-self-check].selected");
+      const required = sentenceList?.querySelector("[data-self-check-required]");
+      const nextButton = sentenceList?.querySelector("[data-text-next]");
+      selfCheck?.classList.remove("hidden");
+      required?.classList.toggle("hidden", Boolean(selected));
+      nextButton?.classList.toggle("hidden", !selected);
+    }
+
+    window.setTimeout(() => nextStep?.scrollIntoView({ behavior: "smooth", block: "center" }), 120);
   }
 
   function handleChunkAnswer(button) {
@@ -2434,6 +3072,33 @@
     }, 350);
   }
 
+  const CUTTING_EDGE_READING_MIN_WORDS = 15;
+
+  function englishWordCount(text) {
+    return (String(text || "").match(/[A-Za-z]+(?:'[A-Za-z]+)?/g) || []).length;
+  }
+
+  function isReadingTarget(row, materialId) {
+    if (typeof row?.readingTarget === "boolean") return row.readingTarget;
+    // FOCUSの重要例文・中文は、短くても構文音読の価値があるため全件対象。
+    // Cutting Edgeは、毎日の音読が細切れにならないよう短文を自動除外する。
+    if (/^T\d+_CE_Y\d+/i.test(String(materialId || ""))) {
+      return englishWordCount(row?.english) >= CUTTING_EDGE_READING_MIN_WORDS;
+    }
+    return true;
+  }
+
+  function readingBundle(bundle) {
+    const allMaterials = Array.isArray(bundle?.materials) ? bundle.materials : [];
+    const materials = allMaterials.filter(row => isReadingTarget(row, bundle?.materialId));
+    return {
+      ...bundle,
+      materials,
+      sourceMaterialCount: allMaterials.length,
+      excludedShortSentenceCount: Math.max(0, allMaterials.length - materials.length)
+    };
+  }
+
   function currentReaderRow() {
     return state.currentReaderBundle?.materials?.[state.currentReaderIndex] || null;
   }
@@ -2448,13 +3113,19 @@
     const progress = getTextStudyProgress(bundle.materialId);
     const hasProgress = progress && progress.sentenceIndex < bundle.materials.length;
     if (el("readerMaterialTitle")) el("readerMaterialTitle").textContent = materialDisplayTitle(bundle.materialId);
-    if (el("readerMaterialSummary")) el("readerMaterialSummary").textContent = `本文 ${bundle.materials.length}文 / 文ガイド ${bundle.guides.filter(g => g.validationStatus !== "hold").length}文`;
+    if (el("readerMaterialSummary")) {
+      const sourceCount = Number(bundle.sourceMaterialCount || bundle.materials.length);
+      el("readerMaterialSummary").textContent = state.currentReaderStudyType === "reading"
+        ? `音読対象 ${bundle.materials.length}文${sourceCount !== bundle.materials.length ? `（全${sourceCount}文）` : ""}`
+        : `本文 ${bundle.materials.length}文 / 文ガイド ${bundle.guides.filter(g => g.validationStatus !== "hold").length}文`;
+    }
     const sentenceList = el("materialSentenceList");
     sentenceList.innerHTML = `
       <article class="text-start-card">
         <span class="mode-icon">📖</span>
         <h3>${escapeHtml(materialDisplayTitle(bundle.materialId))}</h3>
-        <p>1文ずつ、文の形と訳し方を確認します。</p>
+        <p>${state.currentReaderStudyType === "reading" ? "ある程度まとまりのある文を、1文ずつ音声で聞いて自分でも読みます。" : "1文ずつ、文の形と訳し方を確認します。"}</p>
+        ${state.currentReaderStudyType === "reading" && bundle.excludedShortSentenceCount ? `<small>短い文 ${bundle.excludedShortSentenceCount}文は音読対象から外しています。「文をほどく」では確認できます。</small>` : ""}
         ${hasProgress ? `<button type="button" class="primary-button wide" data-text-start="resume">第${progress.sentenceIndex + 1}文から続ける</button>` : ""}
         <button type="button" class="${hasProgress ? "secondary-button" : "primary-button"} wide" data-text-start="restart">最初から始める</button>
       </article>`;
@@ -2480,7 +3151,39 @@
     const label = row.paragraphNo ? `第${row.paragraphNo}段落・第${row.sentenceNo}文` : `第${row.sentenceNo}文`;
     const status = getSelfReviewStatus(bundle.materialId, row.sentenceNo);
     const isLast = state.currentReaderIndex === bundle.materials.length - 1;
+    const interactiveGuide = hasInteractiveChunkGuide(guide);
     if (el("readerMaterialSummary")) el("readerMaterialSummary").textContent = `${state.currentReaderIndex + 1} / ${bundle.materials.length}文`;
+
+    if (state.currentReaderStudyType === "reading") {
+      list.innerHTML = `
+        <article class="sentence-card single-sentence-card reading-only-card">
+          <div class="sentence-progress-row">
+            <span class="sentence-meta">${escapeHtml(label)}</span>
+            <button type="button" class="ghost-button" data-text-pause>一時中断</button>
+          </div>
+          <p class="sentence-english">${escapeHtml(row.english)}</p>
+          <div class="reading-audio-actions">
+            <button type="button" class="primary-button wide" data-read-aloud>🔊 英文を聞く</button>
+            <button type="button" class="secondary-button wide" data-stop-reading>停止</button>
+          </div>
+          ${row.translation ? `<details class="translation-toggle"><summary>意味を確認する</summary><p>${escapeHtml(row.translation)}</p></details>` : ""}
+          <div class="sentence-self-check" data-self-check-panel>
+            <p><strong>自分でも読めた？</strong></p>
+            <div class="self-check-buttons">
+              <button type="button" class="self-check-button ${status === "understood" ? "selected" : ""}" data-self-check="understood">読めた</button>
+              <button type="button" class="self-check-button needs-review ${status === "needs_review" ? "selected" : ""}" data-self-check="needs_review">要復習</button>
+            </div>
+          </div>
+          <p class="self-check-required ${status ? "hidden" : ""}" data-self-check-required>「読めた」か「要復習」を選ぶと、次の文へ進めます。</p>
+          <div class="sentence-navigation-actions">
+            <button type="button" class="primary-button wide ${status ? "" : "hidden"}" data-text-next>${isLast ? "音読を終える" : "次の文へ"}</button>
+            <button type="button" class="text-skip-button" data-text-skip>${isLast ? "この文をスキップして終了" : "この文をスキップ"}</button>
+          </div>
+        </article>`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     list.innerHTML = `
       <article class="sentence-card single-sentence-card">
         <div class="sentence-progress-row">
@@ -2489,8 +3192,8 @@
         </div>
         <p class="sentence-english">${escapeHtml(row.english)}</p>
         ${guideDetailsHtml(guide)}
-        ${row.translation && !hasInteractiveChunkGuide(guide) ? `<details class="translation-toggle"><summary>和訳を考える / 訳を見る</summary><p>${escapeHtml(row.translation)}</p></details>` : ""}
-        <div class="sentence-self-check">
+        ${row.translation && !interactiveGuide ? `<details class="translation-toggle"><summary>和訳を考える / 訳を見る</summary><p>${escapeHtml(row.translation)}</p></details>` : ""}
+        <div class="sentence-self-check ${interactiveGuide ? "hidden" : ""}" data-self-check-panel>
           <p><strong>この文はどうだった？</strong></p>
           <div class="self-check-buttons">
             <button type="button" class="self-check-button ${status === "understood" ? "selected" : ""}" data-self-check="understood">理解した</button>
@@ -2498,15 +3201,21 @@
           </div>
           <small>「要復習」は下の「復習」タブに残ります。HOMEの「今日やる復習」とは別管理です。</small>
         </div>
-        <p class="self-check-required ${status ? "hidden" : ""}" data-self-check-required>「理解した」か「要復習」を選ぶと次へ進めます。</p>
-        <button type="button" class="primary-button wide" data-text-next ${status ? "" : "disabled"}>${isLast ? "この教材を終える" : "次へ"}</button>
+        <p class="self-check-required ${status || interactiveGuide ? "hidden" : ""}" data-self-check-required>「理解した」か「要復習」を選ぶと、次の文へ進めます。</p>
+        <div class="sentence-navigation-actions">
+          <button type="button" class="primary-button wide ${status && !interactiveGuide ? "" : "hidden"}" data-text-next>${isLast ? "この教材を終える" : "次の文へ"}</button>
+          <button type="button" class="text-skip-button" data-text-skip>${isLast ? "この文をスキップして終了" : "この文をスキップ"}</button>
+        </div>
       </article>`;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function openSavedMaterial(materialId, returnView = "materialView", options = {}) {
-    const bundle = await getMaterialBundle(materialId);
-    if (!bundle.materials.length) throw new Error(`この端末に ${materialDisplayTitle(materialId)} の本文データがありません。設定からCSVを読み込んでください。`);
+    const storedBundle = await getMaterialBundle(materialId);
+    if (!storedBundle.materials.length) throw new Error(`この端末に ${materialDisplayTitle(materialId)} の本文データがありません。設定からCSVを読み込んでください。`);
+    state.currentReaderStudyType = options.studyType === "reading" ? "reading" : "breakdown";
+    const bundle = state.currentReaderStudyType === "reading" ? readingBundle(storedBundle) : storedBundle;
+    if (!bundle.materials.length) throw new Error(`${materialDisplayTitle(materialId)} には現在の基準で音読対象になる文がありません。「文をほどく」から確認してください。`);
     state.currentReaderBundle = bundle;
     state.currentReaderMaterialId = bundle.materialId;
     state.currentReaderReturnView = returnView;
@@ -2528,6 +3237,24 @@
     closeMaterialReader();
   }
 
+  function skipTextSentence() {
+    const bundle = state.currentReaderBundle;
+    if (!bundle) return;
+    const row = currentReaderRow();
+    if (row) saveTextStudyProgress(bundle.materialId, state.currentReaderIndex + 1);
+    if (state.currentReaderIndex >= bundle.materials.length - 1) {
+      clearTextStudyProgress(bundle.materialId);
+      if (state.currentReaderStudyType === "reading") markTodayReadingComplete(bundle.materialId);
+      alert(state.currentReaderStudyType === "reading"
+        ? `${materialDisplayTitle(bundle.materialId)} の今日の音読はここまでです。`
+        : `${materialDisplayTitle(bundle.materialId)} の本文学習はここまでです。`);
+      closeMaterialReader();
+      return;
+    }
+    state.currentReaderIndex += 1;
+    renderCurrentSentence();
+  }
+
   function nextTextSentence() {
     const bundle = state.currentReaderBundle;
     if (!bundle) return;
@@ -2539,7 +3266,10 @@
     if (row) saveTextStudyProgress(bundle.materialId, state.currentReaderIndex + 1);
     if (state.currentReaderIndex >= bundle.materials.length - 1) {
       clearTextStudyProgress(bundle.materialId);
-      alert(`${materialDisplayTitle(bundle.materialId)} の本文学習はここまでです。`);
+      if (state.currentReaderStudyType === "reading") markTodayReadingComplete(bundle.materialId);
+      alert(state.currentReaderStudyType === "reading"
+        ? `${materialDisplayTitle(bundle.materialId)} の今日の音読はここまでです。`
+        : `${materialDisplayTitle(bundle.materialId)} の本文学習はここまでです。`);
       closeMaterialReader();
       return;
     }
@@ -2548,6 +3278,7 @@
   }
 
   function closeMaterialReader() {
+    stopSpeechSynthesis();
     const returnView = state.currentReaderReturnView || "materialView";
     state.currentReaderMaterialId = null;
     state.currentReaderReturnView = null;
@@ -2578,7 +3309,41 @@
     }[ch]));
   }
 
+  window.addEventListener("pagehide", stopSpeechSynthesis);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopSpeechSynthesis();
+  });
+
   document.addEventListener("click", (e) => {
+    const finishedReadingBtn = e.target.closest("[data-daily-reading-finished]");
+    if (finishedReadingBtn) {
+      e.preventDefault();
+      alert("今日の音読は終わりです。明日また少しずつ続けよう！");
+      return;
+    }
+
+    const readingMaterialBtn = e.target.closest("[data-open-reading-material]");
+    if (readingMaterialBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const materialId = readingMaterialBtn.dataset.openReadingMaterial;
+      const originalText = readingMaterialBtn.textContent;
+      readingMaterialBtn.disabled = true;
+      readingMaterialBtn.textContent = "読み込み中…";
+      openSavedMaterial(materialId, "materialView", { studyType: "reading" })
+        .catch(async error => {
+          console.error(error);
+          alert(error?.message || "教材を開けませんでした。");
+          showView("settingsView");
+          await renderSavedMaterials();
+        })
+        .finally(() => {
+          readingMaterialBtn.disabled = false;
+          readingMaterialBtn.textContent = originalText;
+        });
+      return;
+    }
+
     const textMaterialBtn = e.target.closest("[data-open-text-material]");
     if (textMaterialBtn) {
       e.preventDefault();
@@ -2587,7 +3352,7 @@
       const originalText = textMaterialBtn.textContent;
       textMaterialBtn.disabled = true;
       textMaterialBtn.textContent = "読み込み中…";
-      openSavedMaterial(materialId, "materialView")
+      openSavedMaterial(materialId, "materialView", { studyType: "breakdown" })
         .catch(async error => {
           console.error(error);
           alert(error?.message || "教材を開けませんでした。");
@@ -2663,7 +3428,15 @@
 
     const materialPrintBtn = e.target.closest("[data-material-print]");
     if (materialPrintBtn) {
-      startQuiz("materialPrint", { material: materialPrintBtn.dataset.materialPrint, printName: materialPrintBtn.dataset.printName });
+      startQuiz("materialPrint", {
+        material: materialPrintBtn.dataset.materialPrint,
+        printName: materialPrintBtn.dataset.printName,
+        category: materialPrintBtn.dataset.problemCategory || "all",
+        ordered: materialPrintBtn.dataset.problemOrdered === "true",
+        categoryLabel: materialPrintBtn.dataset.problemCategory === "all"
+          ? `${materialPrintBtn.dataset.printName} 問題`
+          : materialProblemCategoryLabel(materialPrintBtn.dataset.materialPrint, materialPrintBtn.dataset.problemCategory || "all")
+      });
       return;
     }
 
@@ -2738,6 +3511,28 @@
       return;
     }
 
+    const readAloudBtn = e.target.closest("[data-read-aloud]");
+    if (readAloudBtn) {
+      const row = currentReaderRow();
+      if (!row?.english) return;
+      if (!("speechSynthesis" in window)) {
+        alert("このブラウザでは音声読み上げを利用できません。");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(row.english);
+      utterance.lang = "en-US";
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+      return;
+    }
+
+    const stopReadingBtn = e.target.closest("[data-stop-reading]");
+    if (stopReadingBtn) {
+      stopSpeechSynthesis();
+      return;
+    }
+
     const selfCheckBtn = e.target.closest("[data-self-check]");
     if (selfCheckBtn) {
       const row = currentReaderRow();
@@ -2746,7 +3541,7 @@
       setSelfReviewStatus(bundle.materialId, row.sentenceNo, selfCheckBtn.dataset.selfCheck);
       const panel = selfCheckBtn.closest(".sentence-self-check");
       panel?.querySelectorAll("[data-self-check]").forEach(btn => btn.classList.toggle("selected", btn === selfCheckBtn));
-      el("materialSentenceList")?.querySelector("[data-text-next]")?.removeAttribute("disabled");
+      el("materialSentenceList")?.querySelector("[data-text-next]")?.classList.remove("hidden");
       el("materialSentenceList")?.querySelector("[data-self-check-required]")?.classList.add("hidden");
       return;
     }
@@ -2754,6 +3549,12 @@
     const textNextBtn = e.target.closest("[data-text-next]");
     if (textNextBtn) {
       nextTextSentence();
+      return;
+    }
+
+    const textSkipBtn = e.target.closest("[data-text-skip]");
+    if (textSkipBtn) {
+      skipTextSentence();
       return;
     }
 
@@ -2811,7 +3612,10 @@
   });
   el("nextBtn").addEventListener("click", nextQuestion);
   el("stopBtn")?.addEventListener("click", stopSession);
-  el("backHomeBtn").addEventListener("click", () => showView("homeView"));
+  el("backHomeBtn").addEventListener("click", () => {
+    const returnView = state.quizReturnView || "homeView";
+    showView(returnView);
+  });
   el("resultHomeBtn").addEventListener("click", () => showView("homeView"));
   el("againBtn").addEventListener("click", () => {
     if (!state.resultAction) return;
@@ -2831,6 +3635,8 @@
     el(id)?.addEventListener("change", updateTestPrepSummary);
   });
   el("testPrepStartBtn")?.addEventListener("click", () => startQuiz("testPrep", getTestPrepOptions()));
+  el("materialBundleFilesInput")?.addEventListener("change", updateMaterialBundleFileNames);
+  el("importMaterialBundleBtn")?.addEventListener("click", importMaterialBundleFiles);
   el("materialsCsvInput")?.addEventListener("change", updateCsvFileNames);
   el("guidesCsvInput")?.addEventListener("change", updateCsvFileNames);
   el("importMaterialCsvBtn")?.addEventListener("click", importSelectedCsvFiles);

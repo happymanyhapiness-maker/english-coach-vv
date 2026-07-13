@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>英コミュCoach</title>
-  <link rel="stylesheet" href="style.css?v=20260712-1915" />
+  <link rel="stylesheet" href="style.css?v=20260713-1400" />
 </head>
 <body>
   <div class="app-shell">
     <header class="app-header">
       <div>
-        <h1>英コミュCoach <span class="version-badge">v0.4 Phase2-1.25.6 夏休み試用版</span></h1>
+        <h1>英コミュCoach <span class="version-badge">v0.4 Phase2-1.42 教材別一括セッション</span></h1>
       </div>
       <div class="header-actions">
         <button class="ghost-button" id="settingsBtn" type="button">設定</button>
@@ -27,37 +27,69 @@
     <main>
       <section id="homeView" class="view active" aria-label="ホーム">
         <div id="homeContinueSlot"></div>
+        <div id="dailyReadingSlot"></div>
 
-        <div class="section-label">
-          <p class="eyebrow">Today</p>
-          <h2>今日の導線</h2>
-          <p>迷ったら、まずはここから。</p>
+        <div class="section-label home-main-heading">
+          <p class="eyebrow">Materials</p>
+          <h2>教材から始める</h2>
+          <p>今日使う教材やテスト範囲を選んで進めます。</p>
         </div>
 
-        <div class="today-grid">
-          <button class="action-card hero-action" data-start-mode="today">
-            <span class="mode-icon">🌱</span>
-            <strong>今日の10問</strong>
-            <small>構文・読解をミックス</small>
+        <button class="home-test-card" data-action="test-prep" type="button">
+          <span class="home-test-icon">🎯</span>
+          <span class="home-test-copy">
+            <strong>テスト範囲から学ぶ</strong>
+            <small>第一回・第二回の範囲を組み合わせて確認</small>
+          </span>
+          <span class="home-card-arrow" aria-hidden="true">›</span>
+        </button>
+
+        <div class="mode-grid home-material-grid">
+          <button class="mode-card" data-material="reading">
+            <span class="mode-icon">📘</span>
+            <strong>Cutting Edge</strong>
+            <small>毎日の音読・本文確認 / 問題演習</small>
           </button>
-          <button class="action-card" data-start-mode="reviewToday">
+          <button class="mode-card" data-material="focus">
+            <span class="mode-icon">🔎</span>
+            <strong>FOCUS</strong>
+            <small>例文・中文を読み、構文と訳を確認</small>
+          </button>
+          <button class="mode-card" data-material="writing">
+            <span class="mode-icon">✍️</span>
+            <strong>Insight Writing</strong>
+            <small>英作文・語法をプリント別に確認</small>
+          </button>
+          <button class="mode-card" data-material="vocab">
+            <span class="mode-icon">🧩</span>
+            <strong>重要単語</strong>
+            <small>テスト回・日付・セット別に確認</small>
+          </button>
+        </div>
+
+        <div class="section-label compact home-support-heading">
+          <p class="eyebrow">Support</p>
+          <h2>続けやすい入口</h2>
+        </div>
+
+        <div class="home-support-grid">
+          <button class="home-support-card" data-start-mode="reviewToday" type="button">
             <span class="mode-icon">🐾</span>
-            <strong>今日やる復習</strong>
-            <small>まずはここだけでOK</small>
+            <span>
+              <strong>今日やる復習</strong>
+              <small>復習日が来た問題をまとめて確認</small>
+            </span>
           </button>
-          <button class="action-card" data-action="test-prep">
-            <span class="mode-icon">🎯</span>
-            <strong>テスト対策</strong>
-            <small>範囲を選んで重点チェック</small>
-          </button>
-          <button class="action-card rules-listen-entry" type="button">
+          <button class="home-support-card rules-listen-entry" type="button">
             <span class="mode-icon">🎧</span>
-            <strong>長文を聞く</strong>
-            <small>Lessonを選び、先頭から音声だけを聞く</small>
+            <span>
+              <strong>長文を聞く</strong>
+              <small>RulesのLessonを選んで音声学習</small>
+            </span>
           </button>
         </div>
 
-        <div class="stats-strip" aria-label="今日の学習実績">
+        <div class="stats-strip home-stats" aria-label="今日の学習実績">
           <div class="mini-stat">
             <span id="statTodayChallenge">0</span>
             <small>Today’s Try</small>
@@ -70,29 +102,6 @@
             <span id="statTotalLearned">0</span>
             <small>Total Tried</small>
           </div>
-        </div>
-
-        <div class="section-label compact">
-          <h2>教材から選ぶ</h2>
-          <p>教材を選んでから、ランダム10問・範囲別・並び替えで選べます。</p>
-        </div>
-
-        <div class="mode-grid">
-          <button class="mode-card" data-material="focus">
-            <span class="mode-icon">🔎</span>
-            <strong>FOCUS構文</strong>
-            <small>ランダム / FOCUS別</small>
-          </button>
-          <button class="mode-card" data-material="reading">
-            <span class="mode-icon">📘</span>
-            <strong>Cutting Edge読解</strong>
-            <small>ランダム / Y別</small>
-          </button>
-          <button class="mode-card" data-material="vocab">
-            <span class="mode-icon">🧩</span>
-            <strong>重要単語</strong>
-            <small>ランダム / プリント別</small>
-          </button>
         </div>
       </section>
 
@@ -149,7 +158,7 @@
 
       <section id="quizView" class="view" aria-label="クイズ">
         <div class="quiz-topbar">
-          <button class="back-button" id="backHomeBtn" type="button">← ホーム</button>
+          <button class="back-button" id="backHomeBtn" type="button">← ひとつ前</button>
           <button class="ghost-button" id="stopBtn" type="button">今日はここまで</button>
           <div class="progress-pill" id="progressPill">1 / 10</div>
         </div>
@@ -220,8 +229,19 @@
         <details id="csvImportDetails" class="analysis-card full csv-import-card csv-import-details">
           <summary><strong id="csvImportModeTitle">通常教材を追加・差し替える</strong></summary>
           <div class="csv-import-body">
-            <p class="csv-help"><b>Cutting Edgeなどの通常教材用です。</b><br><code>materials.csv</code> は本文・和訳・文番号、<code>sentence_guides.csv</code> は主語・動詞・意味のまとまりを示す文ほどきガイドです。ガイドは任意です。</p>
-            <div class="csv-file-grid">
+            <p class="csv-help"><b>Cutting Edge・FOCUSなどの英文教材を共通管理します。</b><br>通常は、複数教材分の <code>materials.csv</code> と <code>sentence_guides.csv</code> が入ったZIPを1つ選ぶだけです。回次・教材・範囲はCSV内の <code>materialId</code> から自動判定します。</p>
+            <label class="csv-file-label rules-zip-label">
+              <span>英文教材データパック（ZIP／CSV）</span>
+              <input id="materialBundleFilesInput" type="file" accept=".zip,application/zip,.csv,text/csv" multiple />
+              <small id="materialBundleFilesName">ZIPを1つ選ぶ（CSV複数選択も可）</small>
+            </label>
+            <div class="rules-import-note">第一回・第二回、Cutting Edge・FOCUSをまとめて選べます。同じmaterialIdは差し替え、別教材の既存データは維持します。</div>
+            <button id="importMaterialBundleBtn" class="primary-button wide" type="button">データパックを確認して保存する</button>
+            <div id="materialBundleImportStatus" class="csv-status" aria-live="polite"></div>
+
+            <details class="csv-individual-fallback">
+              <summary>CSVを1教材ずつ選ぶ（予備）</summary>
+              <div class="csv-file-grid">
               <label class="csv-file-label">
                 <span>教材本文（materials.csv）</span>
                 <input id="materialsCsvInput" type="file" accept=".csv,text/csv" />
@@ -232,9 +252,10 @@
                 <input id="guidesCsvInput" type="file" accept=".csv,text/csv" />
                 <small id="guidesCsvName">必要な場合だけ選択</small>
               </label>
-            </div>
-            <button id="importMaterialCsvBtn" class="primary-button wide" type="button">選んだCSVを保存する</button>
-            <div id="csvImportStatus" class="csv-status" aria-live="polite"></div>
+              </div>
+              <button id="importMaterialCsvBtn" class="secondary-button wide" type="button">選んだCSVを保存する</button>
+              <div id="csvImportStatus" class="csv-status" aria-live="polite"></div>
+            </details>
           </div>
         </details>
 
@@ -339,9 +360,9 @@
 
   </div>
 
-  <script src="questions.js?v=20260712-0313"></script>
-  <script src="rules-loader.js?v=20260712-lesson7"></script>
-  <script src="app.js?v=20260712-0313"></script>
+  <script src="questions.js?v=20260713-1400"></script>
+  <script src="rules-loader.js?v=20260713-common-import"></script>
+  <script src="app.js?v=20260713-1400"></script>
   <script src="rules-app.js?v=20260712-lesson7"></script>
 </body>
 </html>

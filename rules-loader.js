@@ -14,5 +14,5 @@
   async function savePacks(packs){for(const p of packs)await savePack(p);return packs;}
   async function loadAll(){const db=await openDb();const rows=await new Promise((res,rej)=>{const r=db.transaction(STORE).objectStore(STORE).getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error);});return rows.sort((a,b)=>(a.lessonOrder||999)-(b.lessonOrder||999));}
   async function remove(lessonId){const db=await openDb();await new Promise((res,rej)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(lessonId);tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});}
-  window.RulesStore={TYPES,parseCsv,buildPacks,savePack,savePacks,loadAll,remove};
+  window.RulesStore={TYPES,parseCsv,unzipFile,normalizeInputs,buildPacks,savePack,savePacks,loadAll,remove};
 })();

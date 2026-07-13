@@ -1,13 +1,8 @@
 // questions.js
-// 英コミュCoach 第一回 定期テスト対策 問題データ
-// BASE: v0.4.1 増補済み310問版
-// UPDATED: 2026-07-09 選択肢バランス調整（日本語/英語混在・正解長さバイアス対策）
-// TOTAL_EXPECTED: 310
-// teacher_vocab: 254
-// non_teacher_vocab: 56
-// FOCUS_1_EXPECTED: 4
-// V04_EXTRA_EXPECTED: 10
-// 注意: 283問版 questions_test1.js 系で上書きしないこと
+// 英コミュCoach 第一回＋第二回 定期テスト対策 問題データ
+// BASE: Phase2-1.42 教材別一括セッション版
+// UPDATED: 2026-07-13 第二回実問題反映 16問 + FOCUS自己採点2問を統合
+// 第二回141問: 全問 active
 
 const QUESTIONS = [
   {
@@ -7710,5 +7705,4044 @@ const QUESTIONS = [
     "mistakeTag": "inference",
     "trapType": "partial_match",
     "status": "draft"
+  },
+  {
+    "id": "T2_CE_Y09_V04_FACTOP_001",
+    "testRound": "2nd",
+    "type": "fact_opinion",
+    "source": "Cutting Edge Y09 問題1",
+    "title": "事実？それとも考え？",
+    "question": "次の英文は、本文の中でどんな役割をしている？\n\n英文：\nFrench people are proud of their native language, so even if they have a good English ability, they speak nothing but French.",
+    "choices": [
+      "筆者が実際に調査して確かめた「事実」として報告されている",
+      "フランス政府が発表した公式データとして引用されている",
+      "多くの人に信じられている「考え」として紹介されている",
+      "筆者がこの後すぐに正しいと証明する結論になっている"
+    ],
+    "answer": 2,
+    "explanation": "本文ではこの内容を this belief（この考え）と呼び、I wonder why this belief has been commonly accepted as if it were true.（なぜこの考えが、あたかも本当であるかのように受け入れられてきたのか）と続く。つまり「事実」ではなく「広く信じられている考え」として扱われている。「筆者が調査して確かめた」「政府のデータ」「証明する結論」はいずれも本文にない（not_in_text）。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y09",
+      "fact/opinion",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "not_in_text",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y09_V04_FACTOP_002",
+    "testRound": "2nd",
+    "type": "fact_opinion",
+    "source": "Cutting Edge Y09 問題1",
+    "title": "筆者の立ち位置を読む",
+    "question": "次の英文から読み取れる、筆者の立ち位置として最も近いものはどれ？\n\n英文：\nI wonder why this belief has been commonly accepted as if it were true.",
+    "choices": [
+      "この考えが受け入れられてきたことに疑問を持っている",
+      "この考えは完全な誤りだと、筆者ははっきり否定し切っている",
+      "この考えを自分も正しいと信じて受け入れている",
+      "この考えについて意見を述べることを避けている"
+    ],
+    "answer": 0,
+    "explanation": "I wonder why ～ は「なぜ～なのだろうか」という疑問。as if it were true（あたかも本当であるかのように）という言い方から、筆者はこの考えをそのまま事実とは認めていないが、「完全な誤りだと否定」まではしていない（too_strong）。疑問を投げかけている段階であり、信じているわけでも、意見を避けているわけでもない。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y09",
+      "fact/opinion",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "too_strong",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y14_V04_FACTOP_003",
+    "testRound": "2nd",
+    "type": "fact_opinion",
+    "source": "Cutting Edge Y14 問題6",
+    "title": "報告？それとも呼びかけ？",
+    "question": "次の英文は、本文の中でどんな役割をしている？\n\n英文：\nWe can also demand more inspections of factories to make sure that workers are not suffering.",
+    "choices": [
+      "工場の検査が既に増えたという「事実」の報告",
+      "私たち読者に向けた、行動の「提案・呼びかけ」",
+      "工場側が自主的に検査の強化を求めているという事例の紹介",
+      "検査には効果がないという筆者の批判"
+    ],
+    "answer": 1,
+    "explanation": "We can also demand ～ は「私たちは～を要求することもできる」という提案・呼びかけ。主語が We（私たち＝読者を含む）である点がポイント。「検査が既に増えた」という事実は書かれていない。「工場側が求めている」は主語のすり替え（wrong_subject）で、要求するのは私たちの側。検査への批判も本文にない。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y14",
+      "fact/opinion",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "wrong_subject",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y17_V04_FACTOP_004",
+    "testRound": "2nd",
+    "type": "fact_opinion",
+    "source": "Cutting Edge Y17 問題6",
+    "title": "断定？それとも推量？",
+    "question": "次の英文の this may be a discovery for scholars の部分は、どう読むのが正しい？\n\n英文：\nExecutives of fast food chains have known that much for years, though this may be a discovery for scholars.",
+    "choices": [
+      "学者はこの事実を何年も前から知っていた、という報告",
+      "学者は重役たちから直接この事実を教わった、という説明",
+      "重役たちは学者の発見を営業に取り入れた、という事実",
+      "学者にとっては新発見かもしれない、という筆者の推量"
+    ],
+    "answer": 3,
+    "explanation": "may be は「～かもしれない」という推量で、断定ではない。何年も前から知っていたのは学者ではなく重役たち（Executives ... have known that much for years）なので、選択肢の1つ目は主体が逆。「営業に取り入れた」と断定するのは本文にない情報を付け足した読みすぎ（too_strong）。授業プリントでも「知っていたという記述のみ」と確認されている。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y17",
+      "fact/opinion",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "too_strong",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y17_V04_FACTOP_005",
+    "testRound": "2nd",
+    "type": "fact_opinion",
+    "source": "Cutting Edge Y17 問題3",
+    "title": "筆者の分析を見分ける",
+    "question": "次の英文は、本文の中でどんな役割をしている？\n\n英文：\nAfter all, the barrier to purchase, when it comes to fast food, isn't cost or taste. It is a sense of guilt.",
+    "choices": [
+      "ファーストフード店の客へのアンケート調査の集計結果をそのまま示している",
+      "「買うのをためらわせるのは罪悪感だ」という筆者の分析を述べている",
+      "ファーストフードの値段と味に関する公式データを引用している",
+      "罪悪感を持つべきだと読者に呼びかけている"
+    ],
+    "answer": 1,
+    "explanation": "After all（結局のところ）で始まるこの部分は、「購入の壁はコストでも味でもなく、罪の意識だ」という筆者の分析・主張。アンケートの集計や公式データという記述は本文にない（not_in_text）。また「罪悪感を持つべきだ」という呼びかけではなく、客の心理がどうなっているかの説明である。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y17",
+      "fact/opinion",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "not_in_text",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y14_V04_FACTOP_006",
+    "testRound": "2nd",
+    "type": "fact_opinion",
+    "source": "Cutting Edge Y14 問題6",
+    "title": "評価と事実を区別する",
+    "question": "次の2つの英文の関係として最も近いものはどれ？\n\n英文：\nSweatshop conditions are terrible.\nIn many sweatshops, workers can be children under 12 years old.",
+    "choices": [
+      "1文目は具体的な数字にもとづく報告で、2文目は筆者の個人的な感想である",
+      "2つの文はどちらも、筆者の個人的な想像を述べている",
+      "1文目は「ひどい」という評価で、2文目はそれを支える具体的な事実である",
+      "2つの文は互いに矛盾する内容を述べている"
+    ],
+    "answer": 2,
+    "explanation": "terrible（ひどい）は評価を表す語で、1文目は筆者のまとめ・評価。2文目の「12歳未満の子どもが働いていることがある」は、その評価を支える具体的事実。1文目に数字はなく、数字（12歳）があるのは2文目なので、1文目だけを見て「数字の報告」とするのは一部の特徴の取り違え（partial_match）。2つの文は矛盾ではなく「評価→根拠」の関係。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y14",
+      "fact/opinion",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "partial_match",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y15_V04_SEQ_001",
+    "testRound": "2nd",
+    "type": "story_sequence",
+    "source": "Cutting Edge Y15 問題5",
+    "title": "電気自動車の歴史を並べる",
+    "question": "次の英文から読み取れる、出来事の正しい順番はどれ？\n\n英文：\nThe first practical electric car was made in 1859, following the invention of a rechargeable battery.\nIn 1897, many of the taxis in London were powered by electricity.\nHowever, by 1920, electric cars became less common around the world.",
+    "choices": [
+      "充電式電池の発明 → 実用的な電気自動車 → ロンドンの電気タクシー → 世界的な衰退",
+      "実用的な電気自動車 → 充電式電池の発明 → ロンドンの電気タクシー → 世界的な衰退",
+      "ロンドンの電気タクシー → 充電式電池の発明 → 実用的な電気自動車 → 世界的な衰退",
+      "充電式電池の発明 → 世界的な衰退 → 実用的な電気自動車 → ロンドンの電気タクシー"
+    ],
+    "answer": 0,
+    "explanation": "following the invention of a rechargeable battery は「充電式電池の発明の後で」。つまり電池の発明が先、実用的な電気自動車（1859年）が後。その後1897年にロンドンのタクシー、1920年までに衰退という流れ。following を「〜より前」と読み違えると2つ目の選択肢のように順番が逆になる（wrong_time）。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y15",
+      "時系列整理",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "wrong_time",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y15_V04_SEQ_002",
+    "testRound": "2nd",
+    "type": "story_sequence",
+    "source": "Cutting Edge Y15 問題6",
+    "title": "復活はいつ起きた？",
+    "question": "次の英文から読み取れる、時代の流れとして正しいものはどれ？\n\n英文：\nHowever, by 1920, electric cars became less common around the world.\nFor the next 50 years almost all cars used gasoline, not electricity or steam.\nPeople began to look at making electric cars again in the 1970's, because of the high price of gasoline.",
+    "choices": [
+      "電気自動車は1920年に復活し、その後50年間主流であり続けた",
+      "電気自動車は1920年までに衰退し、約50年のガソリン車時代を経て、1970年代に再び注目された",
+      "ガソリン車は1970年代に初めて登場し、電気自動車に取って代わった",
+      "電気自動車と蒸気自動車は、1920年から1970年までの約50年間、交互に流行をくり返していた"
+    ],
+    "answer": 1,
+    "explanation": "by 1920 で衰退 → the next 50 years はガソリン車の時代 → in the 1970's に再注目、という3段階の流れ。again（再び）という語が、1970年代の動きが「復活」であることを示す。1920年は復活ではなく衰退の時期（wrong_time）。ガソリン車の初登場が1970年代という記述も、交互に流行したという記述もない。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y15",
+      "時系列整理",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "wrong_time",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y08_V04_SEQ_003",
+    "testRound": "2nd",
+    "type": "story_sequence",
+    "source": "Cutting Edge Y08 問題4",
+    "title": "Kramerに起きたことの順番",
+    "question": "次の英文から読み取れる、Kramer に起きた出来事の順番として正しいものはどれ？\n\n英文：\nKramer took out a patent on the IXI player and kept working on it to make it better.\nUnfortunately, ideas do not equal income. He could not continue to pay the expensive patent fees.",
+    "choices": [
+      "特許料が払えなくなった後で、初めて特許を取得した",
+      "改良をやめてから、特許を取得した",
+      "特許を取得して改良を続けたが、やがて特許料が払えなくなった",
+      "特許料を問題なく払い続けながら、現在もIXIの改良を続けている"
+    ],
+    "answer": 2,
+    "explanation": "took out a patent（特許を取得した）→ kept working on it（改良を続けた）→ could not continue to pay（払い続けられなくなった）の順。Unfortunately 以降が後の展開を示す。「払えなくなった後で特許取得」は順序が逆（opposite）。「現在も続けている」は could not continue と矛盾する。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y08",
+      "時系列整理",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "opposite",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y10_V04_SEQ_004",
+    "testRound": "2nd",
+    "type": "story_sequence",
+    "source": "Cutting Edge Y10 問題3・問題4",
+    "title": "家ができるまでの手順",
+    "question": "次の英文から読み取れる、家の建設手順として正しいものはどれ？\n\n英文：\nDepending on its size, the frame is then filled with between 10,000 and 25,000 recycled plastic bottles.\nOnce they are in place, necessary services like electric cables and water pipes are installed.\nFinally, standard windows, doors, and a roof are added to complete the structure.",
+    "choices": [
+      "窓とドアを付けてから、骨組みにペットボトルを詰める",
+      "電気ケーブルや水道管などの設備を最初に取り付けてから、ペットボトルを詰める",
+      "ペットボトル・窓とドア・電気水道の設備を、すべて同時に取り付ける",
+      "骨組みにペットボトルを詰め、設備を取り付け、最後に窓・ドア・屋根を付ける"
+    ],
+    "answer": 3,
+    "explanation": "then（それから）→ Once they are in place（ボトルがきちんと収まると）→ Finally（最後に）という順序を示す語がポイント。ボトル→設備→窓・ドア・屋根の順。最初の2つの選択肢は手順の前後を逆にしている（opposite）。「すべて同時」は Once や Finally の存在と合わない。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y10",
+      "時系列整理",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "opposite",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y10_V04_SEQ_005",
+    "testRound": "2nd",
+    "type": "story_sequence",
+    "source": "Cutting Edge Y10 問題6",
+    "title": "収集と建設、どっちが先？",
+    "question": "次の英文から読み取れる、ボトル収集と建設の関係として正しいものはどれ？\n\n英文：\nBezeau and his volunteer helpers collected over a million plastic bottles. Then, after the project ended, Bezeau had an idea to use all the collected bottles as building materials to construct new homes.",
+    "choices": [
+      "収集プロジェクトが終わった後で、ボトルを建材に使う考えを思いついた",
+      "収集と建設の構想は、最初から同時に進められていた",
+      "家を建てる計画が先にあり、足りない建材としてボトルを後から集めた",
+      "収集したボトルは100万本に届かず、建設の構想は中止された"
+    ],
+    "answer": 0,
+    "explanation": "Then, after the project ended（それから、そのプロジェクトが終わった後で）が決め手。収集→（収集終了）→建材化のアイデア、の順で、同時進行ではない。「100万本以上集めた」（over a million）は事実だが、それだけを根拠に「同時に進めた」と読むのは、時間関係を示す after を見落とした部分的な読み（partial_match）。建てる計画が先にあったという記述も、中止の記述もない。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y10",
+      "時系列整理",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "partial_match",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y10_V04_CHARCHG_001",
+    "testRound": "2nd",
+    "type": "character_change",
+    "source": "Cutting Edge Y10 問題1・本文第1段落",
+    "title": "ベゾーを動かしたものは？",
+    "question": "次の本文第1段落の英文を読んで、Robert Bezeau がリサイクル計画を始めた直接のきっかけとして正しいものはどれ？\n\n英文：\nAfter noticing plastic waste being carelessly left on the island's beautiful beaches, one island resident, Robert Bezeau, decided to set up a plastic recycling project.",
+    "choices": [
+      "島の政府からリサイクル計画の責任者に任命されたこと",
+      "海外のリサイクル成功例を紹介するテレビ番組を見て感動したこと",
+      "島の住民全員が集まって計画を立てることを決めたこと",
+      "島の美しい海岸に放置されたプラスチックごみに気づいたこと"
+    ],
+    "answer": 3,
+    "explanation": "After noticing plastic waste being carelessly left on the island's beautiful beaches が、計画を始めた直接のきっかけを示す。島の美しい海岸に放置されたプラスチックごみに気づき、その後 Bezeau が計画を立ち上げることを決めた。政府の任命・テレビ番組・住民全員の決定は本文にない。参照：Cutting Edge Y10 問題1・本文第1段落",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y10",
+      "人物の変化",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "wrong_subject",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y11_V04_CHARCHG_002",
+    "testRound": "2nd",
+    "type": "character_change",
+    "source": "Cutting Edge Y11 問題6",
+    "title": "Citraが子どもに望むこと",
+    "question": "次の英文から読み取れる、Citra の願いとして正しいものはどれ？\n\n英文：\n\"I don't want my children to work here,\" she says, \"I want them to go to school and learn everything they need to get good jobs.\"",
+    "choices": [
+      "子どもたちにも、自分と同じように市場の仕事を継いでほしい",
+      "自分の子どもには、ここで働くのではなく学校で学んでほしい",
+      "子どもたちには、働きながら学校にも通ってほしい",
+      "自分自身がもう一度学校に通い直したい"
+    ],
+    "answer": 1,
+    "explanation": "I don't want my children to work here（子どもたちにここで働いてほしくない）と、I want them to go to school（学校に行ってほしい）の2つがCitraの願い。「仕事を継いでほしい」は本文と正反対（opposite）。「働きながら学校にも」は don't want ～ to work here と合わない。願いの対象は my children／them であって、Citra自身の通学ではない。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y11",
+      "人物の変化",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "opposite",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y08_V04_CHARCHG_003",
+    "testRound": "2nd",
+    "type": "character_change",
+    "source": "Cutting Edge Y08 問題4",
+    "title": "Kramerの状況はどう変わった？",
+    "question": "次の英文から読み取れる、Kramer の状況の変化として正しいものはどれ？\n\n英文：\nKramer took out a patent on the IXI player and kept working on it to make it better.\nUnfortunately, ideas do not equal income. He could not continue to pay the expensive patent fees.",
+    "choices": [
+      "特許を大企業に売って、大きな利益を手に入れた",
+      "改良の努力が実り、IXIは大ヒット商品になった",
+      "改良を続けていたが、お金が足りず特許を維持できなくなった",
+      "最初から特許をいっさい取らずに、アイデアを無料で公開する道を選んだ"
+    ],
+    "answer": 2,
+    "explanation": "kept working on it（改良を続けていた）状態から、ideas do not equal income（アイデアは収入にならない）ため could not continue to pay（払い続けられなくなった）へ変化した。「特許を売って利益を得た」「大ヒットした」は本文にない（not_in_text）。特許は取得している（took out a patent）ので「最初から取らなかった」も誤り。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y08",
+      "人物の変化",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "not_in_text",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y11_V04_CHARCHG_004",
+    "testRound": "2nd",
+    "type": "character_change",
+    "source": "Cutting Edge Y11 問題6",
+    "title": "働くことの意味の変化",
+    "question": "次の英文から読み取れる、Citra が市場で稼ぐお金に込めた将来の希望はどれ？\n\n英文：\nCitra hopes that when she has children, she will be able to send them to school using the money that she earns at the market.",
+    "choices": [
+      "将来、自分の子どもを学校に通わせるために使いたい",
+      "市場の店を大きくするための資金にしたい",
+      "これからも宿代と家族への仕送りだけに使い続けるつもりでいる",
+      "貯金はせず、すべてその日の生活のために使いたい"
+    ],
+    "answer": 0,
+    "explanation": "hopes that ～ she will be able to send them to school using the money が中心。市場で稼ぐお金を「将来の子どもの教育」につなげたいという希望。宿代や仕送りは本文の別の箇所にある現在のお金の使い道であり、この文が述べる「将来の希望」とは別（partial_match：本文にある情報だが、問われている内容とは一致しない）。店の拡大やその日暮らしの話はない。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y11",
+      "人物の変化",
+      "アプリ完結"
+    ],
+    "mistakeTag": "inference",
+    "trapType": "partial_match",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y11_V04_OUTLINE_001",
+    "testRound": "2nd",
+    "type": "story_outline",
+    "source": "Cutting Edge Y11 問題5",
+    "title": "段落の中心をつかむ",
+    "question": "次の英文のまとまりが伝えたい中心的な内容はどれ？\n\n英文：\nIt is especially difficult for girls to go to school: they are expected to help with housework and farming.\nIf there is a little money for education, it is used for boys in the family, and even when girls do go to school, in many countries, they leave at a younger age than their brothers.",
+    "choices": [
+      "女の子は手伝いやお金の使われ方のせいで、学校に通うことが特に難しい",
+      "女の子は家事や農作業を手伝うことを期待されている",
+      "教育のためのお金は家族の男の子のために使われる",
+      "多くの国では、男の子も女の子もまったく同じ年齢で学校を卒業してやめていく"
+    ],
+    "answer": 0,
+    "explanation": "1文目の It is especially difficult for girls to go to school が中心で、コロン（:）以下と2文目はその理由の説明。「家事や農作業の手伝い」も「お金が男の子に使われる」も本文にあるが、それぞれ理由の一部にすぎず、まとまり全体の中心ではない（partial_match）。「同じ年齢でやめる」は本文と逆（they leave at a younger age than their brothers）。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y11",
+      "要旨把握",
+      "アプリ完結"
+    ],
+    "mistakeTag": "tf",
+    "trapType": "partial_match",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y12_V04_OUTLINE_002",
+    "testRound": "2nd",
+    "type": "story_outline",
+    "source": "Cutting Edge Y12 問題1・問題5",
+    "title": "ウミガメの能力の全体像",
+    "question": "次の英文のまとまりが伝えたい中心的な内容はどれ？\n\n英文：\nAmerican scientists have found strong evidence that baby sea turtles are born with the ability to recognize and measure the Earth's magnetic fields.\nThey found that the sea turtles use the magnetic fields to guide them as they swim great distances across the ocean.",
+    "choices": [
+      "ウミガメの赤ちゃんは、生まれてから泳ぎ方を学習する",
+      "ウミガメは地球の磁界を認識できる、という能力の紹介だけを述べている",
+      "ウミガメは生まれつき磁界を認識でき、それを長距離移動の道しるべに使っている",
+      "科学者はウミガメの赤ちゃんを道具として使い、地球の磁界の強さを測定している"
+    ],
+    "answer": 2,
+    "explanation": "1文目は、ウミガメの赤ちゃんが地球の磁界を認識・測定する能力を生まれつき持つことを述べ、2文目は、その磁界を大洋を長距離移動するときの道しるべに使うことを述べている。したがって中心は「能力＋その使い方」。能力の紹介だけでは2文目を含まず不十分で、磁界を認識・測定する主体を科学者にすり替えるのも誤り。参照：Cutting Edge Y12 問題1・問題5",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y12",
+      "要旨把握",
+      "アプリ完結"
+    ],
+    "mistakeTag": "tf",
+    "trapType": "partial_match",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y12_V04_OUTLINE_003",
+    "testRound": "2nd",
+    "type": "story_outline",
+    "source": "Cutting Edge Y12 問題4",
+    "title": "環状海流とカメの関係",
+    "question": "次の英文のまとまりが伝えたい中心的な内容はどれ？\n\n英文：\nWater in the gyre is generally warm and food there is plentiful.\nTurtles that leave the gyre often die from the cold water.",
+    "choices": [
+      "環状海流の外の海水は、実は栄養が豊富である",
+      "環状海流を一度でも離れたカメは、例外なく必ず全て死んでしまう",
+      "カメは冷たい海水を好んで、環状海流の外へ出たがる",
+      "環状海流は温かく餌も豊富で、カメの生存を支えている"
+    ],
+    "answer": 3,
+    "explanation": "「海流内は温かく餌が豊富」＋「離れると冷たい水で死ぬことが多い」の2文で、環状海流がカメの命綱であることを伝えている。often（しばしば）は「必ず」ではないので、「例外なく必ず死ぬ」は言いすぎ（too_strong）。栄養豊富なのは海流の中であって外ではない。カメが冷たい水を好むという記述はなく、むしろ逆。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y12",
+      "要旨把握",
+      "アプリ完結"
+    ],
+    "mistakeTag": "tf",
+    "trapType": "too_strong",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y14_V04_OUTLINE_004",
+    "testRound": "2nd",
+    "type": "story_outline",
+    "source": "Cutting Edge Y14 問題3",
+    "title": "この段落は何の話？",
+    "question": "次の英文のまとまりが伝えたい中心的な内容はどれ？\n\n英文：\nMany boycotts have been successful, including a huge one in the U.S., in which university students refused to buy popular college clothing (T-shirts, hats, etc. with logos of their schools) because it had been produced in sweatshops.",
+    "choices": [
+      "アメリカの大学生は、大学ロゴ入りの服が好きではない",
+      "不買運動という消費者の行動が、搾取工場への対抗手段として成果を上げている",
+      "大学ロゴ入りの服は、世界中どこでも例外なくすべて搾取工場で作られている",
+      "アメリカでは不買運動がたびたび失敗してきた"
+    ],
+    "answer": 1,
+    "explanation": "文の骨格は Many boycotts have been successful（多くの不買運動が成功している）で、アメリカの大学生の例（including ～）はその代表例。中心は「不買運動の成果」。大学生が買わなかったのは搾取工場製だったからで、服が嫌いだからではない。「すべて搾取工場製」とは書かれていない（too_strong）。「失敗してきた」は successful と正反対（opposite）。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y14",
+      "要旨把握",
+      "アプリ完結"
+    ],
+    "mistakeTag": "tf",
+    "trapType": "opposite",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y17_V04_OUTLINE_005",
+    "testRound": "2nd",
+    "type": "story_outline",
+    "source": "Cutting Edge Y17 問題2",
+    "title": "「健康メニュー」の役割",
+    "question": "次の英文のまとまりが伝えたい中心的な内容はどれ？\n\n英文：\nThey have introduced so-called \"healthy\" foods. They serve two vital purposes.\nFirst, they attract a group of customers who otherwise might never set foot in a fast food restaurant.",
+    "choices": [
+      "ファーストフード店は、健康メニューの値段を大きく下げることで客を集めている",
+      "健康メニューは味の評判が悪く、客足を遠ざけている",
+      "客は健康メニューが目当てで、ハンバーガーは注文しなくなった",
+      "いわゆる健康メニューには、新しい客層を呼び込むという重要な役割がある"
+    ],
+    "answer": 3,
+    "explanation": "They serve two vital purposes（2つの重要な目的を果たす）の First として、otherwise might never set foot（そうでなければ決して足を踏み入れないであろう）客層を引きつける役割が述べられている。値段を下げたという記述はこの部分にはない（not_in_text）。「客足を遠ざける」は attract（引きつける）と正反対。ハンバーガーを注文しなくなったという話も出てこない。",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y17",
+      "要旨把握",
+      "アプリ完結"
+    ],
+    "mistakeTag": "tf",
+    "trapType": "not_in_text",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y08_001",
+    "testRound": "2nd",
+    "type": "discourse_marker",
+    "source": "Cutting Edge Y08 問題1",
+    "title": "Surprisingly の働き",
+    "question": "次の英文の空所に最も合う語は？\n\n英文：\nApple is also well-known for another product, the iPod, the digital media player. ( 1 ), the iPod was not the idea of Jobs, or Wozniak, or anyone at Apple.",
+    "choices": [
+      "Naturally",
+      "Fortunately",
+      "Surprisingly",
+      "Undoubtedly"
+    ],
+    "answer": 2,
+    "explanation": "iPodがApple社内の人物の発案ではなかった、という意外な事実を導くので Surprisingly（驚いたことに）が適切。参照：Cutting Edge Y08 問題1",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y08",
+      "接続副詞",
+      "文脈判断"
+    ],
+    "mistakeTag": "inference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y08_002",
+    "testRound": "2nd",
+    "type": "reading_reference",
+    "source": "Cutting Edge Y08 問題3",
+    "title": "this が指す内容",
+    "question": "次の英文で this が指す内容として最も適切なものは？\n\n英文：\nHe thought that in the future music would be inputted directly into the IXI at shops or by telephone, and this is now what we have with Apple’s iTunes and other on-line music stores.",
+    "choices": [
+      "IXIの特許料金を支払うこと",
+      "JobsがiPodを発明したこと",
+      "音楽を店や電話でIXIへ直接入力すること",
+      "オンライン音楽店がなくなること"
+    ],
+    "answer": 2,
+    "explanation": "this は直前の内容、すなわち「音楽を店や電話でIXIへ直接入力すること」を受ける。参照：Cutting Edge Y08 問題3",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y08",
+      "指示語",
+      "this"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y08_003",
+    "testRound": "2nd",
+    "type": "reading_reason",
+    "source": "Cutting Edge Y08 問題4",
+    "title": "開発を続けられなかった理由",
+    "question": "次の英文から、KramerがIXIの開発を続けられなかった理由として最も適切なものは？\n\n英文：\nUnfortunately, ideas do not equal income. He could not continue to pay the expensive patent fees.",
+    "choices": [
+      "Appleに設計を断られたから",
+      "IXIがすでに完成していたから",
+      "オンライン音楽店を経営することにしたから",
+      "十分な資金がなく、高額な特許料を払い続けられなかったから"
+    ],
+    "answer": 3,
+    "explanation": "直接の根拠は He could not continue to pay the expensive patent fees.。高額な特許料を払い続けられなかったことが理由。参照：Cutting Edge Y08 問題4",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y08",
+      "理由説明",
+      "本文根拠"
+    ],
+    "mistakeTag": "pinpoint",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y08_004",
+    "testRound": "2nd",
+    "type": "reading_reference",
+    "source": "Cutting Edge Y08 本文第4段落",
+    "title": "This changed の内容",
+    "question": "次の英文を読んで、This changed が表す変化として最も適切なものは？\n\n英文：\nKramer later became a furniture designer and salesperson in England. He did not want to think about Apple and the iPod. This changed in 2007 when Kramer suddenly received a phone call from Apple. Apple needed his help to show that the iPod was based on Kramer's drawings and design system for the IXI.",
+    "choices": [
+      "Kramerが家具の仕事を辞め、再びゲーム会社で働き始めたこと",
+      "AppleがiPodの販売をやめ、IXIをそのまま販売することにしたこと",
+      "AppleとiPodを考えたくなかったKramerが、Appleから協力を求められて再び関わることになったこと",
+      "KramerがAppleへ電話をかけ、iPodの売上金を要求したこと"
+    ],
+    "answer": 2,
+    "explanation": "This changed は直前の He did not want to think about Apple and the iPod. を受ける。2007年にAppleから突然電話があり、iPodがKramerの図面とIXIの設計に基づくことを示すための協力を求められ、再びAppleとiPodに関わることになった。Kramerから電話したのではなく、売上金を要求したとも書かれていない。参照：Cutting Edge Y08 本文第4段落",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y08",
+      "指示語",
+      "本文根拠",
+      "アプリ完結"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y09_001",
+    "testRound": "2nd",
+    "type": "reading_reference",
+    "source": "Cutting Edge Y09 問題1",
+    "title": "this belief の内容",
+    "question": "次の英文の this belief が指す考えとして最も適切なものは？\n\n英文：\nFrench people are proud of their native language, so even if they have a good English ability, they speak nothing but French. No one can tell whether French people or non-French people were the first to say this. However, quite a few people seem to have been convinced by the above words. I wonder why this belief has been commonly accepted as if it were true.",
+    "choices": [
+      "フランス人は英語を学ばないという考え",
+      "フランス語は英語より簡単だという考え",
+      "外国人はフランス語を話すべきだという考え",
+      "フランス人は英語力があってもフランス語しか話さないという考え"
+    ],
+    "answer": 3,
+    "explanation": "this belief は this、the above words とさかのぼり、冒頭の「英語力があってもフランス語しか話さない」という内容を指す。参照：Cutting Edge Y09 問題1",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y09",
+      "指示語",
+      "this belief"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y09_002",
+    "testRound": "2nd",
+    "type": "vocab_context",
+    "source": "Cutting Edge Y09 問題2",
+    "title": "turn down の文脈意味",
+    "question": "次の英文の turned down に最も近い意味は？\n\n英文：\nAt first I asked the way to sightseeing spots, but they frequently turned down my question by saying “No,” in French.",
+    "choices": [
+      "accepted",
+      "appreciated",
+      "refused",
+      "misunderstood"
+    ],
+    "answer": 2,
+    "explanation": "turn down はこの文脈では「断る」。選択肢では refused が最も近い。参照：Cutting Edge Y09 問題2",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y09",
+      "文脈語彙",
+      "turn down"
+    ],
+    "mistakeTag": "meaning",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y09_003",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Cutting Edge Y09 問題4",
+    "title": "unless と just because",
+    "question": "次の英文の意味として最も自然なものは？\n\n英文：\nUnless people actually use English, they won’t be able to speak it just because they learned it at school.",
+    "choices": [
+      "学校で英語を学びさえすれば、実際に使わなくても話せるようになる",
+      "実際に英語を使わない限り、学校で学んだというだけでは話せるようにならない",
+      "学校で学ばなければ、英語を使うことはできない",
+      "英語を話せる人は学校で学んだことがない"
+    ],
+    "answer": 1,
+    "explanation": "unless は「〜しない限り」。否定文の just because は「単に〜という理由だけでは…ない」。参照：Cutting Edge Y09 問題4",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y09",
+      "和訳ポイント",
+      "unless",
+      "just because"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y09_004",
+    "testRound": "2nd",
+    "type": "reading_tf",
+    "source": "Cutting Edge Y09 問題5",
+    "title": "本文内容に合うもの",
+    "question": "次のうち、本文内容に合うものはどれ？\n\n英文：\nFrench people are proud of their native language, so even if they have a good English ability, they speak nothing but French. However, quite a few people seem to have been convinced by the above words.",
+    "choices": [
+      "英語を話せるフランス人は一人もいない",
+      "多くの人が、英語を話せるフランス人も英語を使わないことがあると信じている",
+      "フランス人は外国人と話すことを恥ずかしがっている",
+      "フランス人が最初に英語を作ったことが証明されている"
+    ],
+    "answer": 1,
+    "explanation": "quite a few people seem to have been convinced by the above words が根拠。ほかは本文にない、または強すぎる。参照：Cutting Edge Y09 問題5",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y09",
+      "内容一致",
+      "本文根拠"
+    ],
+    "mistakeTag": "tf",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y10_001",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Cutting Edge Y10 問題1",
+    "title": "after noticing の訳し方",
+    "question": "次の英文の after noticing plastic waste being carelessly left ... の意味として最も自然なものは？\n\n英文：\nAfter noticing plastic waste being carelessly left on the island’s beautiful beaches, one island resident, Robert Bezeau, decided to set up a plastic recycling project.",
+    "choices": [
+      "プラスチックごみを海岸に置いた後",
+      "海岸の美しさを宣伝した後",
+      "リサイクル計画が中止されたことを知った後",
+      "プラスチックごみが海岸にぞんざいに放置されているのに気づいた後"
+    ],
+    "answer": 3,
+    "explanation": "notice O doing は「Oが〜しているのに気づく」。ここでは waste が being left（放置されている）状態。参照：Cutting Edge Y10 問題1",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y10",
+      "和訳ポイント",
+      "notice O doing",
+      "受け身"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y10_002",
+    "testRound": "2nd",
+    "type": "vocab_context",
+    "source": "Cutting Edge Y10 問題2",
+    "title": "purpose の言い換え",
+    "question": "次の英文の purpose に最も近い意味は？\n\n英文：\nThirty-four hectares of undeveloped land were bought for the purpose, and the Plastic Bottle Village was born.",
+    "choices": [
+      "aim",
+      "subject",
+      "design",
+      "proposal"
+    ],
+    "answer": 0,
+    "explanation": "purpose は「目的」。最も近いのは aim。参照：Cutting Edge Y10 問題2",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y10",
+      "文脈語彙",
+      "purpose"
+    ],
+    "mistakeTag": "meaning",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y10_003",
+    "testRound": "2nd",
+    "type": "discourse_marker",
+    "source": "Cutting Edge Y10 問題3",
+    "title": "工程をつなぐ Once",
+    "question": "次の英文の空所に最も適切な語は？\n\n英文：\nDepending on its size, the frame is then filled with between 10,000 and 25,000 recycled plastic bottles. ( 3 ) they are in place, necessary services like electric cables and water pipes are installed.",
+    "choices": [
+      "Once",
+      "Before",
+      "Even if",
+      "Unless"
+    ],
+    "answer": 0,
+    "explanation": "ペットボトルが所定の位置に入った「あとで」設備を設置する流れなので Once（いったん〜すると）が適切。参照：Cutting Edge Y10 問題3",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y10",
+      "接続詞",
+      "Once",
+      "手順"
+    ],
+    "mistakeTag": "inference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y10_004",
+    "testRound": "2nd",
+    "type": "discourse_marker",
+    "source": "Cutting Edge Y10 問題4",
+    "title": "So far の文脈判断",
+    "question": "次の英文の空所に最も適切な語句は？\n\n英文：\nFinally, standard windows, doors, and a roof are added to complete the structure. ( 4 ), only a few houses have been completed, but, if everything goes according to plan, the final village will have 120 homes, a guest house, and a community park.",
+    "choices": [
+      "Fortunately",
+      "Nevertheless",
+      "So far",
+      "As a result"
+    ],
+    "answer": 2,
+    "explanation": "現時点までに完成した家はわずか、という意味なので So far（これまでのところ）が最適。参照：Cutting Edge Y10 問題4",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y10",
+      "接続表現",
+      "So far",
+      "文脈判断"
+    ],
+    "mistakeTag": "inference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y11_001",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Cutting Edge Y11 問題2",
+    "title": "コロンの働き",
+    "question": "次の英文のコロン（:）の働きとして最も適切なものは？\n\n英文：\nIt is especially difficult for girls to go to school: they are expected to help with housework and farming.",
+    "choices": [
+      "前後を反対の内容にする",
+      "前の内容の理由・補足説明を示す",
+      "具体例を列挙せず省略する",
+      "時間の前後関係を示す"
+    ],
+    "answer": 1,
+    "explanation": "コロン以下が「女の子が学校に通うのが特に難しい」理由を補足している。参照：Cutting Edge Y11 問題2",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y11",
+      "句読法",
+      "コロン",
+      "理由"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y11_002",
+    "testRound": "2nd",
+    "type": "reading_reason",
+    "source": "Cutting Edge Y11 問題2",
+    "title": "女の子が通学しにくい理由",
+    "question": "次の英文から、女の子が学校へ通うことが特に難しい理由として最も適切なものは？\n\n英文：\nIt is especially difficult for girls to go to school: they are expected to help with housework and farming. If there is a little money for education, it is used for boys in the family.",
+    "choices": [
+      "女の子は学校が嫌いだから",
+      "学校が女子だけを受け入れないから",
+      "女の子は家事や農作業を期待され、教育費が男の子に使われることがあるから",
+      "女の子は男子より年上だから"
+    ],
+    "answer": 2,
+    "explanation": "根拠は they are expected to help ... と money ... is used for boys。2つの理由をまとめた選択肢が正解。参照：Cutting Edge Y11 問題2",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y11",
+      "理由説明",
+      "複数根拠"
+    ],
+    "mistakeTag": "pinpoint",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y11_003",
+    "testRound": "2nd",
+    "type": "number_compare",
+    "source": "Cutting Edge Y11 問題4",
+    "title": "Citra の年齢",
+    "question": "次の英文から、Citraの現在のおおよその年齢として最も適切なものは？\n\n英文：\nCitra started working at the fruit market in Jakarta when she was ten years old. For the past five years, she has worked from 5 a.m. until evening.",
+    "choices": [
+      "10歳",
+      "約12歳",
+      "約15歳",
+      "約20歳"
+    ],
+    "answer": 2,
+    "explanation": "10歳で働き始め、その後5年間働いているので約15歳。参照：Cutting Edge Y11 問題4",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y11",
+      "数字",
+      "年齢計算"
+    ],
+    "mistakeTag": "tf",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y11_004",
+    "testRound": "2nd",
+    "type": "reading_evidence",
+    "source": "Cutting Edge Y11 問題6",
+    "title": "Citra の望み",
+    "question": "Citraの望みを最もよく表す英文はどれ？",
+    "choices": [
+      "I want them to go to school and learn everything they need to get good jobs.",
+      "She carries a huge basket loaded with fruit and vegetables on her head all day.",
+      "For the past five years, she has worked from 5 a.m. until evening.",
+      "Some of the money Citra sends home is used for her younger brother."
+    ],
+    "answer": 0,
+    "explanation": "将来、自分の子どもに学校で学び、良い仕事を得てほしいという望みを直接述べた文。参照：Cutting Edge Y11 問題6",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y11",
+      "本文根拠",
+      "望み"
+    ],
+    "mistakeTag": "pinpoint",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y12_001",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Cutting Edge Y12 問題1",
+    "title": "be born with the ability to do",
+    "question": "baby sea turtles are born with the ability to recognize and measure ... の意味として最も自然なものは？",
+    "choices": [
+      "ウミガメの赤ちゃんは認識され測定されるために生まれる",
+      "ウミガメの赤ちゃんは生まれた後で能力を失う",
+      "ウミガメの赤ちゃんは認識し測定する能力を持って生まれる",
+      "ウミガメの赤ちゃんは能力について教えられる"
+    ],
+    "answer": 2,
+    "explanation": "be born with the ability to do は「〜する能力を持って生まれる」。参照：Cutting Edge Y12 問題1",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y12",
+      "構文",
+      "ability to do"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y12_002",
+    "testRound": "2nd",
+    "type": "reading_reference",
+    "source": "Cutting Edge Y12 問題3",
+    "title": "that の指すもの",
+    "question": "次の英文の that が指すものは？\n\n英文：\nWhenever the turtles were in a magnetic field like that found in the ocean, they swam in a direction that would keep them in the warm current.",
+    "choices": [
+      "the turtles",
+      "a magnetic field",
+      "the ocean",
+      "the warm current"
+    ],
+    "answer": 1,
+    "explanation": "like that found in the ocean の that は、直前の a magnetic field の代用。参照：Cutting Edge Y12 問題3",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y12",
+      "指示語",
+      "that"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y12_003",
+    "testRound": "2nd",
+    "type": "reading_reason",
+    "source": "Cutting Edge Y12 問題4",
+    "title": "環状海流で生きられる理由",
+    "question": "次の英文から、アカウミガメがNorth Atlantic gyreで生きられる主な理由は？\n\n英文：\nWater in the gyre is generally warm and food there is plentiful. Turtles that leave the gyre often die from the cold water.",
+    "choices": [
+      "海流が短く泳ぎやすいから",
+      "海流の外に敵がいないから",
+      "毎年同じ場所で生まれるから",
+      "水が温かく、餌が豊富だから"
+    ],
+    "answer": 3,
+    "explanation": "warm と food ... plentiful が直接の根拠。参照：Cutting Edge Y12 問題4",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y12",
+      "理由説明",
+      "本文根拠"
+    ],
+    "mistakeTag": "pinpoint",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y12_004",
+    "testRound": "2nd",
+    "type": "reading_tf",
+    "source": "Cutting Edge Y12 問題5(2)",
+    "title": "ほかの生物への広がり",
+    "question": "次の英文から判断して、本文内容に合うものはどれ？\n\n英文：\nKenneth Lohmann says the findings provide direct evidence that turtles can use the Earth’s magnetic fields as markers. He says similar systems might exist in other ocean creatures and even some birds.",
+    "choices": [
+      "磁界を使うのはカメだけである",
+      "ほかの海洋生物や一部の鳥も似た仕組みを使う可能性がある",
+      "すべての鳥が磁界を使うことが証明された",
+      "研究者は磁界の存在を否定している"
+    ],
+    "answer": 1,
+    "explanation": "might exist が「存在する可能性」を表す。断定ではない点にも注意。参照：Cutting Edge Y12 問題5(2)",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y12",
+      "内容一致",
+      "might"
+    ],
+    "mistakeTag": "tf",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y14_001",
+    "testRound": "2nd",
+    "type": "reading_reason",
+    "source": "Cutting Edge Y14 問題1",
+    "title": "衣料産業に多い理由",
+    "question": "次の英文から、sweatshopsが主に衣料産業に存在する理由として最も適切なものは？\n\n英文：\nSweatshops exist mainly in the clothing industry, where not every machine can replace detailed work by hand.",
+    "choices": [
+      "衣料品は機械で一切作れないから",
+      "衣料産業には法律がないから",
+      "衣服の需要がなくなったから",
+      "細かな手作業のすべてを機械で代替できないから"
+    ],
+    "answer": 3,
+    "explanation": "not every machine can replace detailed work by hand が理由。参照：Cutting Edge Y14 問題1",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y14",
+      "理由説明",
+      "not every"
+    ],
+    "mistakeTag": "pinpoint",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y14_002",
+    "testRound": "2nd",
+    "type": "vocab_context",
+    "source": "Cutting Edge Y14 問題2",
+    "title": "illegal immigrants",
+    "question": "次の英文の illegal immigrants の意味として最も適切なものは？\n\n英文：\nSweatshops can even be found in the U.S., where firms employ illegal immigrants.",
+    "choices": [
+      "合法的に働く市民",
+      "違法に入国・滞在している移民",
+      "海外へ旅行する学生",
+      "工場を検査する職員"
+    ],
+    "answer": 1,
+    "explanation": "illegal は「違法な」、immigrants は「移民」。参照：Cutting Edge Y14 問題2",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y14",
+      "語彙",
+      "illegal immigrants"
+    ],
+    "mistakeTag": "meaning",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y14_003",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Cutting Edge Y14 問題3",
+    "title": "in which の訳し方",
+    "question": "次の英文の in which の訳し方として最も自然なものは？\n\n英文：\nMany boycotts have been successful, including a huge one in the U.S., in which university students refused to buy popular college clothing because it had been produced in sweatshops.",
+    "choices": [
+      "その衣服の中では",
+      "その大学の前では",
+      "その工場のために",
+      "その不買運動では"
+    ],
+    "answer": 3,
+    "explanation": "先行詞は a huge one（大規模な不買運動）。in which は「その不買運動では」と訳す。参照：Cutting Edge Y14 問題3",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y14",
+      "関係詞",
+      "in which",
+      "和訳ポイント"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y14_004",
+    "testRound": "2nd",
+    "type": "reading_tf",
+    "source": "Cutting Edge Y14 問題6",
+    "title": "改善策の内容一致",
+    "question": "次の英文と内容が一致するものはどれ？\n\n英文：\nWe can also demand more inspections of factories to make sure that workers are not suffering.",
+    "choices": [
+      "労働者が苦しんでいないか確認するため、工場検査を増やすよう求められる",
+      "工場検査をすべて廃止するべきだ",
+      "労働者を工場から追い出すべきだ",
+      "衣料品の価格を必ず上げるべきだ"
+    ],
+    "answer": 0,
+    "explanation": "more inspections of factories と make sure that workers are not suffering をそのまま言い換えた選択肢。参照：Cutting Edge Y14 問題6",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y14",
+      "内容一致",
+      "改善策"
+    ],
+    "mistakeTag": "tf",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y15_001",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Cutting Edge Y15 問題2",
+    "title": "無生物主語 make O C",
+    "question": "次の英文の made gasoline-powered cars cheaper, faster and easier to use の構造として最も適切なものは？\n\n英文：\nBetter roads, cheaper gasoline and other developments made gasoline-powered cars cheaper, faster and easier to use.",
+    "choices": [
+      "make O C：SによってOがCになる",
+      "make O do：Oに〜させる",
+      "be made of：〜で作られる",
+      "make up：〜を構成する"
+    ],
+    "answer": 0,
+    "explanation": "made + O + C の形で、「より良い道路などによってガソリン車がより安く・速く・使いやすくなった」。参照：Cutting Edge Y15 問題2",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y15",
+      "構文",
+      "make O C",
+      "無生物主語"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y15_002",
+    "testRound": "2nd",
+    "type": "reading_reason",
+    "source": "Cutting Edge Y15 問題2",
+    "title": "電気自動車が減った理由",
+    "question": "1920年までに電気自動車が一般的でなくなった理由として最も適切なものは？\n\n英文：\nBetter roads, cheaper gasoline and other developments made gasoline-powered cars cheaper, faster and easier to use.",
+    "choices": [
+      "電気が発明されていなかったから",
+      "道路がすべて閉鎖されたから",
+      "ガソリン車がより安く、速く、使いやすくなったから",
+      "蒸気自動車が禁止されたから"
+    ],
+    "answer": 2,
+    "explanation": "英文の cheaper, faster and easier to use が直接の理由。参照：Cutting Edge Y15 問題2",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y15",
+      "理由説明",
+      "比較"
+    ],
+    "mistakeTag": "pinpoint",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y15_003",
+    "testRound": "2nd",
+    "type": "reading_tf",
+    "source": "Cutting Edge Y15 問題4",
+    "title": "Tesla の特徴",
+    "question": "次の英文からわかるTesla社の特徴は？\n\n英文：\nOne new car company, Tesla, makes only electric cars, and the Tesla S is now the most popular electric car in North America.",
+    "choices": [
+      "ガソリン車だけを作る",
+      "蒸気自動車を最初に発明した",
+      "北米では自動車を販売していない",
+      "電気自動車だけを作る"
+    ],
+    "answer": 3,
+    "explanation": "makes only electric cars が根拠。参照：Cutting Edge Y15 問題4",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y15",
+      "内容一致",
+      "only"
+    ],
+    "mistakeTag": "tf",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y15_004",
+    "testRound": "2nd",
+    "type": "number_compare",
+    "source": "Cutting Edge Y15 問題6",
+    "title": "not as long as の比較",
+    "question": "次の英文から判断して正しいものはどれ？\n\n英文：\nElectric cars couldn’t be driven as long as steam-powered or gasoline-powered cars.",
+    "choices": [
+      "電気自動車は蒸気・ガソリン車より長距離を走れた",
+      "電気自動車は蒸気・ガソリン車ほど長く走れなかった",
+      "3種類の車は同じ距離を走れた",
+      "蒸気自動車だけが走れなかった"
+    ],
+    "answer": 1,
+    "explanation": "X not as ... as Y は「XはYほど…でない」。参照：Cutting Edge Y15 問題6",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y15",
+      "比較",
+      "not as as"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y17_001",
+    "testRound": "2nd",
+    "type": "vocab_context",
+    "source": "Cutting Edge Y17 問題1",
+    "title": "target の言い換え",
+    "question": "次の英文の target に最も近い意味は？\n\n英文：\nOne of the fast food chains’ strategies is to target populations — kids, young people, and the poor in particular — who tend to ignore nutritional warnings.",
+    "choices": [
+      "attack",
+      "focus on",
+      "criticize",
+      "defend"
+    ],
+    "answer": 1,
+    "explanation": "target はここでは「〜を対象にする」。focus on が最も近い。参照：Cutting Edge Y17 問題1",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y17",
+      "文脈語彙",
+      "target"
+    ],
+    "mistakeTag": "meaning",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y17_002",
+    "testRound": "2nd",
+    "type": "reading_reference",
+    "source": "Cutting Edge Y17 問題2",
+    "title": "they の指すもの",
+    "question": "次の英文の2文目の They / they が指すものは？\n\n英文：\nThey have introduced so-called “healthy” foods. They serve two vital purposes. First, they attract a group of customers who otherwise might never set foot in a fast food restaurant.",
+    "choices": [
+      "fast food chains",
+      "customers",
+      "nutritional warnings",
+      "so-called healthy foods"
+    ],
+    "answer": 3,
+    "explanation": "直前に導入された複数名詞 so-called “healthy” foods を受ける。参照：Cutting Edge Y17 問題2",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y17",
+      "指示語",
+      "they"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y17_003",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Cutting Edge Y17 問題2",
+    "title": "otherwise の補い方",
+    "question": "次の英文の otherwise の意味として最も自然なものは？\n\n英文：\nThey attract a group of customers who otherwise might never set foot in a fast food restaurant.",
+    "choices": [
+      "健康食品が導入されていなければ",
+      "値段がもっと高ければ",
+      "客が空腹でなければ",
+      "レストランが閉店した後なら"
+    ],
+    "answer": 0,
+    "explanation": "otherwise は「そうでなければ」。文脈上「いわゆる健康食品が導入されていなければ」を補う。参照：Cutting Edge Y17 問題2",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y17",
+      "和訳ポイント",
+      "otherwise"
+    ],
+    "mistakeTag": "inference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y17_004",
+    "testRound": "2nd",
+    "type": "reading_reference",
+    "source": "Cutting Edge Y17 問題3",
+    "title": "this psychological process",
+    "question": "次の英文の this psychological process が指す内容として最も適切なものは？\n\n英文：\nAfter all, the barrier to purchase, when it comes to fast food, isn’t cost or taste. It is a sense of guilt. And executives of fast food chains are well aware of this psychological process.",
+    "choices": [
+      "ファーストフードを食べることに罪悪感を持つ心理",
+      "価格が高いほど味がよくなるという心理",
+      "栄養表示を必ず読む習慣",
+      "店員が客に謝る行動"
+    ],
+    "answer": 0,
+    "explanation": "直前の a sense of guilt、つまりファーストフードを食べることへの後ろめたさを指す。参照：Cutting Edge Y17 問題3",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y17",
+      "指示語",
+      "心理過程"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y18_001",
+    "testRound": "2nd",
+    "type": "vocab_context",
+    "source": "Cutting Edge Y18 問題2",
+    "title": "a matter of chance",
+    "question": "次の英文の空所に最も適切な語は？\n\n英文：\nSometimes you win, sometimes you lose. It is a matter of ( ) whether we win or lose.",
+    "choices": [
+      "interest",
+      "chance",
+      "ability",
+      "intelligence"
+    ],
+    "answer": 1,
+    "explanation": "勝つことも負けることもある、という流れなので a matter of chance（運の問題）が自然。参照：Cutting Edge Y18 問題2",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y18",
+      "語彙",
+      "chance"
+    ],
+    "mistakeTag": "meaning",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y18_002",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Cutting Edge Y18 問題3",
+    "title": "仮定法過去",
+    "question": "次の英文の if there was ... が表すものとして最も適切なのは？\n\n英文：\nHow would you feel if there was a rock-paper-scissors player who could never be beaten?",
+    "choices": [
+      "過去に実際に起きた出来事",
+      "未来に必ず起きる予定",
+      "一般的な習慣",
+      "現在の事実に反する、または現実性の低い仮定"
+    ],
+    "answer": 3,
+    "explanation": "would と過去形 was を用いた仮定法過去で、現実とは異なる仮定を表す。参照：Cutting Edge Y18 問題3",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y18",
+      "仮定法過去",
+      "if"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y18_003",
+    "testRound": "2nd",
+    "type": "reading_reference",
+    "source": "Cutting Edge Y18 問題4",
+    "title": "It might happen の内容",
+    "question": "次の英文の It が指す内容として最も適切なものは？\n\n英文：\nBut imagine if robot table tennis players were allowed to participate in the tournaments. It might happen one day.",
+    "choices": [
+      "ロボット卓球選手が大会への参加を認められること",
+      "人間の卓球選手が全員引退すること",
+      "じゃんけんロボットが壊れること",
+      "大会そのものがなくなること"
+    ],
+    "answer": 0,
+    "explanation": "It は直前の if節の内容、ロボット卓球選手が大会参加を認められることを指す。参照：Cutting Edge Y18 問題4",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y18",
+      "指示語",
+      "it"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_CE_Y18_004",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Cutting Edge Y18 問題5",
+    "title": "imagine O doing",
+    "question": "次の英文の imagine a more competitive version coming soon の意味として最も自然なものは？\n\n英文：\nBut it is easy to imagine a more competitive version coming soon.",
+    "choices": [
+      "より競争力のある型がまもなく現れることを想像する",
+      "競争をやめた型をすでに販売した",
+      "より弱い型を作るよう命令する",
+      "競争力のある型が来ないと否定する"
+    ],
+    "answer": 0,
+    "explanation": "imagine O doing は「Oが〜することを想像する」。competitive は「競争力のある」。参照：Cutting Edge Y18 問題5",
+    "tags": [
+      "第二回",
+      "Cutting Edge Y18",
+      "構文",
+      "imagine O doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_06_001",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 6-1",
+    "title": "動名詞の働き",
+    "question": "things like walking under a ladder or spilling salt の walking と spilling の働きとして正しいものは？",
+    "choices": [
+      "前置詞 like の目的語になる動名詞",
+      "things を修飾する現在分詞",
+      "命令文を作る動詞",
+      "are thought と並列する動詞"
+    ],
+    "answer": 0,
+    "explanation": "walking と spilling は前置詞 like の後ろに置かれ、「〜すること」を表す動名詞。or で並列されている。参照：FOCUS 6-1",
+    "tags": [
+      "第二回",
+      "FOCUS 6",
+      "動名詞",
+      "並列"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_06_002",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 6-1",
+    "title": "be thought to be",
+    "question": "things ... are thought to be unlucky の are thought to be の意味として最も自然なものは？",
+    "choices": [
+      "不吉になるよう命じられている",
+      "不吉だと考えられている",
+      "不吉かどうか尋ねられている",
+      "不吉であることを避けている"
+    ],
+    "answer": 1,
+    "explanation": "think O to be C の受動態で、S is thought to be C は「SはCだと考えられている」。参照：FOCUS 6-1",
+    "tags": [
+      "第二回",
+      "FOCUS 6",
+      "受動態",
+      "think O to be C"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_06_003",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 6-1",
+    "title": "not doing の訳",
+    "question": "Not walking under a ladder is a way ... の Not walking under a ladder の訳として最も自然なものは？",
+    "choices": [
+      "はしごの下を歩いた後で",
+      "はしごの下を歩くために",
+      "はしごの下を歩かないこと",
+      "はしごの下を歩けない人"
+    ],
+    "answer": 2,
+    "explanation": "not doing は動名詞の否定で「〜しないこと」。文全体の主語になっている。参照：FOCUS 6-1",
+    "tags": [
+      "第二回",
+      "FOCUS 6",
+      "動名詞",
+      "否定"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_06_004",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 6-1",
+    "title": "avoid doing",
+    "question": "a way of avoiding having things dropped on your head の avoid doing の意味は？",
+    "choices": [
+      "〜することを勧める",
+      "〜することを続ける",
+      "〜することを想像する",
+      "〜することを避ける"
+    ],
+    "answer": 3,
+    "explanation": "avoid の後ろは動名詞で、avoid doing は「〜することを避ける」。参照：FOCUS 6-1",
+    "tags": [
+      "第二回",
+      "FOCUS 6",
+      "熟語",
+      "avoid doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_06_005",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 6-1",
+    "title": "have O done",
+    "question": "having things dropped on your head を自然に訳すときのポイントは？",
+    "choices": [
+      "things が落とすと能動で訳す",
+      "「頭上に物が落ちてくる」と受け身関係を自然に訳す",
+      "having を「所有する」とだけ訳す",
+      "dropped を「下げた」と訳す"
+    ],
+    "answer": 1,
+    "explanation": "have O done は文脈により「Oを〜される」。ここでは「頭上に物が落ちてくる」と自然に訳す。参照：FOCUS 6-1",
+    "tags": [
+      "第二回",
+      "FOCUS 6",
+      "have O done",
+      "和訳ポイント"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_06_006",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 6-2",
+    "title": "動名詞主語の訳",
+    "question": "taking them away leads to further problems を自然に訳すとき、taking them away はどう処理する？",
+    "choices": [
+      "「それらを取り上げると」と条件的に訳す",
+      "「それらが取り上げる」と訳す",
+      "「それらを取り上げられた」と受動にする",
+      "訳さず省略する"
+    ],
+    "answer": 0,
+    "explanation": "taking them away は動名詞句の主語。「それらを取り上げることは」または自然に「取り上げると」と訳せる。参照：FOCUS 6-2",
+    "tags": [
+      "第二回",
+      "FOCUS 6",
+      "動名詞主語",
+      "和訳ポイント"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_06_007",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 6-2",
+    "title": "分詞構文 Finding",
+    "question": "Finding the phones useful, many parents buy them. の Finding the phones useful の意味として最も自然なものは？",
+    "choices": [
+      "携帯電話を見つけるために",
+      "携帯電話が役立たないので",
+      "携帯電話が役立つと思い",
+      "携帯電話を役立てられて"
+    ],
+    "answer": 2,
+    "explanation": "find O C は「OをCだと思う」。分詞構文なので「携帯電話が役立つと思い」と読む。参照：FOCUS 6-2",
+    "tags": [
+      "第二回",
+      "FOCUS 6",
+      "分詞構文",
+      "find O C"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_06_008",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 6-2",
+    "title": "insist on X doing",
+    "question": "insist on their children having one の their children の役割は？",
+    "choices": [
+      "insist の直接目的語",
+      "having を修飾する副詞",
+      "one の所有者",
+      "動名詞 having の意味上の主語"
+    ],
+    "answer": 3,
+    "explanation": "X doing で「Xが〜すること」。their children は having の意味上の主語。参照：FOCUS 6-2",
+    "tags": [
+      "第二回",
+      "FOCUS 6",
+      "動名詞",
+      "意味上の主語"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_06_009",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 6-3",
+    "title": "too ... to be worth",
+    "question": "student exchanges sometimes encounter too many difficulties to be worth trying の意味として最も自然なものは？",
+    "choices": [
+      "困難が多すぎて試みる価値がない",
+      "困難が少ないので試す価値がある",
+      "試せば困難がなくなる",
+      "困難を試す価値がある"
+    ],
+    "answer": 0,
+    "explanation": "too ... to do は「〜すぎて…できない」。be worth doing は「〜する価値がある」なので、全体は「困難が多すぎて試みる価値がない」。参照：FOCUS 6-3",
+    "tags": [
+      "第二回",
+      "FOCUS 6",
+      "too to",
+      "be worth doing"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_07_001",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 7-1",
+    "title": "関係詞節内の並列",
+    "question": "someone who can walk into a room ... and ... give an accurate description の walk と give の関係は？",
+    "choices": [
+      "walk が give を修飾する",
+      "give だけが someone を説明する",
+      "can walk と (can) give が and で並列",
+      "walk into a room が主節である"
+    ],
+    "answer": 2,
+    "explanation": "who can の後ろで walk と give が and で並列し、どちらも someone の能力を説明する。参照：FOCUS 7-1",
+    "tags": [
+      "第二回",
+      "FOCUS 7",
+      "関係詞",
+      "並列"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_07_002",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 7-1",
+    "title": "description の動詞化",
+    "question": "give an accurate description of the relationships ... を自然に訳すポイントは？",
+    "choices": [
+      "description を「説明書」と訳す",
+      "give を必ず「与える」と訳す",
+      "accurate を省略する",
+      "名詞 description を「正確に述べる」と動詞的に訳す"
+    ],
+    "answer": 3,
+    "explanation": "give a description は「説明を与える」より「説明する・述べる」と動詞化すると自然。参照：FOCUS 7-1",
+    "tags": [
+      "第二回",
+      "FOCUS 7",
+      "名詞構文",
+      "和訳ポイント"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_07_003",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 7-2",
+    "title": "動名詞主語",
+    "question": "Borrowing words from other languages is not the only way ... の主語はどれ？",
+    "choices": [
+      "Borrowing words from other languages",
+      "other languages",
+      "the only way",
+      "a language"
+    ],
+    "answer": 0,
+    "explanation": "Borrowing ... 全体が動名詞句として主語。「他の言語から単語を借用することは」。参照：FOCUS 7-2",
+    "tags": [
+      "第二回",
+      "FOCUS 7",
+      "動名詞主語",
+      "文構造"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_07_004",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 7-2",
+    "title": "the way in which",
+    "question": "the way in which a language can develop its vocabulary の in which の働きは？",
+    "choices": [
+      "the way を否定する",
+      "a language を所有格にする",
+      "「言語が語彙を発達させる方法」と the way を説明する",
+      "vocabulary と並列する"
+    ],
+    "answer": 2,
+    "explanation": "the way in which S V は「SがVする方法」。in which 以下が the way を説明する。参照：FOCUS 7-2",
+    "tags": [
+      "第二回",
+      "FOCUS 7",
+      "関係詞",
+      "the way in which"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_07_005",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 7-2",
+    "title": "セミコロンの働き",
+    "question": "vocabulary; there are many cases ... のセミコロンの働きとして最も適切なものは？",
+    "choices": [
+      "文を疑問文に変える",
+      "関係の深い二つの文を接続する",
+      "引用の始まりを示す",
+      "語句を同格にする"
+    ],
+    "answer": 1,
+    "explanation": "セミコロンは、内容的に関係の深い独立した二文をつなぐ。参照：FOCUS 7-2",
+    "tags": [
+      "第二回",
+      "FOCUS 7",
+      "句読法",
+      "セミコロン"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_07_006",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 7-2",
+    "title": "that is の働き",
+    "question": "is developed “from within,” that is, by using the language’s existing resources の that is の働きは？",
+    "choices": [
+      "逆接を示す",
+      "時を示す",
+      "仮定を示す",
+      "前の内容を「すなわち」と言い換える"
+    ],
+    "answer": 3,
+    "explanation": "that is は「すなわち」。from within の具体的内容を by using ... で言い換えている。参照：FOCUS 7-2",
+    "tags": [
+      "第二回",
+      "FOCUS 7",
+      "言い換え",
+      "that is"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_07_007",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 7-3",
+    "title": "knowledge の動詞化",
+    "question": "We don’t have enough knowledge of life. の自然な訳として最も適切なものは？",
+    "choices": [
+      "私たちは生命について十分な知識を所有していない",
+      "私たちは生命を十分に知らない",
+      "生命は私たちを十分に知らない",
+      "私たちは生命の知識を作らない"
+    ],
+    "answer": 1,
+    "explanation": "have knowledge of X は自然な日本語では「Xを知っている」。名詞 knowledge を動詞的に訳す。参照：FOCUS 7-3",
+    "tags": [
+      "第二回",
+      "FOCUS 7",
+      "名詞構文",
+      "和訳ポイント"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_07_008",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 7-3",
+    "title": "find O doing",
+    "question": "We continue to find microbes living in places ... の living in places は何を説明している？",
+    "choices": [
+      "We",
+      "continue",
+      "microbes",
+      "places"
+    ],
+    "answer": 2,
+    "explanation": "find O doing で「Oが〜しているのを見つける」。living ... は microbes の状態を説明する。参照：FOCUS 7-3",
+    "tags": [
+      "第二回",
+      "FOCUS 7",
+      "find O doing",
+      "分詞"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_07_009",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 7-3",
+    "title": "imagine O C の復元",
+    "question": "in ways we never imagined possible の元の関係として最も適切なものは？",
+    "choices": [
+      "we never imagined ways possible",
+      "ways never imagined us possible",
+      "possible imagined ways",
+      "we imagined possible never ways"
+    ],
+    "answer": 0,
+    "explanation": "imagine O C の関係で、ways が目的語、possible が補語。「可能だとは思わなかった方法」。参照：FOCUS 7-3",
+    "tags": [
+      "第二回",
+      "FOCUS 7",
+      "imagine O C",
+      "文構造"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_08_001",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 8-1",
+    "title": "drawing の名詞構文",
+    "question": "his drawing of the human body を自然に訳すときのポイントは？",
+    "choices": [
+      "drawing を「絵を描く」と命令形にする",
+      "of 以下を省略する",
+      "「彼が人体を描いたこと」と動詞的に訳す",
+      "his を「彼のもの」とだけ訳す"
+    ],
+    "answer": 2,
+    "explanation": "drawing は名詞だが、文脈では「彼が人体を描いたこと」と動詞化すると自然。参照：FOCUS 8-1",
+    "tags": [
+      "第二回",
+      "FOCUS 8",
+      "名詞構文",
+      "和訳ポイント"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_08_002",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 8-1",
+    "title": "all of which の先行内容",
+    "question": "He drew it in different layers and from different angles, all of which led him ... の which が受ける内容は？",
+    "choices": [
+      "人体だけ",
+      "layers だけ",
+      "angles だけ",
+      "異なる層と角度から描いたこと全体"
+    ],
+    "answer": 3,
+    "explanation": "all of which は直前の複数の内容、ここでは異なる層・角度から描いたこと全体を受ける。参照：FOCUS 8-1",
+    "tags": [
+      "第二回",
+      "FOCUS 8",
+      "関係詞",
+      "all of which"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_08_003",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 8-1",
+    "title": "無生物主語 lead",
+    "question": "all of which led him to discover ... の自然な訳として最も適切なものは？",
+    "choices": [
+      "それらすべてによって彼は発見することになった",
+      "それらは彼に発見を命令した",
+      "彼はそれらを発見するために導いた",
+      "それらは発見されることを拒んだ"
+    ],
+    "answer": 0,
+    "explanation": "無生物主語 lead O to do は「SによってOは〜するようになる」と訳すと自然。参照：FOCUS 8-1",
+    "tags": [
+      "第二回",
+      "FOCUS 8",
+      "無生物主語",
+      "lead O to do"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_08_004",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 8-2",
+    "title": "継続用法 where",
+    "question": "prisons are ... like “crime schools,” where the prisoners learn ... の where の意味は？",
+    "choices": [
+      "そのため",
+      "そこで",
+      "それにもかかわらず",
+      "いつでも"
+    ],
+    "answer": 1,
+    "explanation": "カンマ＋where は継続用法で、ここでは「そこで」と前の prisons/crime schools を受ける。参照：FOCUS 8-2",
+    "tags": [
+      "第二回",
+      "FOCUS 8",
+      "関係副詞",
+      "継続用法"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_08_005",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 8-2",
+    "title": "avoid punishment",
+    "question": "new ways to avoid punishment の to avoid punishment は何を説明している？",
+    "choices": [
+      "prisoners",
+      "new ways",
+      "crime schools",
+      "connections"
+    ],
+    "answer": 1,
+    "explanation": "to avoid punishment は不定詞の形容詞用法で new ways を説明し、「刑罰を避ける新しい方法」。参照：FOCUS 8-2",
+    "tags": [
+      "第二回",
+      "FOCUS 8",
+      "不定詞",
+      "修飾関係"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_08_006",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 8-2",
+    "title": "which の目的格",
+    "question": "new friends and connections which they can use after their release の which が指すものは？",
+    "choices": [
+      "prisoners",
+      "punishment",
+      "new friends and connections",
+      "their release"
+    ],
+    "answer": 2,
+    "explanation": "which は直前の new friends and connections を受け、use の目的語になっている。参照：FOCUS 8-2",
+    "tags": [
+      "第二回",
+      "FOCUS 8",
+      "関係代名詞",
+      "指示対象"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_08_007",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 8-3",
+    "title": "This confusion の内容",
+    "question": "This confusion が指す内容として最も適切なものは？\n\n英文：\nIn watching television we tend to confuse the persona with the person. This confusion is especially common with young children.",
+    "choices": [
+      "テレビと現実を完全に同じだと考えること",
+      "登場人物と演じている本人を混同すること",
+      "子どもと大人を区別すること",
+      "医者と司会者を比較すること"
+    ],
+    "answer": 1,
+    "explanation": "直前の confuse the persona with the person を受け、「登場人物と本人を混同すること」。参照：FOCUS 8-3",
+    "tags": [
+      "第二回",
+      "FOCUS 8",
+      "指示語",
+      "confuse A with B"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_08_008",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 8-3",
+    "title": "be incapable of doing",
+    "question": "young children, who are incapable of distinguishing between reality and fantasy の be incapable of doing の意味は？",
+    "choices": [
+      "〜する能力がない",
+      "〜する義務がある",
+      "〜することに慣れている",
+      "〜することを許される"
+    ],
+    "answer": 0,
+    "explanation": "be incapable of doing は「〜することができない」。参照：FOCUS 8-3",
+    "tags": [
+      "第二回",
+      "FOCUS 8",
+      "熟語",
+      "be incapable of doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_08_009",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 8-3",
+    "title": "継続用法 who の訳",
+    "question": "This confusion is especially common with young children, who are incapable of ... の who を自然に訳すと？",
+    "choices": [
+      "そして彼らは",
+      "もし彼らが",
+      "彼らを除いて",
+      "というのは彼らは〜だから"
+    ],
+    "answer": 3,
+    "explanation": "継続用法の who は文脈に応じて補足・理由として訳せる。ここでは「というのは、彼らは区別できないから」。参照：FOCUS 8-3",
+    "tags": [
+      "第二回",
+      "FOCUS 8",
+      "関係代名詞",
+      "継続用法"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_09_001",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 9-1",
+    "title": "コロンの働き",
+    "question": "My big sister once told me an interesting thing: by shutting my eyes ... のコロンの働きは？",
+    "choices": [
+      "前の an interesting thing の内容を後ろで説明する",
+      "逆接を表す",
+      "理由を表す接続詞になる",
+      "疑問文を導く"
+    ],
+    "answer": 0,
+    "explanation": "コロンは説明・定義・列挙を導く。後ろが an interesting thing の具体的内容。参照：FOCUS 9-1",
+    "tags": [
+      "第二回",
+      "FOCUS 9",
+      "句読法",
+      "コロン"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_09_002",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 9-1",
+    "title": "by doing",
+    "question": "by shutting my eyes and blowing on a dandelion puff の by doing の意味は？",
+    "choices": [
+      "〜する前に",
+      "〜することによって",
+      "〜するにもかかわらず",
+      "〜しない限り"
+    ],
+    "answer": 1,
+    "explanation": "by doing は手段を表し「〜することによって」。shutting と blowing が並列。参照：FOCUS 9-1",
+    "tags": [
+      "第二回",
+      "FOCUS 9",
+      "by doing",
+      "並列"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_09_003",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 9-1",
+    "title": "make O V",
+    "question": "I could make all my dreams come true. の make O V の意味として正しいものは？",
+    "choices": [
+      "OがVするのを妨げる",
+      "OにVするよう頼む",
+      "OをVさせる",
+      "OがVしたように見える"
+    ],
+    "answer": 2,
+    "explanation": "make O V は「OをVさせる」。make all my dreams come true は「夢をすべて実現させる」。参照：FOCUS 9-1",
+    "tags": [
+      "第二回",
+      "FOCUS 9",
+      "使役",
+      "make O V"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_09_004",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 9-1",
+    "title": "used to と would",
+    "question": "I used to believe her and would wake up early ... の used to と would の説明として適切なものは？",
+    "choices": [
+      "どちらも未来の推量だけを表す",
+      "used to は一度だけの動作、would は現在の習慣",
+      "used to は義務、would は願望",
+      "used to は過去の状態・習慣、would は回想中の習慣的動作"
+    ],
+    "answer": 3,
+    "explanation": "used to は今とは違う過去の状態・習慣、would は過去の習慣的動作を表す。参照：FOCUS 9-1",
+    "tags": [
+      "第二回",
+      "FOCUS 9",
+      "used to",
+      "would"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_09_005",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 9-2",
+    "title": "compare A with B",
+    "question": "compare the acquisition of English language skills with learning to play a musical instrument の A と B は？",
+    "choices": [
+      "A=英語技能の習得、B=楽器演奏を学ぶこと",
+      "A=英語、B=音楽理論",
+      "A=楽器、B=作曲",
+      "A=技能、B=人"
+    ],
+    "answer": 0,
+    "explanation": "compare A with B は「AをBと比較する」。参照：FOCUS 9-2",
+    "tags": [
+      "第二回",
+      "FOCUS 9",
+      "熟語",
+      "compare A with B"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_09_006",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 9-2",
+    "title": "may well の訳",
+    "question": "One may well know a great deal about musical theory ... の may well の意味として最も自然なものは？",
+    "choices": [
+      "決して〜しない",
+      "たぶん〜するだろう",
+      "〜してはいけない",
+      "〜する必要がない"
+    ],
+    "answer": 1,
+    "explanation": "may well do は文脈により「たぶん〜するだろう」「〜するのももっともだ」。ここでは前者。参照：FOCUS 9-2",
+    "tags": [
+      "第二回",
+      "FOCUS 9",
+      "助動詞",
+      "may well"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_09_007",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 9-2",
+    "title": "yet の並列",
+    "question": "One may well know ... yet be quite incapable ... の yet がつないでいるものは？",
+    "choices": [
+      "musical theory と compositions",
+      "English と instrument",
+      "know と be",
+      "may と well"
+    ],
+    "answer": 2,
+    "explanation": "主語 One と助動詞 may を共有し、know と be が yet で対比的に並列されている。参照：FOCUS 9-2",
+    "tags": [
+      "第二回",
+      "FOCUS 9",
+      "並列",
+      "yet"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_09_008",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 9-3",
+    "title": "must have done",
+    "question": "Surely he must have burned his tongue enough times. の must have done の意味は？",
+    "choices": [
+      "〜したに違いない",
+      "〜したかもしれない",
+      "〜したはずがない",
+      "〜する必要がある"
+    ],
+    "answer": 0,
+    "explanation": "must have done は過去についての強い推量で「〜したに違いない」。参照：FOCUS 9-3",
+    "tags": [
+      "第二回",
+      "FOCUS 9",
+      "完了形",
+      "must have done"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_09_009",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 9-3",
+    "title": "過去文脈の would have to",
+    "question": "He would have to find a way of eating the hot stuff. の would have to の訳として最も自然なものは？",
+    "choices": [
+      "方法を見つけるだろうと予言した",
+      "方法を見つけたくなかった",
+      "方法を見つけなければならなかった",
+      "方法を見つけてもよかった"
+    ],
+    "answer": 2,
+    "explanation": "過去の文脈で would は単純な未来推量ではなく、「〜しなければならなかった」と読む。参照：FOCUS 9-3",
+    "tags": [
+      "第二回",
+      "FOCUS 9",
+      "would have to",
+      "和訳ポイント"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_10_001",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 10-1",
+    "title": "take O for granted",
+    "question": "People in the Western world take this for granted. の take O for granted の意味は？",
+    "choices": [
+      "Oを当然のことと考える",
+      "Oを無料で受け取る",
+      "Oを秘密にする",
+      "Oを根拠から外す"
+    ],
+    "answer": 0,
+    "explanation": "take O for granted は「Oを当然のことと考える」。参照：FOCUS 10-1",
+    "tags": [
+      "第二回",
+      "FOCUS 10",
+      "熟語",
+      "take O for granted"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_10_002",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 10-1",
+    "title": "be foreign to",
+    "question": "the idea is foreign to many other civilizations の foreign の意味として最も自然なものは？",
+    "choices": [
+      "外国製である",
+      "異質でなじみがない",
+      "海外へ移動する",
+      "国際的に有名だ"
+    ],
+    "answer": 1,
+    "explanation": "be foreign to X は「Xにとって異質である・なじみがない」。参照：FOCUS 10-1",
+    "tags": [
+      "第二回",
+      "FOCUS 10",
+      "語法",
+      "be foreign to"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_10_003",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 10-1",
+    "title": "同格の that",
+    "question": "the belief that some mystery lies at the root of natural phenomena の that 以下の働きは？",
+    "choices": [
+      "belief の原因を表す副詞節",
+      "belief を否定する節",
+      "belief の内容を示す同格節",
+      "mystery を修飾する関係詞節"
+    ],
+    "answer": 2,
+    "explanation": "that 以下は完全文で、the belief の具体的内容を示す同格の that 節。参照：FOCUS 10-1",
+    "tags": [
+      "第二回",
+      "FOCUS 10",
+      "同格",
+      "that節"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_10_004",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 10-1",
+    "title": "継続用法 where の理由訳",
+    "question": "many other civilizations, where the belief is commonly held ... の where を文脈に合うように訳すと？",
+    "choices": [
+      "いつでも",
+      "どこへでも",
+      "もしそこなら",
+      "というのは、そこでは"
+    ],
+    "answer": 3,
+    "explanation": "継続用法の where は補足を加える。ここでは前文の理由説明として「というのは、そこでは」。参照：FOCUS 10-1",
+    "tags": [
+      "第二回",
+      "FOCUS 10",
+      "関係副詞",
+      "継続用法"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_10_005",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 10-2",
+    "title": "同格 that の範囲",
+    "question": "the idea in the American Constitution that each person has the right ... の that 以下は何を説明する？",
+    "choices": [
+      "the idea",
+      "the American Constitution",
+      "each person",
+      "the right"
+    ],
+    "answer": 0,
+    "explanation": "that 以下は「各人が権利を有するという」という the idea の内容を示す同格節。参照：FOCUS 10-2",
+    "tags": [
+      "第二回",
+      "FOCUS 10",
+      "同格",
+      "修飾関係"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_10_006",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 10-2",
+    "title": "doing so の内容",
+    "question": "except where doing so may harm others の doing so が指す内容は？",
+    "choices": [
+      "憲法を書くこと",
+      "自分で選択や決定を行うこと",
+      "他人を助けること",
+      "権利を放棄すること"
+    ],
+    "answer": 1,
+    "explanation": "doing so は直前の make his or her own choices and decisions を受ける。参照：FOCUS 10-2",
+    "tags": [
+      "第二回",
+      "FOCUS 10",
+      "指示表現",
+      "doing so"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_10_007",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 10-3",
+    "title": "Whether節の主語",
+    "question": "Whether we bother to correct ourselves or not seems to depend on ... の文全体の主語は？",
+    "choices": [
+      "we",
+      "Whether we bother to correct ourselves or not",
+      "ourselves",
+      "seems"
+    ],
+    "answer": 1,
+    "explanation": "Whether S V or not 全体が名詞節として主語になっている。参照：FOCUS 10-3",
+    "tags": [
+      "第二回",
+      "FOCUS 10",
+      "名詞節",
+      "whether"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_10_008",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "FOCUS 10-3",
+    "title": "how urgently 節",
+    "question": "how urgently we want to get on with what we are saying の how urgently の意味は？",
+    "choices": [
+      "なぜ急いで",
+      "どこで急いで",
+      "どれほど急いで",
+      "急がないように"
+    ],
+    "answer": 2,
+    "explanation": "how＋副詞＋S V で「どれほど〜にSがVするか」。参照：FOCUS 10-3",
+    "tags": [
+      "第二回",
+      "FOCUS 10",
+      "間接疑問",
+      "how＋副詞"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_FOCUS_10_009",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "FOCUS 10-3",
+    "title": "for what they are",
+    "question": "recognize our own mistakes for what they are の for what they are を自然に訳すと？",
+    "choices": [
+      "誤りになる前に",
+      "誤りを隠すために",
+      "誤りかどうかに関係なく",
+      "誤りをそのまま、ありのままに"
+    ],
+    "answer": 3,
+    "explanation": "what S is は「Sの本質・ありのままの姿」。ここでは「自分の誤りを誤りとして認識する」。参照：FOCUS 10-3",
+    "tags": [
+      "第二回",
+      "FOCUS 10",
+      "what節",
+      "和訳ポイント"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_05_001",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 05 問題1",
+    "title": "It is important for A to do",
+    "question": "「家族の構成員が互いに支え合うことは重要である」を表す英文の骨組みとして正しいものは？",
+    "choices": [
+      "It is important for family members to support each other.",
+      "Family members are important supporting each other.",
+      "It is family members important to support each other.",
+      "Family members have important to support each other."
+    ],
+    "answer": 0,
+    "explanation": "「Aが〜することは重要だ」は It is important for A to do。ここでは A が family members、do が support each other。参照：Insight Writing 05 問題1",
+    "tags": [
+      "第二回",
+      "Insight Writing 05",
+      "英作文",
+      "形式主語"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_05_002",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 05 問題1",
+    "title": "each other の使い方",
+    "question": "空所に最も適切な語句は？\n\nFamily members should support (      ).",
+    "choices": [
+      "themselves member",
+      "each other",
+      "one family",
+      "another families"
+    ],
+    "answer": 1,
+    "explanation": "each other は「互いに」。support each other で「互いに支え合う」。参照：Insight Writing 05 問題1",
+    "tags": [
+      "第二回",
+      "Insight Writing 05",
+      "語法",
+      "each other"
+    ],
+    "mistakeTag": "meaning",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_05_003",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 05 問題2",
+    "title": "have a responsibility to do",
+    "question": "「政府は〜する責任がある」を表す形として最も適切なものは？",
+    "choices": [
+      "Governments are responsibility to do ...",
+      "Governments responsible doing ...",
+      "Governments have a responsibility to do ...",
+      "Governments have responsible for do ..."
+    ],
+    "answer": 2,
+    "explanation": "have a responsibility to do で「〜する責任がある」。responsibility は名詞なので have と組み合わせる。参照：Insight Writing 05 問題2",
+    "tags": [
+      "第二回",
+      "Insight Writing 05",
+      "英作文",
+      "responsibility"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_05_004",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 05 問題2",
+    "title": "make O do",
+    "question": "make companies do the right thing の make O do の意味として正しいものは？",
+    "choices": [
+      "企業が正しいことをするのを待つ",
+      "企業に正しいことを説明する",
+      "企業が正しいことをしたように見せる",
+      "企業に正しいことをさせる"
+    ],
+    "answer": 3,
+    "explanation": "make O do は「Oに〜させる」。make companies do the right thing は「企業に正しいことをさせる」。参照：Insight Writing 05 問題2",
+    "tags": [
+      "第二回",
+      "Insight Writing 05",
+      "使役",
+      "make O do"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_05_005",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 05 問題3",
+    "title": "目的を表す to do",
+    "question": "空所に最も適切なものは？\n\nToday, in many countries, women need to work (      ) their families.",
+    "choices": [
+      "to support",
+      "supporting for",
+      "for support",
+      "supported"
+    ],
+    "answer": 0,
+    "explanation": "目的を表す不定詞で to support。「家族を支えるために働く」となる。参照：Insight Writing 05 問題3",
+    "tags": [
+      "第二回",
+      "Insight Writing 05",
+      "不定詞",
+      "目的"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_05_006",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Insight Writing 05 問題3",
+    "title": "Today と Nowadays",
+    "question": "一般的な現在の状況を表す語の組み合わせとして適切なものは？",
+    "choices": [
+      "Today は必ず過去形と使う",
+      "Today / Nowadays / In many countries などを文頭に置ける",
+      "Nowadays は未来形とだけ使う",
+      "in many countries は文末に置けない"
+    ],
+    "answer": 1,
+    "explanation": "一般的な現在の状況では Today や Nowadays、In many countries などを自然に組み合わせられる。参照：Insight Writing 05 問題3",
+    "tags": [
+      "第二回",
+      "Insight Writing 05",
+      "語順",
+      "時を表す表現"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_05_007",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 05 問題4",
+    "title": "There are difficulties in life",
+    "question": "「人生には困難なこともある」に最も近い英文は？",
+    "choices": [
+      "Life is difficulty there.",
+      "There has difficult things in life.",
+      "There are difficulties in life.",
+      "Difficulties are life there."
+    ],
+    "answer": 2,
+    "explanation": "存在を表す There are ... を使い、difficulties in life で「人生における困難」。参照：Insight Writing 05 問題4",
+    "tags": [
+      "第二回",
+      "Insight Writing 05",
+      "There is構文",
+      "英作文"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_05_008",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 05 問題4",
+    "title": "ways to overcome them",
+    "question": "ways to overcome them の to overcome them は何を説明している？",
+    "choices": [
+      "we",
+      "must think",
+      "difficulties",
+      "ways"
+    ],
+    "answer": 3,
+    "explanation": "to overcome them は不定詞の形容詞用法で ways を説明し、「それらを乗り越える方法」。参照：Insight Writing 05 問題4",
+    "tags": [
+      "第二回",
+      "Insight Writing 05",
+      "不定詞",
+      "修飾関係"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_05_009",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 05 問題5",
+    "title": "see O do",
+    "question": "I want to see him do his best. の see O do の意味として最も適切なものは？",
+    "choices": [
+      "彼が全力を尽くすのを見たい",
+      "彼に全力を尽くしてもらうよう頼みたい",
+      "彼が全力を尽くしたと聞きたい",
+      "彼を全力で見る必要がある"
+    ],
+    "answer": 0,
+    "explanation": "see O do は「Oが〜するのを見る」。want to see him do his best で「彼が全力を尽くすのを見たい」。参照：Insight Writing 05 問題5",
+    "tags": [
+      "第二回",
+      "Insight Writing 05",
+      "知覚動詞",
+      "see O do"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_05_010",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 05 問題5",
+    "title": "be careful not to do",
+    "question": "空所に最も適切なものは？\n\nI want him to be careful (      ) injured or sick before the game.",
+    "choices": [
+      "for not get",
+      "not to get",
+      "to not getting",
+      "not getting to"
+    ],
+    "answer": 1,
+    "explanation": "be careful not to do で「〜しないように気をつける」。ここでは not to get injured or sick。参照：Insight Writing 05 問題5",
+    "tags": [
+      "第二回",
+      "Insight Writing 05",
+      "不定詞の否定",
+      "be careful"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_06_001",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 06 問題1",
+    "title": "brush one’s teeth",
+    "question": "「毎晩寝る前に歯磨きをしなさい」に最も近い英文は？",
+    "choices": [
+      "Wash your tooth before sleep every nights.",
+      "Brush teeth yours before bed every night.",
+      "Brush your teeth every night before going to bed.",
+      "You brush your teeth before went to bed."
+    ],
+    "answer": 2,
+    "explanation": "brush one’s teeth で「歯を磨く」。before going to bed で「寝る前に」。参照：Insight Writing 06 問題1",
+    "tags": [
+      "第二回",
+      "Insight Writing 06",
+      "英作文",
+      "語法"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_06_002",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 06 問題1",
+    "title": "before doing",
+    "question": "before going to bed の going が動名詞になる理由は？",
+    "choices": [
+      "命令文の動詞だから",
+      "teeth を修飾するから",
+      "現在進行形だから",
+      "前置詞 before の後ろだから"
+    ],
+    "answer": 3,
+    "explanation": "before が前置詞として使われているため、後ろは動名詞 going。before you go to bed と節にすることもできる。参照：Insight Writing 06 問題1",
+    "tags": [
+      "第二回",
+      "Insight Writing 06",
+      "動名詞",
+      "before doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_06_003",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 06 問題2",
+    "title": "be good at doing",
+    "question": "I’m not very good at speaking Japanese. の be good at doing の意味は？",
+    "choices": [
+      "〜するのが得意である",
+      "〜する義務がある",
+      "〜し始める",
+      "〜するのを恐れる"
+    ],
+    "answer": 0,
+    "explanation": "be good at doing は「〜するのが得意である」。否定文では not very good at ... で「あまり得意ではない」。参照：Insight Writing 06 問題2",
+    "tags": [
+      "第二回",
+      "Insight Writing 06",
+      "熟語",
+      "be good at doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_06_004",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 06 問題2",
+    "title": "speak の語法",
+    "question": "speak の使い方として正しいものは？",
+    "choices": [
+      "speak him Japanese",
+      "speak Japanese",
+      "speak the problem",
+      "speak my idea him"
+    ],
+    "answer": 1,
+    "explanation": "言語名は speak Japanese のように前置詞なしで続ける。人には speak to/with 人、話題には speak of/about 物。参照：Insight Writing 06 問題2",
+    "tags": [
+      "第二回",
+      "Insight Writing 06",
+      "語法",
+      "speak"
+    ],
+    "mistakeTag": "meaning",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_06_005",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Insight Writing 06 問題3",
+    "title": "learn about values",
+    "question": "「いろいろな価値観を知る」を表すとき、最も自然な表現は？",
+    "choices": [
+      "know new various values suddenly",
+      "understand about value learn",
+      "study values to know",
+      "learn about different values"
+    ],
+    "answer": 3,
+    "explanation": "新しく文化や価値観について知るという文脈では learn about different values が自然。参照：Insight Writing 06 問題3",
+    "tags": [
+      "第二回",
+      "Insight Writing 06",
+      "語法",
+      "learn about"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_06_006",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 06 問題3",
+    "title": "by studying abroad",
+    "question": "by studying abroad の by doing は何を表す？",
+    "choices": [
+      "目的",
+      "逆接",
+      "手段・方法",
+      "時間の終点"
+    ],
+    "answer": 2,
+    "explanation": "by doing は「〜することによって」と手段を表す。参照：Insight Writing 06 問題3",
+    "tags": [
+      "第二回",
+      "Insight Writing 06",
+      "動名詞",
+      "by doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_06_007",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 06 問題4",
+    "title": "It is not easy to do",
+    "question": "空所に最も適切なものは？\n\nIt is not easy (      ) a balanced meal when you eat out.",
+    "choices": [
+      "having",
+      "for have",
+      "have",
+      "to have"
+    ],
+    "answer": 3,
+    "explanation": "It is not easy to do で「〜するのは簡単ではない」。to have a balanced meal が正しい。参照：Insight Writing 06 問題4",
+    "tags": [
+      "第二回",
+      "Insight Writing 06",
+      "形式主語",
+      "不定詞"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_06_008",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Insight Writing 06 問題4",
+    "title": "when you eat out",
+    "question": "when you eat out の意味として最も自然なものは？",
+    "choices": [
+      "外食するとき",
+      "食事を外へ運ぶとき",
+      "外で食べ終えた後",
+      "食べ物を持ち帰るために"
+    ],
+    "answer": 0,
+    "explanation": "eat out は「外食する」。when you eat out で「外食するとき」。参照：Insight Writing 06 問題4",
+    "tags": [
+      "第二回",
+      "Insight Writing 06",
+      "熟語",
+      "eat out"
+    ],
+    "mistakeTag": "meaning",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_06_009",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 06 問題5",
+    "title": "be afraid of doing",
+    "question": "Many of us are afraid of getting involved ... の be afraid of doing の意味は？",
+    "choices": [
+      "〜することを期待する",
+      "〜することを恐れる",
+      "〜することを許可する",
+      "〜することに成功する"
+    ],
+    "answer": 1,
+    "explanation": "be afraid of doing は「〜することを恐れる」。of は前置詞なので getting。参照：Insight Writing 06 問題5",
+    "tags": [
+      "第二回",
+      "Insight Writing 06",
+      "動名詞",
+      "be afraid of"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_06_010",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Insight Writing 06 問題5",
+    "title": "instead of doing",
+    "question": "instead of helping others の意味として最も自然なものは？",
+    "choices": [
+      "他人を助けた結果",
+      "他人を助けるために",
+      "他人を助けるのではなく",
+      "他人を助けると同時に"
+    ],
+    "answer": 2,
+    "explanation": "instead of doing は「〜する代わりに／〜するのではなく」。選択・対比を表す。参照：Insight Writing 06 問題5",
+    "tags": [
+      "第二回",
+      "Insight Writing 06",
+      "熟語",
+      "instead of doing"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_07_001",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 07 問題1",
+    "title": "現在完了進行形",
+    "question": "Recently, the number of people living alone has been increasing in Japan. の has been increasing が表すものは？",
+    "choices": [
+      "現在だけの一時的な状態",
+      "過去の一度きりの出来事",
+      "未来の予定",
+      "過去から現在まで続く増加"
+    ],
+    "answer": 3,
+    "explanation": "現在完了進行形 has been increasing は、過去から現在にかけて増え続けていることを表す。参照：Insight Writing 07 問題1",
+    "tags": [
+      "第二回",
+      "Insight Writing 07",
+      "現在完了進行形",
+      "時制"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_07_002",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 07 問題1",
+    "title": "the number of",
+    "question": "空所に最も適切なものは？\n\nRecently, (      ) people living alone has been increasing in Japan.",
+    "choices": [
+      "the number of",
+      "an amount of",
+      "many number",
+      "the numbers"
+    ],
+    "answer": 0,
+    "explanation": "可算名詞 people の人数の増加は the number of people。主語の中心は number なので has。参照：Insight Writing 07 問題1",
+    "tags": [
+      "第二回",
+      "Insight Writing 07",
+      "数量表現",
+      "主語一致"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_07_003",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 07 問題2",
+    "title": "spend O doing",
+    "question": "He spends hours reading novels on weekends. の spend O doing の意味は？",
+    "choices": [
+      "Oを読むために借りる",
+      "Oを〜して過ごす",
+      "Oを〜する前に終える",
+      "Oを〜するよう勧める"
+    ],
+    "answer": 1,
+    "explanation": "spend 時間 doing で「時間を〜して過ごす」。spends hours reading novels は「何時間も小説を読んで過ごす」。参照：Insight Writing 07 問題2",
+    "tags": [
+      "第二回",
+      "Insight Writing 07",
+      "熟語",
+      "spend O doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_07_004",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 07 問題2",
+    "title": "on weekends",
+    "question": "「週末に」を一般的な習慣として表す語句は？",
+    "choices": [
+      "in weekend",
+      "at the weekends day",
+      "on weekends",
+      "for weekend"
+    ],
+    "answer": 2,
+    "explanation": "一般的な「週末に」は on weekends。参照：Insight Writing 07 問題2",
+    "tags": [
+      "第二回",
+      "Insight Writing 07",
+      "前置詞",
+      "on weekends"
+    ],
+    "mistakeTag": "meaning",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_07_005",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Insight Writing 07 問題3",
+    "title": "分詞構文 feeling",
+    "question": "I open a book feeling excited about reading it. の feeling excited ... を自然に訳すと？",
+    "choices": [
+      "本を読むことにわくわくしながら",
+      "本を読ませるために",
+      "本を読めないので",
+      "本を読み終えた後で"
+    ],
+    "answer": 0,
+    "explanation": "主語 I が共通の分詞構文で、「本を読むことにわくわくしながら」。参照：Insight Writing 07 問題3",
+    "tags": [
+      "第二回",
+      "Insight Writing 07",
+      "分詞構文",
+      "和訳ポイント"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_07_006",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 07 問題3",
+    "title": "feel excited about doing",
+    "question": "feel excited about doing の意味として最も自然なものは？",
+    "choices": [
+      "〜することに失望する",
+      "〜することにわくわくする",
+      "〜することを恐れる",
+      "〜することを避ける"
+    ],
+    "answer": 1,
+    "explanation": "feel excited about doing は「〜することにわくわくする」。about は前置詞なので reading。参照：Insight Writing 07 問題3",
+    "tags": [
+      "第二回",
+      "Insight Writing 07",
+      "熟語",
+      "about doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_07_007",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 07 問題4",
+    "title": "see O doing",
+    "question": "we see young people walking on the streets ... の see O doing が表すものは？",
+    "choices": [
+      "動作の最初から最後までを見る",
+      "Oに動作を命じる",
+      "Oが動作している場面を見る",
+      "Oが動作したと聞く"
+    ],
+    "answer": 2,
+    "explanation": "see O doing は「Oが〜しているのを見る」で、動作の一場面を捉える。参照：Insight Writing 07 問題4",
+    "tags": [
+      "第二回",
+      "Insight Writing 07",
+      "知覚動詞",
+      "see O doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_07_008",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 07 問題4",
+    "title": "while doing",
+    "question": "空所に最も適切なものは？\n\nThese days, we see young people walking on the streets (      ) looking at their smartphones.",
+    "choices": [
+      "because of",
+      "unless",
+      "to",
+      "while"
+    ],
+    "answer": 3,
+    "explanation": "同じ人が「歩きながらスマホを見る」ので while looking が自然。参照：Insight Writing 07 問題4",
+    "tags": [
+      "第二回",
+      "Insight Writing 07",
+      "接続詞",
+      "while doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_07_009",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 07 問題5",
+    "title": "spend time doing",
+    "question": "If we do not spend time interacting with each other, ... の spend time doing の意味は？",
+    "choices": [
+      "〜することに時間をかける",
+      "〜する時間を失う",
+      "〜する前に時間を測る",
+      "〜することを延期する"
+    ],
+    "answer": 0,
+    "explanation": "spend time doing は「〜することに時間をかける」。interact with each other は「互いに交流する」。参照：Insight Writing 07 問題5",
+    "tags": [
+      "第二回",
+      "Insight Writing 07",
+      "熟語",
+      "spend time doing"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_07_010",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Insight Writing 07 問題5",
+    "title": "risk doing",
+    "question": "we risk losing something essential to the human experience の risk doing の意味は？",
+    "choices": [
+      "〜することを必ず防ぐ",
+      "〜する危険がある",
+      "〜する許可を得る",
+      "〜する方法を学ぶ"
+    ],
+    "answer": 1,
+    "explanation": "risk doing は「〜する危険がある」。ここでは「人間の経験に欠かせないものを失う危険がある」。参照：Insight Writing 07 問題5",
+    "tags": [
+      "第二回",
+      "Insight Writing 07",
+      "熟語",
+      "risk doing"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_08_001",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 08 問題1",
+    "title": "put off X until",
+    "question": "Don’t put off what you can do today until tomorrow. の put off X until Y の意味は？",
+    "choices": [
+      "XをYまでに終える",
+      "XをYと交換する",
+      "XをYまで延期する",
+      "XをYから始める"
+    ],
+    "answer": 2,
+    "explanation": "put off X until Y は「XをYまで延期する」。参照：Insight Writing 08 問題1",
+    "tags": [
+      "第二回",
+      "Insight Writing 08",
+      "熟語",
+      "put off"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_08_002",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 08 問題1",
+    "title": "what you can do today",
+    "question": "what you can do today の what の働きとして最も適切なものは？",
+    "choices": [
+      "today を修飾する副詞",
+      "命令文を作る疑問詞",
+      "until の意味を強める語",
+      "「今日できること」を表す名詞節を作る"
+    ],
+    "answer": 3,
+    "explanation": "what S V で「SがVすること」。what you can do today 全体が put off の目的語。参照：Insight Writing 08 問題1",
+    "tags": [
+      "第二回",
+      "Insight Writing 08",
+      "what節",
+      "名詞節"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_08_003",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 08 問題2",
+    "title": "By reading books",
+    "question": "By reading books, you can experience emotions ... の By reading books の意味は？",
+    "choices": [
+      "本を読むことで",
+      "本を読む前に",
+      "本を読まない限り",
+      "本を読むための本"
+    ],
+    "answer": 0,
+    "explanation": "By doing は「〜することで」。手段を表す。参照：Insight Writing 08 問題2",
+    "tags": [
+      "第二回",
+      "Insight Writing 08",
+      "by doing",
+      "手段"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_08_004",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 08 問題2",
+    "title": "関係詞節",
+    "question": "emotions that you have never felt before の that 以下は何を説明する？",
+    "choices": [
+      "you",
+      "emotions",
+      "before",
+      "reading books"
+    ],
+    "answer": 1,
+    "explanation": "that you have never felt before が emotions を後ろから説明し、「今まで感じたことのない感情」。参照：Insight Writing 08 問題2",
+    "tags": [
+      "第二回",
+      "Insight Writing 08",
+      "関係代名詞",
+      "後置修飾"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_08_005",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 08 問題3",
+    "title": "条件を表す if",
+    "question": "空所に最も適切なものは？\n\n(      ) you want to succeed abroad in the future, it is important to imagine what you want to be.",
+    "choices": [
+      "Because of",
+      "Until",
+      "Despite",
+      "If"
+    ],
+    "answer": 3,
+    "explanation": "「〜したいのならば」は条件の if 節で表す。参照：Insight Writing 08 問題3",
+    "tags": [
+      "第二回",
+      "Insight Writing 08",
+      "接続詞",
+      "if"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_08_006",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Insight Writing 08 問題3",
+    "title": "what you want to be",
+    "question": "what you want to be の意味として最も自然なものは？",
+    "choices": [
+      "あなたが今いる場所",
+      "あなたが過去にしたこと",
+      "あなたがなりたい姿",
+      "あなたが持っている物"
+    ],
+    "answer": 2,
+    "explanation": "what S wants to be は「Sがなりたい姿」。参照：Insight Writing 08 問題3",
+    "tags": [
+      "第二回",
+      "Insight Writing 08",
+      "what節",
+      "和訳ポイント"
+    ],
+    "mistakeTag": "transword",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_08_007",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 08 問題4",
+    "title": "distinguish A from B",
+    "question": "distinguish what you really need from what you do not の distinguish A from B の意味は？",
+    "choices": [
+      "AをBに変える",
+      "AをBと比べて増やす",
+      "AをBから借りる",
+      "AとBを見分ける"
+    ],
+    "answer": 3,
+    "explanation": "distinguish A from B は「AをBと見分ける」。参照：Insight Writing 08 問題4",
+    "tags": [
+      "第二回",
+      "Insight Writing 08",
+      "熟語",
+      "distinguish A from B"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_08_008",
+    "testRound": "2nd",
+    "type": "translation_point",
+    "source": "Insight Writing 08 問題4",
+    "title": "省略された need",
+    "question": "what you do not の後ろで省略されている内容は？\n\n英文：\nIt is important to distinguish what you really need from what you do not.",
+    "choices": [
+      "really need",
+      "distinguish",
+      "modern society",
+      "important"
+    ],
+    "answer": 0,
+    "explanation": "what you do not の後ろには need が省略されている。「本当に必要とするものと、必要としないもの」。参照：Insight Writing 08 問題4",
+    "tags": [
+      "第二回",
+      "Insight Writing 08",
+      "省略",
+      "what節"
+    ],
+    "mistakeTag": "reference",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_08_009",
+    "testRound": "2nd",
+    "type": "grammar_focus",
+    "source": "Insight Writing 08 問題5",
+    "title": "One important thing ... is",
+    "question": "One important thing we can do is to raise awareness ... の文の骨組みとして正しいものは？",
+    "choices": [
+      "One important thing が目的語、raise が主語",
+      "One important thing we can do が主語、is が動詞",
+      "we が主語、can do is が動詞",
+      "awareness が主語、raise が動詞"
+    ],
+    "answer": 1,
+    "explanation": "One important thing we can do 全体が主語で、is が動詞。後ろの to raise ... が内容を示す。参照：Insight Writing 08 問題5",
+    "tags": [
+      "第二回",
+      "Insight Writing 08",
+      "文構造",
+      "関係詞省略"
+    ],
+    "mistakeTag": "structure",
+    "status": "active"
+  },
+  {
+    "id": "T2_IW_08_010",
+    "testRound": "2nd",
+    "type": "mini_test",
+    "source": "Insight Writing 08 問題5",
+    "title": "raise awareness of",
+    "question": "空所に最も適切なものは？\n\nOne important thing we can do is to raise awareness (      ) environmental problems and biodiversity.",
+    "choices": [
+      "at",
+      "with",
+      "of",
+      "by"
+    ],
+    "answer": 2,
+    "explanation": "raise awareness of/about A で「Aについての意識を高める」。参照：Insight Writing 08 問題5",
+    "tags": [
+      "第二回",
+      "Insight Writing 08",
+      "熟語",
+      "raise awareness"
+    ],
+    "mistakeTag": "meaning",
+    "status": "active"
   }
+,
+{
+  "id": "T2_CE_Y10_TEST_001",
+  "testRound": "2nd",
+  "type": "test_word_form",
+  "source": "Cutting Edge Y10 本文・第2回定期テスト形式",
+  "title": "語形変化：install",
+  "question": "英文の空所に入る最も適切な形はどれ？\n\nOnce the bottles are in place, necessary services like electric cables and water pipes are (　　　).",
+  "choices": [
+    "install",
+    "installed",
+    "installing",
+    "installation"
+  ],
+  "answer": 1,
+  "explanation": "主語 services は「設置される」側なので、受け身 are installed が適切。参照：Cutting Edge Y10 建設工程。",
+  "tags": [
+    "第二回",
+    "Cutting Edge Y10",
+    "テスト形式",
+    "語形変化",
+    "受け身"
+  ],
+  "mistakeTag": "grammar",
+  "status": "active"
+},
+{
+  "id": "T2_CE_Y10_TEST_002",
+  "testRound": "2nd",
+  "type": "test_phrase_completion",
+  "source": "Cutting Edge Y10 問題2・第2回定期テスト形式",
+  "title": "語句補充：for the purpose",
+  "question": "英文の空所に入る最も適切な語はどれ？\n\nThirty-four hectares of undeveloped land were bought (　　　) the purpose, and the Plastic Bottle Village was born.",
+  "choices": [
+    "at",
+    "for",
+    "by",
+    "with"
+  ],
+  "answer": 1,
+  "explanation": "for the purpose で「その目的のために」。purpose と結びつく前置詞をセットで確認する。",
+  "tags": [
+    "第二回",
+    "Cutting Edge Y10",
+    "テスト形式",
+    "前置詞",
+    "語句補充"
+  ],
+  "mistakeTag": "meaning",
+  "status": "active"
+},
+{
+  "id": "T2_CE_Y10_TEST_003",
+  "testRound": "2nd",
+  "type": "test_sentence_insertion",
+  "source": "Cutting Edge Y10 問題3・第2回定期テスト形式",
+  "title": "文挿入：建設の順序",
+  "question": "次の文を入れる位置として最も自然なのはどこ？\n\n【挿入する文】\nOnce they are in place, necessary services like electric cables and water pipes are installed.\n\n【本文】\nEach home is built by first constructing a steel frame.\n\n[A]\nDepending on its size, the frame is then filled with between 10,000 and 25,000 recycled plastic bottles.\n\n[B]\nThe bottle-filled frame is then covered with layers of concrete.\n\n[C]\nFinally, standard windows, doors, and a roof are added.\n\n[D]",
+  "choices": [
+    "[A]",
+    "[B]",
+    "[C]",
+    "[D]"
+  ],
+  "answer": 1,
+  "explanation": "they は直前の recycled plastic bottles を指す。ボトルを詰めた後、配線や水道管を設置し、その後コンクリートで覆う流れなので [B]。",
+  "tags": [
+    "第二回",
+    "Cutting Edge Y10",
+    "テスト形式",
+    "文挿入",
+    "指示語",
+    "順序"
+  ],
+  "mistakeTag": "inference",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_08_TEST_001",
+  "testRound": "2nd",
+  "type": "test_full_translation",
+  "source": "FOCUS 8-1・第2回定期テスト形式",
+  "title": "下線部和訳：all of which",
+  "question": "次の英文の最も自然な日本語訳はどれ？\n\nHe drew the human body in different layers and from different angles, all of which led him to discover a great deal about the science of levers.",
+  "choices": [
+    "彼は人体を異なる層や角度から描き、そのすべてによって、てこの科学について多くのことを発見するに至った。",
+    "彼は人体を一つの角度から描いたが、てこの科学については何も発見できなかった。",
+    "人体の異なる層が彼を描き、角度がてこの科学を発見した。",
+    "彼はてこの科学を発見するためだけに、人体を描くのをやめた。"
+  ],
+  "answer": 0,
+  "explanation": "all of which は前の「異なる層・角度から描いたこと」全体を受ける。lead O to do は「それによってOは〜するに至る」と訳す。",
+  "tags": [
+    "第二回",
+    "FOCUS 8",
+    "テスト形式",
+    "下線部和訳",
+    "all of which"
+  ],
+  "mistakeTag": "transword",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_08_TEST_002",
+  "testRound": "2nd",
+  "type": "test_japanese_to_english",
+  "source": "FOCUS 8-1・第2回定期テスト形式",
+  "title": "日本語から英語：lead O to do",
+  "question": "「そのすべてによって、彼は多くのことを発見するに至った」に最も近い英語はどれ？",
+  "choices": [
+    "all of which led him to discover a great deal",
+    "all of him discovered which led a great deal",
+    "which all led to him a great discovery",
+    "all which he led to discover greatly"
+  ],
+  "answer": 0,
+  "explanation": "all of which + led + him + to discover の順。lead O to do の形をそのまま使う。",
+  "tags": [
+    "第二回",
+    "FOCUS 8",
+    "テスト形式",
+    "日本語から英語",
+    "lead O to do"
+  ],
+  "mistakeTag": "structure",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_08_TEST_003",
+  "testRound": "2nd",
+  "type": "test_phrase_build",
+  "source": "FOCUS 8-1・第2回定期テスト形式",
+  "title": "英語表現：異なる角度から",
+  "question": "「異なる層で、そして異なる角度から」に最も適切な英語はどれ？",
+  "choices": [
+    "in different layers and from different angles",
+    "at different layers and by different angles",
+    "from different layers and in different angles",
+    "on different layers and with different angles"
+  ],
+  "answer": 0,
+  "explanation": "layer には in、angle には from を用い、in different layers and from different angles。前置詞ごと表現を覚える。",
+  "tags": [
+    "第二回",
+    "FOCUS 8",
+    "テスト形式",
+    "英語表現",
+    "前置詞"
+  ],
+  "mistakeTag": "grammar",
+  "status": "active"
+}
+,
+{
+  "id": "T2_FOCUS_08_SELF_001",
+  "testRound": "2nd",
+  "type": "self_translation",
+  "questionMode": "self_assessment",
+  "source": "FOCUS 8-1・自己採点式試作",
+  "title": "自分で訳す：all of which",
+  "question": "次の英文を、自分で日本語に訳してみよう。\n\nHe drew the human body in different layers and from different angles, all of which led him to discover a great deal about the science of levers.",
+  "selfInstruction": "紙に書くか、声に出して訳してから「答えを見る」を押そう。",
+  "modelAnswer": "彼は人体を異なる層で、また異なる角度から描き、そのすべてによって、てこの科学について多くのことを発見するに至った。",
+  "keyPoints": "all of which は前の内容全体を受ける。lead O to do は「それによってOは〜するに至る」。",
+  "choices": ["できた", "要復習", "自己採点", "模範解答"],
+  "answer": 0,
+  "explanation": "模範訳と確認ポイントを見比べて自己採点しました。",
+  "tags": ["第二回", "FOCUS 8", "自己採点", "下線部和訳", "all of which"],
+  "mistakeTag": "transword",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_08_SELF_002",
+  "testRound": "2nd",
+  "type": "grammar_focus",
+  "source": "FOCUS 8-1・構文確認",
+  "title": "構文の一部補充：lead O to do",
+  "question": "空欄に入る最も適切な語はどれ？\n\nHe drew the human body in different layers and from different angles, all of which (      ) him to discover a great deal about the science of levers.",
+  "choices": ["led", "lead", "leads", "leading"],
+  "answer": 0,
+  "explanation": "本文は過去の出来事なので lead の過去形 led。all of which led him to discover ... で「そのすべてによって、彼は〜を発見するに至った」。まずは lead O to do の形を一部補充で確認しよう。",
+  "tags": ["第二回", "FOCUS 8", "構文確認", "一部補充", "lead O to do"],
+  "mistakeTag": "structure",
+  "status": "active"
+}
+,
+{
+  "id": "T2_CE_Y09_TESTFORM_001",
+  "testRound": "2nd",
+  "type": "grammar_focus",
+  "source": "第二回定期テスト I-1／実問題英文",
+  "title": "see O do",
+  "question": "次の空所に入る語句として正しいものは？\n\n英文：\nI want to (　) his best.",
+  "choices": [
+    "see him do",
+    "see him to do",
+    "see he does",
+    "seeing him do"
+  ],
+  "answer": 0,
+  "explanation": "see O do で「Oが〜するのを見る」。したがって see him do his best で「彼が全力を尽くすのを見たい」。実問題の英文に合わせた語句補充。",
+  "tags": [
+    "第二回",
+    "実問題形式",
+    "語句補充",
+    "see O do"
+  ],
+  "mistakeTag": "grammar",
+  "status": "active"
+},
+{
+  "id": "T2_CE_Y09_TESTFORM_002",
+  "testRound": "2nd",
+  "type": "grammar_focus",
+  "source": "第二回定期テスト I-3／Cutting Edge Y09",
+  "title": "move の語形",
+  "question": "次の空所に入る語として正しいものは？\n\n英文：\nHe (　) to a new place two years ago.",
+  "choices": [
+    "moves",
+    "moving",
+    "moved",
+    "move"
+  ],
+  "answer": 2,
+  "explanation": "two years ago があるので過去形 moved。実問題では、日本語の意味に合うように語形を変えて入れる形式が出題された。",
+  "tags": [
+    "第二回",
+    "Cutting Edge Y09",
+    "実問題形式",
+    "語形変化"
+  ],
+  "mistakeTag": "grammar",
+  "status": "active"
+},
+{
+  "id": "T2_CE_Y09_TESTFORM_003",
+  "testRound": "2nd",
+  "type": "vocab_context",
+  "source": "第二回定期テスト III／Cutting Edge Y09 問題2",
+  "title": "turn down",
+  "question": "次の英文の空所に最も合う語句は？\n\n英文：\nAt first I asked the way to sightseeing spots, but they frequently (　) my question by saying “No,” in French.",
+  "choices": [
+    "looked after",
+    "turned down",
+    "gave up",
+    "found out"
+  ],
+  "answer": 1,
+  "explanation": "turn down は「申し出・依頼などを断る」。この英文は Cutting Edge Y09 原文の表現（turned down my question）をそのまま使用している。文脈では質問に“No”と答えて取り合わなかったことを表す。参照：Cutting Edge Y09 問題2。",
+  "tags": [
+    "第二回",
+    "Cutting Edge Y09",
+    "実問題形式",
+    "語句補充"
+  ],
+  "mistakeTag": "meaning",
+  "status": "active"
+},
+{
+  "id": "T2_CE_Y09_TESTFORM_004",
+  "testRound": "2nd",
+  "type": "reading_reason",
+  "source": "第二回定期テスト III／Cutting Edge Y09 問題4",
+  "title": "短い内容説明",
+  "question": "次の英文が伝えている内容として最も適切なものは？\n\n英文：\nUnless people actually use English, they won’t be able to speak it just because they learned it at school.",
+  "choices": [
+    "学校で学びさえすれば、実際に使わなくても英語を話せる",
+    "実際に英語を使わない限り、学校で学んだだけでは話せるようにならない",
+    "学校で英語を学ぶことは、実際に使うより重要である",
+    "英語を話せる人は、学校で英語を学んでいない"
+  ],
+  "answer": 1,
+  "explanation": "unless は「〜しない限り」。否定文中の just because は「単に〜という理由だけでは…ない」。参照：Cutting Edge Y09 問題4。",
+  "tags": [
+    "第二回",
+    "Cutting Edge Y09",
+    "実問題形式",
+    "内容説明"
+  ],
+  "mistakeTag": "pinpoint",
+  "status": "active"
+},
+{
+  "id": "T2_CE_Y10_TESTFORM_001",
+  "testRound": "2nd",
+  "type": "grammar_focus",
+  "source": "第二回定期テスト I／Cutting Edge Y10 問題1",
+  "title": "left の語形",
+  "question": "次の空所に入る語として正しいものは？\n\n英文：\nAfter noticing plastic waste being carelessly (　) on the island’s beautiful beaches, Robert Bezeau decided to set up a plastic recycling project.",
+  "choices": [
+    "leave",
+    "leaving",
+    "left",
+    "leaves"
+  ],
+  "answer": 2,
+  "explanation": "being left は受動態の動名詞で「放置されていること」。plastic waste は「放置する側」ではなく「放置される側」なので過去分詞 left を使う。参照：Cutting Edge Y10 問題1。",
+  "tags": [
+    "第二回",
+    "Cutting Edge Y10",
+    "実問題形式",
+    "語形変化"
+  ],
+  "mistakeTag": "grammar",
+  "status": "active"
+},
+{
+  "id": "T2_CE_Y10_TESTFORM_002",
+  "testRound": "2nd",
+  "type": "discourse_marker",
+  "source": "第二回定期テスト B／Cutting Edge Y10 問題3",
+  "title": "Once の補充",
+  "question": "次の空所に最も合う語は？\n\n英文：\nThe frame is filled with recycled plastic bottles. (　) they are in place, necessary services like electric cables and water pipes are installed.",
+  "choices": [
+    "Unless",
+    "Before",
+    "Once",
+    "Even if"
+  ],
+  "answer": 2,
+  "explanation": "Once S V は「いったん〜すると／〜したら」。ボトルが所定の位置に入った後、設備が取り付けられる流れ。参照：Cutting Edge Y10 問題3。",
+  "tags": [
+    "第二回",
+    "Cutting Edge Y10",
+    "実問題形式",
+    "接続語"
+  ],
+  "mistakeTag": "inference",
+  "status": "active"
+},
+{
+  "id": "T2_CE_Y10_TESTFORM_003",
+  "testRound": "2nd",
+  "type": "discourse_marker",
+  "source": "第二回定期テスト B／Cutting Edge Y10 問題4",
+  "title": "So far の補充",
+  "question": "次の空所に最も合う語句は？\n\n英文：\n(　), only a few houses have been completed, but if everything goes according to plan, the final village will have 120 homes.",
+  "choices": [
+    "As a result",
+    "So far",
+    "Fortunately",
+    "For example"
+  ],
+  "answer": 1,
+  "explanation": "現在までに完成した家が少ない、という現在完了の内容なので So far「これまでのところ」が最適。参照：Cutting Edge Y10 問題4。",
+  "tags": [
+    "第二回",
+    "Cutting Edge Y10",
+    "実問題形式",
+    "語句補充"
+  ],
+  "mistakeTag": "inference",
+  "status": "active"
+},
+{
+  "id": "T2_CE_Y10_TESTFORM_004",
+  "testRound": "2nd",
+  "type": "story_sequence",
+  "source": "第二回定期テスト C／Cutting Edge Y10 問題3-4",
+  "title": "文挿入",
+  "question": "次の文を入れる位置として最も適切なのはどこ？\n\n挿入文：\nOnce they are in place, necessary services like electric cables and water pipes are installed.\n\n本文：\n① The steel frame is filled with recycled plastic bottles.\n② The bottle-filled frame is covered with layers of concrete.\n③ Finally, standard windows, doors, and a roof are added.\n④ The structure is complete.",
+  "choices": [
+    "①の前",
+    "①と②の間",
+    "②と③の間",
+    "③と④の間"
+  ],
+  "answer": 1,
+  "explanation": "they は recycled plastic bottles を指す。ボトルを詰めた直後、コンクリートで覆う前に設備を取り付ける流れなので①と②の間。",
+  "tags": [
+    "第二回",
+    "Cutting Edge Y10",
+    "実問題形式",
+    "文挿入"
+  ],
+  "mistakeTag": "inference",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_07_TESTFORM_001",
+  "testRound": "2nd",
+  "type": "grammar_focus",
+  "source": "第二回定期テスト F-1／FOCUS 7-1",
+  "title": "within minutes",
+  "question": "次の空所に最も合う前置詞は？\n\n英文：\nEveryone knows someone who can walk into a room full of people and, (　) minutes, give an accurate description of the relationships between those people.",
+  "choices": [
+    "at",
+    "within",
+    "from",
+    "out"
+  ],
+  "answer": 1,
+  "explanation": "within minutes は「数分以内に／ものの数分で」。実問題の前置詞補充形式を再現。参照：FOCUS 7-1。",
+  "tags": [
+    "第二回",
+    "FOCUS 7",
+    "実問題形式",
+    "構文補充"
+  ],
+  "mistakeTag": "grammar",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_07_TESTFORM_002",
+  "testRound": "2nd",
+  "type": "grammar_focus",
+  "source": "第二回定期テスト F-2／FOCUS 7-2",
+  "title": "the way in which",
+  "question": "次の空所に最も合う語は？\n\n英文：\nBorrowing words from other languages is not the only way (　) which a language can develop its vocabulary.",
+  "choices": [
+    "on",
+    "at",
+    "in",
+    "for"
+  ],
+  "answer": 2,
+  "explanation": "the way in which S V で「SがVする方法」。参照：FOCUS 7-2。",
+  "tags": [
+    "第二回",
+    "FOCUS 7",
+    "実問題形式",
+    "構文補充"
+  ],
+  "mistakeTag": "structure",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_07_TESTFORM_003",
+  "testRound": "2nd",
+  "type": "translation_point",
+  "source": "第二回定期テスト II／FOCUS 7-2",
+  "title": "developed from within",
+  "question": "次の英文の下線部に相当する部分の訳として最も自然なものは？\n\n英文：\nThere are many cases where the vocabulary of a language is developed “from within,” that is, by using the language’s existing resources.\n\n対象：where 以下",
+  "choices": [
+    "ある言語の語彙が、既存の資源を使わず外部から借用される",
+    "ある言語の語彙が、その言語の既存の資源を使うことによって「内部から」発達する",
+    "ある言語が、語彙を減らすために他言語の資源を使う",
+    "既存の言語は、語彙を発達させる唯一の方法である"
+  ],
+  "answer": 1,
+  "explanation": "対象は where 以下のみ。where は cases を受け、from within は「内部から」、that is は「すなわち」、by using ... は手段を表す。主節 There are many cases の「場合が多い」は訳に含めない。参照：FOCUS 7-2。",
+  "tags": [
+    "第二回",
+    "FOCUS 7",
+    "実問題形式",
+    "下線部和訳"
+  ],
+  "mistakeTag": "transword",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_07_TESTFORM_004",
+  "testRound": "2nd",
+  "type": "grammar_focus",
+  "source": "第二回定期テスト F-3／FOCUS 7-3",
+  "title": "good for",
+  "question": "次の空所に最も合う前置詞は？\n\n英文：\nThis project may be good (　) both humans and animals.",
+  "choices": [
+    "at",
+    "for",
+    "on",
+    "from"
+  ],
+  "answer": 1,
+  "explanation": "be good for 〜 は「〜のためになる／〜に良い」。実問題では good (　) の形で問われた。",
+  "tags": [
+    "第二回",
+    "FOCUS 7",
+    "実問題形式",
+    "前置詞補充"
+  ],
+  "mistakeTag": "grammar",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_08_TESTFORM_001",
+  "testRound": "2nd",
+  "type": "translation_point",
+  "source": "第二回定期テスト D／FOCUS 8-2",
+  "title": "after their release",
+  "question": "次の英文の after their release の意味として最も自然なものは？\n\n英文：\nThey also make new friends and connections which they can use after their release.",
+  "choices": [
+    "彼らが友人を解放したあとで",
+    "彼らが釈放されたあとで",
+    "彼らが関係を断ったあとで",
+    "彼らが刑罰を受ける前に"
+  ],
+  "answer": 1,
+  "explanation": "release はここでは名詞で「釈放」。after their release は自然な日本語では「彼らが釈放されたあとで」と訳す。参照：FOCUS 8-2。",
+  "tags": [
+    "第二回",
+    "FOCUS 8",
+    "実問題形式",
+    "語句の意味"
+  ],
+  "mistakeTag": "transword",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_08_TESTFORM_002",
+  "testRound": "2nd",
+  "type": "grammar_focus",
+  "source": "第二回定期テスト D-3／FOCUS 8-1",
+  "title": "all of which",
+  "question": "次の英文の all of which が指す内容として最も適切なのは？\n\n英文：\nHe drew the human body in different layers and from different angles, all of which led him to discover a great deal about the science of levers.",
+  "choices": [
+    "the human body だけ",
+    "different layers だけ",
+    "different angles だけ",
+    "人体をさまざまな層・角度から描いたこと全体"
+  ],
+  "answer": 3,
+  "explanation": "all of which は直前の内容全体を受ける非制限用法。「そうしたことすべてが彼を発見へ導いた」。参照：FOCUS 8-1。",
+  "tags": [
+    "第二回",
+    "FOCUS 8",
+    "実問題形式",
+    "指示内容"
+  ],
+  "mistakeTag": "reference",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_08_TESTFORM_003",
+  "testRound": "2nd",
+  "type": "translation_point",
+  "source": "第二回定期テスト D-3／FOCUS 8-1",
+  "title": "無生物主語 lead O to do",
+  "question": "下線部に相当する部分の訳として最も自然なものは？\n\n英文：\n..., all of which led him to discover a great deal about the science of levers.\n\n対象：all of which 以下",
+  "choices": [
+    "そのすべてを、彼はてこの科学から隠した",
+    "そうしたことのすべてによって、彼はてこの科学について多くのことを発見することになった",
+    "彼は、てこの科学を発見したすべての人を導いた",
+    "そのすべては、彼が人体を描くことを妨げた"
+  ],
+  "answer": 1,
+  "explanation": "無生物主語 lead O to do は「SによってOは〜するようになる」と訳すと自然。参照：FOCUS 8-1。",
+  "tags": [
+    "第二回",
+    "FOCUS 8",
+    "実問題形式",
+    "下線部和訳"
+  ],
+  "mistakeTag": "transword",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_08_TESTFORM_004",
+  "testRound": "2nd",
+  "type": "grammar_focus",
+  "source": "第二回定期テスト F-3／FOCUS 8",
+  "title": "while の補充",
+  "question": "次の空所に最も合う接続詞は？\n\n英文：\nThe team will focus on intonation, voice, and speaking style in human speech, (　) finding out how the two communicate.",
+  "choices": [
+    "While",
+    "Unless",
+    "Until",
+    "If"
+  ],
+  "answer": 0,
+  "explanation": "while doing は「〜する一方で／〜しながら」。実問題原本は how the two communicate（その2者がどのように意思疎通するか）であり、how to communicate ではない。",
+  "tags": [
+    "第二回",
+    "FOCUS 8",
+    "実問題形式",
+    "接続詞補充"
+  ],
+  "mistakeTag": "grammar",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_07_SELFCHECK_001",
+  "testRound": "2nd",
+  "type": "self_translation",
+  "questionMode": "self_assessment",
+  "source": "第二回定期テスト II／FOCUS 7-2",
+  "title": "下線部和訳（自己採点）",
+  "question": "次の下線部に相当する部分を日本語に訳そう。\n\nThere are many cases where the vocabulary of a language is developed “from within,” that is, by using the language’s existing resources.\n\n対象：where 以下",
+  "selfInstruction": "紙に書くか、声に出して訳してから「答えを見る」を押そう。",
+  "modelAnswer": "ある言語の語彙が「内部から」、すなわち、その言語の既存の資源を使うことによって発達する。",
+  "keyPoints": "・where が cases を修飾していることを踏まえて訳している\n・from within を「内部から」と訳している\n・that is を「すなわち」と訳している\n・by using を手段として訳している\n・the language’s existing resources の情報を落としていない",
+  "choices": [
+    "できた",
+    "要復習",
+    "自己採点",
+    "模範解答"
+  ],
+  "answer": 0,
+  "explanation": "対象は where 以下のみ。主節 There are many cases の「場合が多くある」は模範訳に含めない。that is は「すなわち」、by doing は「〜することによって」。",
+  "tags": [
+    "第二回",
+    "FOCUS 7",
+    "下線部和訳",
+    "自己採点"
+  ],
+  "mistakeTag": "transword",
+  "status": "active"
+},
+{
+  "id": "T2_FOCUS_08_SELFCHECK_001",
+  "testRound": "2nd",
+  "type": "self_translation",
+  "questionMode": "self_assessment",
+  "source": "第二回定期テスト D-3／FOCUS 8-1",
+  "title": "下線部和訳（自己採点）",
+  "question": "次の下線部に相当する部分を日本語に訳そう。\n\nHe drew the human body in different layers and from different angles, all of which led him to discover a great deal about the science of levers.\n\n対象：all of which 以下",
+  "selfInstruction": "紙に書くか、声に出して訳してから「答えを見る」を押そう。",
+  "modelAnswer": "そうしたことのすべてによって、彼はてこの科学について多くのことを発見することになった。",
+  "keyPoints": "・all of which が前の内容全体を受ける\n・lead O to do を自然な無生物主語で訳す\n・a great deal を「多くのこと」と訳す\n・about the science of levers の情報を落としていない",
+  "choices": [
+    "できた",
+    "要復習",
+    "自己採点",
+    "模範解答"
+  ],
+  "answer": 0,
+  "explanation": "all of which は前の内容全体を受ける。lead O to do は「SによってOは〜するようになる」。",
+  "tags": [
+    "第二回",
+    "FOCUS 8",
+    "下線部和訳",
+    "自己採点"
+  ],
+  "mistakeTag": "transword",
+  "status": "active"
+}
+
 ];
