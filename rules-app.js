@@ -4,10 +4,10 @@
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const split=v=>String(v||'').split(';').map(x=>x.trim()).filter(Boolean);
   let packs=[],D=null,info=null,sentenceMap=new Map(),ruleMap=new Map(),summaryMap=new Map();
-  let quizIndex=0,quickIndex=0,gachiSentenceId=null,gachiStep=0,wrongCount=0,lastAnswer=null,gachiHubScroll=0,quizSession={},lessonEntryMode='menu',listenOrigin='menu';
+  let quizIndex=0,quickIndex=0,gachiSentenceId=null,gachiStep=0,wrongCount=0,lastAnswer=null,gachiHubScroll=0,quizSession={},lessonEntryMode='menu',listenOrigin='menu',habitCalendarDate=new Date();
   const savedPackOpenIds=new Set();
   const state=(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{};}catch{return{}}})();
-  state.questions ||= {}; state.quick ||= {}; state.gachi ||= {}; state.listenHistory ||= []; state.preReadSeen ||= {}; state.latestResults ||= {}; state.listenPosition ||= {};
+  state.questions ||= {}; state.quick ||= {}; state.gachi ||= {}; state.listenHistory ||= []; state.preReadSeen ||= {}; state.latestResults ||= {}; state.listenPosition ||= {}; state.dailyListenTargetLessonId ||= null;
   const save=()=>localStorage.setItem(KEY,JSON.stringify(state));
   function show(id){if(window.EikomiApp?.showView)window.EikomiApp.showView(id);else document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));window.scrollTo({top:0,behavior:'smooth'});}
   function bindData(pack){D=pack.data;D.tables ||= [];D.notes ||= [];info=D.info[0];sentenceMap=new Map(D.sentences.map(x=>[x.sentenceId,x]));ruleMap=new Map(D.rules.map(x=>[String(x.ruleId),x]));summaryMap=new Map(D.summaries.map(x=>[x.questionId,x]));}
@@ -30,6 +30,66 @@
       .filter(Boolean)
       .join(' ');
   }
+
+  const localDateKey=(value=new Date())=>{const d=value instanceof Date?value:new Date(value);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+  function completedListenEntries(){return state.listenHistory.filter(x=>x?.completed&&x.lessonId&&x.at);}
+  function listenDays(){return new Set(completedListenEntries().map(x=>localDateKey(x.at)));}
+  function monthCalendarHtml(reference=new Date()){
+    const viewDate=new Date(reference.getFullYear(),reference.getMonth(),1);
+    const year=viewDate.getFullYear(),month=viewDate.getMonth(),now=new Date(),today=localDateKey(now),done=listenDays();
+    const firstDay=new Date(year,month,1).getDay(),daysInMonth=new Date(year,month+1,0).getDate();
+    const cells=[];
+    for(let i=0;i<firstDay;i++)cells.push('<span class="rules-habit-day empty" aria-hidden="true"></span>');
+    for(let day=1;day<=daysInMonth;day++){
+      const key=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+      cells.push(`<span class="rules-habit-day ${done.has(key)?'done':''} ${key===today?'today':''}" title="${done.has(key)?'音読した日':'未記録'}">${day}</span>`);
+    }
+    const count=[...done].filter(k=>k.startsWith(`${year}-${String(month+1).padStart(2,'0')}-`)).length;
+    const isCurrent=year===now.getFullYear()&&month===now.getMonth();
+    return `<section class="rules-habit-calendar" aria-label="${year}年${month+1}月の音読カレンダー"><div class="rules-habit-head"><button class="rules-habit-nav" data-calendar-nav="prev" type="button">‹ 前月</button><strong>${year}年${month+1}月</strong><button class="rules-habit-nav" data-calendar-nav="current" type="button" ${isCurrent?'disabled':''}>今月</button></div><div class="rules-habit-count">${count}日 🎧</div><div class="rules-habit-week"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div><div class="rules-habit-grid">${cells.join('')}</div></section>`;
+  }
+  function bindHabitCalendarNavigation(root=document){
+    root.querySelectorAll('[data-calendar-nav]').forEach(button=>button.onclick=()=>{
+      if(button.dataset.calendarNav==='prev')habitCalendarDate=new Date(habitCalendarDate.getFullYear(),habitCalendarDate.getMonth()-1,1);
+      else habitCalendarDate=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+      const calendar=button.closest('.rules-habit-calendar');
+      if(calendar){
+        const holder=calendar.parentElement;
+        calendar.outerHTML=monthCalendarHtml(habitCalendarDate);
+        if(holder)bindHabitCalendarNavigation(holder);
+      }
+    });
+  }
+  function renderHabitCalendar(target){
+    const container=typeof target==='string'?byId(target):target;
+    if(!container)return;
+    habitCalendarDate=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+    container.innerHTML=monthCalendarHtml(habitCalendarDate);
+    bindHabitCalendarNavigation(container);
+  }
+  function lastCompletedAtFor(lessonId){return completedListenEntries().filter(x=>x.lessonId===lessonId).map(x=>new Date(x.at).getTime()).sort((a,b)=>b-a)[0]||0;}
+  function resolveDailyListenPack(){
+    if(!packs.length)return null;
+    const saved=packs.find(p=>p.lessonId===state.dailyListenTargetLessonId);
+    if(saved)return saved;
+    const never=packs.find(p=>!completedListenEntries().some(x=>x.lessonId===p.lessonId));
+    const target=never||[...packs].sort((a,b)=>lastCompletedAtFor(a.lessonId)-lastCompletedAtFor(b.lessonId)||Number(a.data.info?.[0]?.lessonOrder||0)-Number(b.data.info?.[0]?.lessonOrder||0))[0];
+    state.dailyListenTargetLessonId=target?.lessonId||null;save();return target;
+  }
+  function advanceDailyListenTarget(completedLessonId){
+    if(!packs.length)return;
+    const ordered=[...packs].sort((a,b)=>Number(a.data.info?.[0]?.lessonOrder||0)-Number(b.data.info?.[0]?.lessonOrder||0));
+    const idx=ordered.findIndex(p=>p.lessonId===completedLessonId);
+    state.dailyListenTargetLessonId=ordered[(idx+1+ordered.length)%ordered.length]?.lessonId||null;
+    save();
+  }
+  function getDailyReadingSummary(){
+    const target=resolveDailyListenPack();
+    const pi=target?.data?.info?.[0];
+    const done=listenDays(),now=new Date(),prefix=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-`;
+    return {ready:!!target,lessonId:target?.lessonId||null,lessonOrder:pi?.lessonOrder||'',title:pi?.title||'',monthDays:[...done].filter(x=>x.startsWith(prefix)).length,totalDays:done.size,completedToday:done.has(localDateKey(now))};
+  }
+
   function ensureData(){if(D)return true;alert('Rules教材が未読込です。設定からLessonごとのCSV 9ファイルを読み込んでください。');show('settingsView');return false;}
   function packStats(pack){const oldD=D,oldInfo=info,oldSentenceMap=sentenceMap,oldRuleMap=ruleMap,oldSummaryMap=summaryMap;bindData(pack);const out=lessonStats();D=oldD;info=oldInfo;sentenceMap=oldSentenceMap;ruleMap=oldRuleMap;summaryMap=oldSummaryMap;return out;}
   async function refreshPacks(){packs=await RulesStore.loadAll();renderSavedRules();}
@@ -358,9 +418,21 @@
     byId('rulesListenStart').onclick=startListen;
     byId('rulesListenStop').onclick=stopListen;
   }
+  function renderListenComplete(){
+    stopListen(false);
+    const card=byId('rulesListenCard');
+    if(!card)return;
+    habitCalendarDate=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+    card.innerHTML=`<div class="rules-listen-complete"><div class="rules-complete-icon">🎉</div><p class="eyebrow">Daily Reading Complete</p><h2>今日の音読 完了！</h2><p><strong>${esc(info.title)}</strong>を最後まで聞きました。</p><p class="rules-gentle">少しずつ続けた日が、カレンダーにたまっていきます。</p>${monthCalendarHtml(habitCalendarDate)}<button id="rulesListenDoneHome" class="primary-button wide" type="button">今日はここまで</button><button id="rulesListenAgain" class="ghost-button wide" type="button">もう一度聞く</button></div>`;
+    bindHabitCalendarNavigation();
+    byId('rulesListenDoneHome').onclick=()=>{listenOrigin='menu';show('homeView');};
+    byId('rulesListenAgain').onclick=()=>{renderListen();};
+  }
   function stopListen(userInitiated=true){listenRunId++;const wasSpeaking=speaking;speaking=false;if('speechSynthesis'in window)speechSynthesis.cancel();document.querySelectorAll('.rules-listen-phrase').forEach(x=>x.classList.remove('current','next'));document.querySelectorAll('.rules-listen-number').forEach(x=>x.classList.remove('current'));if(userInitiated&&wasSpeaking&&byId('rulesListenStatus')){byId('rulesListenStatus').textContent='ここで中断しました。この回は記録していません。次回も本文の先頭から再生します。';byId('rulesListenStatus').className='rules-gentle rules-status-neutral';}}
-  function startListen(){if(!('speechSynthesis'in window)){alert('このブラウザでは音声読み上げを利用できません。');return;}stopListen(false);speaking=true;const runId=++listenRunId,mode=document.querySelector('input[name="listenMode"]:checked').value,guide=byId('rulesGuideToggle').checked;utterances=[];D.sentences.forEach(s=>{const parts=mode==='chunked'?s.displayText.split('/').map(x=>x.trim()).filter(Boolean):[s.speechTextReference||s.displayText.replaceAll('/',' ')];parts.forEach((text,i)=>utterances.push({text,key:`${s.sentenceId}-${mode==='chunked'?i:0}`,sentenceId:s.sentenceId,partIndex:i,natural:mode==='natural'}));});let idx=0;const next=()=>{if(!speaking||runId!==listenRunId)return;if(idx>=utterances.length){speaking=false;state.listenHistory.push({lessonId:info.lessonId,mode,guide,completed:true,at:new Date().toISOString()});save();byId('rulesListenStatus').textContent='✅ 1回聞いたとして記録しました。';renderListen();return;}const item=utterances[idx];document.querySelectorAll('.rules-listen-phrase').forEach(x=>x.classList.remove('current','next'));document.querySelectorAll('.rules-listen-number').forEach(x=>x.classList.remove('current'));if(guide){document.querySelector(`[data-sentence="${CSS.escape(item.sentenceId)}"] .rules-listen-number`)?.classList.add('current');}const u=new SpeechSynthesisUtterance(item.text);u.lang='en-US';u.rate=Number(byId('rulesListenRate')?.value||.9);u.onend=()=>{if(runId!==listenRunId)return;idx++;setTimeout(next,mode==='chunked'?220:40)};u.onerror=()=>{if(runId!==listenRunId||!speaking)return;speaking=false;byId('rulesListenStatus').textContent='音声を再生できませんでした。もう一度お試しください。';byId('rulesListenStatus').className='rules-gentle rules-status-error';};byId('rulesListenStatus').textContent=`文${sentenceMap.get(item.sentenceId)?.sentenceOrder||''}を再生中…`;speechSynthesis.speak(u);};next();}
-  window.RulesApp={...(window.RulesApp||{}),stopListen};
-  async function init(){await refreshPacks();const input=byId('rulesCsvFilesInput');input?.addEventListener('change',()=>{const names=[...input.files].map(f=>f.name);byId('rulesCsvFilesName').textContent=names.length?names.join('、'):'ZIPを1つ選ぶ（CSV個別選択も可）';byId('rulesCsvImportStatus').textContent=names.length?'選択したファイルを確認できます。保存ボタンを押してください。':'';});byId('importRulesCsvBtn')?.addEventListener('click',async()=>{try{byId('rulesCsvImportStatus').textContent='ZIP内の必要ファイルを確認中…';const before=new Set(packs.map(p=>p.lessonId)),newPacks=await RulesStore.buildPacks(input.files);await RulesStore.savePacks(newPacks);const messages=newPacks.map(p=>`${before.has(p.lessonId)?'差し替え':'追加'}：Lesson ${p.lessonOrder}「${p.title}」／必要CSV ${p.files.length}件${p.ignoredCount?`・不要ファイル ${p.ignoredCount}件を除外`:''}`);byId('rulesCsvImportStatus').innerHTML='✅ '+messages.map(esc).join('<br>');await refreshPacks();bindData(newPacks[0]);input.value='';byId('rulesCsvFilesName').textContent='ZIPを1つ選ぶ（CSV個別選択も可）';}catch(e){byId('rulesCsvImportStatus').textContent='⚠️ '+e.message;}});document.querySelectorAll('.rules-test-entry').forEach(b=>b.onclick=()=>{lessonEntryMode='menu';if(!D&&packs.length)bindData(packs[0]);if(ensureData()){renderLessonList();show('rulesLessonView');}});document.querySelectorAll('.rules-listen-entry').forEach(b=>b.onclick=()=>{lessonEntryMode='listen';listenOrigin='home';if(!D&&packs.length)bindData(packs[0]);if(ensureData()){renderLessonList();show('rulesLessonView');}});document.querySelectorAll('.rules-back-home').forEach(b=>b.onclick=()=>show('homeView'));document.querySelectorAll('.rules-back-lessons').forEach(b=>b.onclick=()=>{renderLessonList();show('rulesLessonView');});document.querySelectorAll('.rules-back-menu').forEach(b=>b.onclick=()=>{stopListen();if(b.dataset.listenBack==='home'){listenOrigin='menu';show('homeView');}else{renderMenu();show('rulesMenuView');}});document.querySelectorAll('.rules-back-quiz').forEach(b=>b.onclick=()=>show('rulesQuizView'));document.querySelectorAll('.rules-back-gachi-hub').forEach(b=>b.onclick=()=>{renderGachiHub();show('rulesGachiHubView');requestAnimationFrame(()=>window.scrollTo({top:gachiHubScroll,behavior:'smooth'}));});document.querySelector('.rules-start-quiz').onclick=()=>{renderPreRead();show('rulesPreReadView');};document.querySelector('.rules-start-quick').onclick=()=>{quickIndex=0;renderQuick();show('rulesQuickView');};document.querySelector('.rules-start-gachi').onclick=()=>{renderGachiHub();show('rulesGachiHubView');};document.querySelector('.rules-start-listen').onclick=()=>{listenOrigin='menu';renderListen();show('rulesListenView');};byId('rulesPassageToggle').onclick=()=>{const p=byId('rulesPassage');p.classList.toggle('hidden');byId('rulesPassageToggle').textContent=p.classList.contains('hidden')?'本文を見る':'本文を閉じる';};}
+  function startListen(){if(!('speechSynthesis'in window)){alert('このブラウザでは音声読み上げを利用できません。');return;}stopListen(false);speaking=true;const runId=++listenRunId,mode=document.querySelector('input[name="listenMode"]:checked').value,guide=byId('rulesGuideToggle').checked;utterances=[];D.sentences.forEach(s=>{const parts=mode==='chunked'?s.displayText.split('/').map(x=>x.trim()).filter(Boolean):[s.speechTextReference||s.displayText.replaceAll('/',' ')];parts.forEach((text,i)=>utterances.push({text,key:`${s.sentenceId}-${mode==='chunked'?i:0}`,sentenceId:s.sentenceId,partIndex:i,natural:mode==='natural'}));});let idx=0;const next=()=>{if(!speaking||runId!==listenRunId)return;if(idx>=utterances.length){speaking=false;const completedLessonId=info.lessonId;state.listenHistory.push({lessonId:completedLessonId,mode,guide,completed:true,at:new Date().toISOString()});advanceDailyListenTarget(completedLessonId);save();renderListenComplete();document.dispatchEvent(new CustomEvent('rules-progress-updated'));return;}const item=utterances[idx];document.querySelectorAll('.rules-listen-phrase').forEach(x=>x.classList.remove('current','next'));document.querySelectorAll('.rules-listen-number').forEach(x=>x.classList.remove('current'));if(guide){document.querySelector(`[data-sentence="${CSS.escape(item.sentenceId)}"] .rules-listen-number`)?.classList.add('current');}const u=new SpeechSynthesisUtterance(item.text);u.lang='en-US';u.rate=Number(byId('rulesListenRate')?.value||.9);u.onend=()=>{if(runId!==listenRunId)return;idx++;setTimeout(next,mode==='chunked'?220:40)};u.onerror=()=>{if(runId!==listenRunId||!speaking)return;speaking=false;byId('rulesListenStatus').textContent='音声を再生できませんでした。もう一度お試しください。';byId('rulesListenStatus').className='rules-gentle rules-status-error';};byId('rulesListenStatus').textContent=`文${sentenceMap.get(item.sentenceId)?.sentenceOrder||''}を再生中…`;speechSynthesis.speak(u);};next();}
+  window.RulesApp={...(window.RulesApp||{}),stopListen,getDailyReadingSummary,monthCalendarHtml,renderHabitCalendar};
+  function openRulesListenEntry(){listenOrigin='home';const target=resolveDailyListenPack();if(target)bindData(target);if(ensureData()){renderListen();show('rulesListenView');}}
+  async function init(){await refreshPacks();document.dispatchEvent(new CustomEvent('rules-ready'));const input=byId('rulesCsvFilesInput');input?.addEventListener('change',()=>{const names=[...input.files].map(f=>f.name);byId('rulesCsvFilesName').textContent=names.length?names.join('、'):'ZIPを1つ選ぶ（CSV個別選択も可）';byId('rulesCsvImportStatus').textContent=names.length?'選択したファイルを確認できます。保存ボタンを押してください。':'';});byId('importRulesCsvBtn')?.addEventListener('click',async()=>{try{byId('rulesCsvImportStatus').textContent='ZIP内の必要ファイルを確認中…';const before=new Set(packs.map(p=>p.lessonId)),newPacks=await RulesStore.buildPacks(input.files);await RulesStore.savePacks(newPacks);const messages=newPacks.map(p=>`${before.has(p.lessonId)?'差し替え':'追加'}：Lesson ${p.lessonOrder}「${p.title}」／必要CSV ${p.files.length}件${p.ignoredCount?`・不要ファイル ${p.ignoredCount}件を除外`:''}`);byId('rulesCsvImportStatus').innerHTML='✅ '+messages.map(esc).join('<br>');await refreshPacks();bindData(newPacks[0]);input.value='';byId('rulesCsvFilesName').textContent='ZIPを1つ選ぶ（CSV個別選択も可）';}catch(e){byId('rulesCsvImportStatus').textContent='⚠️ '+e.message;}});document.querySelectorAll('.rules-test-entry').forEach(b=>b.onclick=()=>{lessonEntryMode='menu';if(!D&&packs.length)bindData(packs[0]);if(ensureData()){renderLessonList();show('rulesLessonView');}});document.querySelectorAll('.rules-back-home').forEach(b=>b.onclick=()=>show('homeView'));document.querySelectorAll('.rules-back-lessons').forEach(b=>b.onclick=()=>{renderLessonList();show('rulesLessonView');});document.querySelectorAll('.rules-back-menu').forEach(b=>b.onclick=()=>{stopListen();if(b.dataset.listenBack==='home'){listenOrigin='menu';show('homeView');}else{renderMenu();show('rulesMenuView');}});document.querySelectorAll('.rules-back-quiz').forEach(b=>b.onclick=()=>show('rulesQuizView'));document.querySelectorAll('.rules-back-gachi-hub').forEach(b=>b.onclick=()=>{renderGachiHub();show('rulesGachiHubView');requestAnimationFrame(()=>window.scrollTo({top:gachiHubScroll,behavior:'smooth'}));});document.querySelector('.rules-start-quiz').onclick=()=>{renderPreRead();show('rulesPreReadView');};document.querySelector('.rules-start-quick').onclick=()=>{quickIndex=0;renderQuick();show('rulesQuickView');};document.querySelector('.rules-start-gachi').onclick=()=>{renderGachiHub();show('rulesGachiHubView');};document.querySelector('.rules-start-listen').onclick=()=>{listenOrigin='menu';renderListen();show('rulesListenView');};byId('rulesPassageToggle').onclick=()=>{const p=byId('rulesPassage');p.classList.toggle('hidden');byId('rulesPassageToggle').textContent=p.classList.contains('hidden')?'本文を見る':'本文を閉じる';};}
+  document.addEventListener('click',e=>{const entry=e.target.closest('.rules-listen-entry');if(!entry)return;e.preventDefault();openRulesListenEntry();});
   document.addEventListener('DOMContentLoaded',init);
 })();

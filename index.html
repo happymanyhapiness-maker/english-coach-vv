@@ -10,7 +10,7 @@
   <div class="app-shell">
     <header class="app-header">
       <div>
-        <h1>英コミュCoach <span class="version-badge">v0.4 Phase2-1.44 リリース前修正版</span></h1>
+        <h1>英コミュCoach <span class="version-badge">v0.4 Phase2-1.45.18 問題再開導線修正</span></h1>
       </div>
       <div class="header-actions">
         <button class="ghost-button" id="settingsBtn" type="button">設定</button>
@@ -78,13 +78,6 @@
             <span>
               <strong>今日やる復習</strong>
               <small>復習日が来た問題をまとめて確認</small>
-            </span>
-          </button>
-          <button class="home-support-card rules-listen-entry" type="button">
-            <span class="mode-icon">🎧</span>
-            <span>
-              <strong>長文を聞く</strong>
-              <small>RulesのLessonを選んで音声学習</small>
             </span>
           </button>
         </div>
@@ -156,6 +149,22 @@
         </article>
       </section>
 
+
+      <section id="problemPickerView" class="view" aria-label="問題を解く">
+        <div class="quiz-topbar">
+          <button id="closeProblemPickerBtn" class="back-button" type="button">← 教材一覧</button>
+        </div>
+        <section class="problem-picker-screen">
+          <div class="section-head">
+            <p class="eyebrow">Question Study</p>
+            <h2 id="problemPickerTitle">問題を解く</h2>
+            <p id="problemPickerSummary">タブを切り替えて、取り組む問題を選びます。</p>
+            <div id="problemPickerTabs" class="reader-reading-tabs problem-picker-tabs" role="tablist" aria-label="問題の種類"></div>
+          </div>
+          <article id="problemPickerPanel" class="problem-picker-panel"></article>
+        </section>
+      </section>
+
       <section id="quizView" class="view" aria-label="クイズ">
         <div class="quiz-topbar">
           <button class="back-button" id="backHomeBtn" type="button">← ひとつ前</button>
@@ -205,6 +214,7 @@
             <p class="eyebrow">Text Study</p>
             <h2 id="readerMaterialTitle">教材本文</h2>
             <p id="readerMaterialSummary"></p>
+            <div id="readerReadingTabs" class="reader-reading-tabs hidden" aria-label="音読内容の切り替え"></div>
           </div>
           <div id="materialSentenceList" class="sentence-list"></div>
         </section>
@@ -306,6 +316,17 @@
             <div id="weakTagsList" class="tag-list"></div>
           </article>
 
+          <details id="readingHabitDetails" class="analysis-card full reading-habit-card">
+            <summary>
+              <span>
+                <strong>音読記録</strong>
+                <small id="readingHabitSummary">今月 0日</small>
+              </span>
+              <span class="reading-habit-toggle-label">カレンダーを見る</span>
+            </summary>
+            <div id="readingHabitCalendar" class="reading-habit-body"></div>
+          </details>
+
           <article class="analysis-card full learning-log-card">
             <div class="learning-log-head">
               <div>
@@ -362,7 +383,7 @@
 
   <script src="questions.js?v=20260713-1444"></script>
   <script src="rules-loader.js?v=20260713-common-import"></script>
-  <script src="app.js?v=20260713-1444"></script>
-  <script src="rules-app.js?v=20260712-lesson7"></script>
+  <script src="app.js?v=20260714-1457"></script>
+  <script src="rules-app.js?v=20260714-daily-reading-1457"></script>
 </body>
 </html>

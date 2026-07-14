@@ -6,6 +6,8 @@
   const TEXT_STUDY_PROGRESS_KEY = "eikomiCoachTextStudyProgress.v01";
   const DAILY_READING_COMPLETION_KEY = "eikomiCoachDailyReadingCompletion.v01";
   const SELF_REVIEW_KEY = "eikomiCoachSelfReview.v01";
+  const PROBLEM_CATEGORY_COMPLETION_KEY = "eikomiCoachProblemCategoryCompletion.v01";
+  const MATERIAL_ACTIVITY_KEY = "eikomiCoachMaterialActivity.v01";
 
   const questions = (typeof QUESTIONS !== "undefined" ? QUESTIONS : [])
     .filter(q => q && q.id && q.choices && q.choices.length === 4)
@@ -127,6 +129,9 @@
     currentReaderIndex: 0,
     currentReaderMode: null,
     currentReaderStudyType: "breakdown",
+    currentProblemMaterial: null,
+    currentProblemPrintName: null,
+    currentProblemCategory: "all",
     replaceMaterialId: null
   };
 
@@ -150,6 +155,110 @@
 
   function saveJsonStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
+  }
+
+
+  function problemCategoryCompletionId(material, printName, category) {
+    return [material, printName, category || "all"].map(value => String(value || "").trim()).join("::");
+  }
+
+  function getProblemCategoryCompletion(material, printName, category) {
+    const all = loadJsonStorage(PROBLEM_CATEGORY_COMPLETION_KEY, {});
+    return all[problemCategoryCompletionId(material, printName, category)] || null;
+  }
+
+  function markProblemCategoryComplete(material, printName, category) {
+    if (!material || !printName) return;
+    const all = loadJsonStorage(PROBLEM_CATEGORY_COMPLETION_KEY, {});
+    const key = problemCategoryCompletionId(material, printName, category);
+    all[key] = {
+      material,
+      printName,
+      category: category || "all",
+      appDate: getAppTodayDate(),
+      completedAt: new Date().toISOString()
+    };
+    saveJsonStorage(PROBLEM_CATEGORY_COMPLETION_KEY, all);
+  }
+
+  function formatCompletionDate(appDate) {
+    const match = String(appDate || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return "";
+    return `${Number(match[2])}/${Number(match[3])}完了`;
+  }
+
+  function getMaterialLatestAttemptDate(items) {
+    let latest = null;
+    (items || []).forEach(question => {
+      const record = state.records[question.id];
+      const candidate = record?.lastAnsweredAt
+        || record?.attempts?.map(attempt => attempt.answeredAt).filter(Boolean).sort().at(-1)
+        || null;
+      if (candidate && (!latest || String(candidate) > String(latest))) latest = candidate;
+    });
+    return toAppDate(latest);
+  }
+
+  function formatMaterialAttemptStatus(items) {
+    const latestDate = getMaterialLatestAttemptDate(items);
+    if (!latestDate) return "未着手";
+    const match = latestDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return "着手済み";
+    return `最終着手 ${Number(match[2])}/${Number(match[3])}`;
+  }
+
+  function materialActivityId(activityType, materialId) {
+    return `${String(activityType || "").trim()}::${String(materialId || "").trim()}`;
+  }
+
+  function markMaterialActivity(activityType, materialId) {
+    const type = String(activityType || "").trim();
+    const id = String(materialId || "").trim();
+    if (!type || !id) return;
+    const all = loadJsonStorage(MATERIAL_ACTIVITY_KEY, {});
+    all[materialActivityId(type, id)] = {
+      activityType: type,
+      materialId: id,
+      appDate: getAppTodayDate(),
+      startedAt: new Date().toISOString()
+    };
+    saveJsonStorage(MATERIAL_ACTIVITY_KEY, all);
+  }
+
+  function getMaterialActivityDate(activityType, materialId) {
+    const all = loadJsonStorage(MATERIAL_ACTIVITY_KEY, {});
+    const item = all[materialActivityId(activityType, materialId)];
+    return toAppDate(item?.startedAt || item?.appDate || null);
+  }
+
+  function formatActivityDate(dateValue) {
+    const appDate = toAppDate(dateValue);
+    if (!appDate) return "未着手";
+    const match = appDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return "着手済み";
+    return `最終着手 ${Number(match[2])}/${Number(match[3])}`;
+  }
+
+  function appendActionWithStatus(target, button, statusText) {
+    const wrap = document.createElement("div");
+    wrap.className = "material-action-with-status";
+    const status = document.createElement("small");
+    status.className = "material-action-status";
+    status.textContent = statusText || "未着手";
+    wrap.append(button, status);
+    target.appendChild(wrap);
+  }
+
+  function markCurrentProblemCategoryCompleteIfEligible() {
+    if (state.currentMode !== "materialPrint") return;
+    const options = state.currentOptions || {};
+    const material = options.material;
+    const printName = options.printName;
+    const category = options.category || "all";
+    if (!material || !printName) return;
+    const fullCount = questionsForMaterialPrint(material, printName, category).length;
+    if (!fullCount || state.session.length !== fullCount || state.sessionResults.length !== fullCount) return;
+    markProblemCategoryComplete(material, printName, category);
   }
 
   function getTextStudyProgress(materialId) {
@@ -667,11 +776,8 @@
       return;
     }
 
-    if (mode === "today" || mode === "reviewToday" || mode === "mistakes" || mode === "recommendedDrill") {
-      createOrUpdateSession();
-    } else {
-      saveActiveSession(null);
-    }
+    // どの問題モードでも「今日はここまで」から再開できるようにする。
+    createOrUpdateSession();
 
     showView("quizView");
     renderQuestion();
@@ -679,6 +785,7 @@
 
   function createOrUpdateSession() {
     const mode = state.currentMode === "mistakes" ? "reviewToday" : state.currentMode;
+    const options = state.currentOptions || {};
     const session = {
       mode,
       title: mode === "materialPrint" && options.categoryLabel
@@ -687,6 +794,8 @@
       questionIds: state.session.map(q => q.id),
       answeredIds: [],
       remainingIds: state.session.map(q => q.id),
+      options,
+      returnView: state.quizReturnView || "homeView",
       appDate: getAppTodayDate(),
       startedAt: new Date().toISOString(),
       lastAnsweredAt: null
@@ -727,7 +836,13 @@
       return { ...session, remainingIds: validIds };
     }
 
-    return null;
+    // 教材別・テスト対策・種類別なども、残っている問題が存在すれば再開可能。
+    const validIds = session.remainingIds.filter(id => {
+      const q = questions.find(item => item.id === id);
+      return q && q.status !== "hold" && q.status !== "retired";
+    });
+    if (!validIds.length) return null;
+    return { ...session, remainingIds: validIds };
   }
 
   function resumeActiveSession() {
@@ -739,7 +854,8 @@
     }
     saveActiveSession(validated);
     state.currentMode = validated.mode;
-    state.currentOptions = {};
+    state.currentOptions = validated.options || {};
+    state.quizReturnView = validated.returnView || "homeView";
     state.session = validated.remainingIds.map(id => questions.find(q => q.id === id)).filter(Boolean);
     state.index = 0;
     state.selected = null;
@@ -1014,6 +1130,7 @@
   function nextQuestion() {
     if (state.index + 1 >= state.session.length) {
       saveActiveSession(null);
+      markCurrentProblemCategoryCompleteIfEligible();
       renderResult();
       showView("resultView");
       return;
@@ -1139,58 +1256,28 @@
     const slot = el("dailyReadingSlot");
     if (!slot) return;
 
-    const completed = getTodayReadingCompletion();
-    if (completed) {
-      slot.innerHTML = `
-        <section class="daily-reading-card daily-reading-complete" aria-label="今日の音読・完了">
-          <div class="daily-reading-icon" aria-hidden="true">✅</div>
-          <div class="daily-reading-copy">
-            <p class="eyebrow">Daily Reading</p>
-            <strong>今日の音読は完了！</strong>
-            <span>${escapeHtml(materialDisplayTitle(completed.materialId))}</span>
-            <small>今日はここまで。明日また少しずつ続けよう。</small>
-          </div>
-          <button type="button" class="secondary-button daily-reading-start daily-reading-finished" data-daily-reading-finished aria-disabled="true">今日は完了</button>
-        </section>`;
-      return;
-    }
-
-    const progressMap = loadJsonStorage(TEXT_STUDY_PROGRESS_KEY, {});
-    const recent = Object.entries(progressMap)
-      .filter(([materialId, item]) => materialId && Number.isInteger(item?.sentenceIndex) && item.sentenceIndex >= 0)
-      .sort((a, b) => String(b[1]?.updatedAt || "").localeCompare(String(a[1]?.updatedAt || "")))[0];
-
-    if (recent) {
-      const [materialId, item] = recent;
-      slot.innerHTML = `
-        <section class="daily-reading-card" aria-label="今日の音読">
-          <div class="daily-reading-icon" aria-hidden="true">🔊</div>
-          <div class="daily-reading-copy">
-            <p class="eyebrow">Daily Reading</p>
-            <strong>今日の音読</strong>
-            <span>${escapeHtml(materialDisplayTitle(materialId))}</span>
-            <small>${Number(item.sentenceIndex) + 1}文目から続けられます</small>
-          </div>
-          <button type="button" class="primary-button daily-reading-start" data-open-reading-material="${escapeHtml(materialId)}">続きから読む</button>
-        </section>`;
-      return;
-    }
-
+    const summary = window.RulesApp?.getDailyReadingSummary?.();
+    const lessonLine = summary?.ready
+      ? `Rules Lesson ${escapeHtml(String(summary.lessonOrder))}　${escapeHtml(summary.title)}`
+      : "Rulesの長文を少しずつ聞こう";
+    const progressLine = summary?.ready
+      ? `${summary.completedToday ? "✅ 今日は音読済み" : "次に聞くLesson"}・今月 ${summary.monthDays}日`
+      : "教材を読み込むと、ここからワンタップで始められます。";
     slot.innerHTML = `
-      <section class="daily-reading-card daily-reading-empty" aria-label="今日の音読">
-        <div class="daily-reading-icon" aria-hidden="true">🔊</div>
+      <section class="daily-reading-card" aria-label="今日の音読">
+        <div class="daily-reading-icon" aria-hidden="true">🎧</div>
         <div class="daily-reading-copy">
           <p class="eyebrow">Daily Reading</p>
           <strong>今日の音読</strong>
-          <span>Cutting Edge または FOCUSから、読む教材を選ぼう</span>
-          <small>全文を少しずつ。読みにくい文は中で「文をほどく」で確認できます。</small>
+          <span>${lessonLine}</span>
+          <small>${progressLine}</small>
         </div>
-        <div class="daily-reading-actions">
-          <button type="button" class="secondary-button" data-material="reading">Cutting Edge</button>
-          <button type="button" class="secondary-button" data-material="focus">FOCUS</button>
-        </div>
+        <button type="button" class="primary-button daily-reading-start rules-listen-entry" ${summary&&!summary.ready?'disabled':''}>${summary?.completedToday?'もう少し聞く':'すぐに聞く'}</button>
       </section>`;
   }
+
+  document.addEventListener("rules-ready", renderDailyReadingCard);
+  document.addEventListener("rules-progress-updated", renderDailyReadingCard);
 
   function renderContinueSlots() {
     const slots = [el("homeContinueSlot"), el("reviewContinueSlot")].filter(Boolean);
@@ -1237,6 +1324,83 @@
       olderItems: sortDueReview(due.filter(q => getRecord(q.id).nextReviewAt < dayBefore)),
       allItems: sortDueReview(due)
     };
+  }
+
+  function problemPickerCategories(material, printName) {
+    const items = questionsForMaterialPrint(material, printName, "all");
+    const order = material === "reading"
+      ? ["content", "language", "readingSkill", "testStyle"]
+      : material === "focus"
+        ? ["structure", "translation", "production"]
+        : [];
+    return [
+      { category: "all", label: "おすすめ順", count: items.length },
+      ...order.map(category => ({
+        category,
+        label: materialProblemCategoryLabel(material, category),
+        count: items.filter(q => getMaterialProblemCategory(material, q) === category).length
+      })).filter(item => item.count > 0)
+    ].filter(item => item.count > 0);
+  }
+
+  function renderProblemPicker() {
+    const material = state.currentProblemMaterial;
+    const printName = state.currentProblemPrintName;
+    if (!material || !printName) return;
+    const categories = problemPickerCategories(material, printName);
+    if (!categories.some(item => item.category === state.currentProblemCategory)) {
+      state.currentProblemCategory = categories[0]?.category || "all";
+    }
+    const title = el("problemPickerTitle");
+    const summary = el("problemPickerSummary");
+    const tabs = el("problemPickerTabs");
+    const panel = el("problemPickerPanel");
+    if (!title || !summary || !tabs || !panel) return;
+
+    title.textContent = `${printName}　問題を解く`;
+    summary.textContent = "タブを切り替えて、今やる内容をワンタッチで選べます。";
+    tabs.innerHTML = categories.map(item => {
+      const completion = getProblemCategoryCompletion(material, printName, item.category);
+      const completedLabel = formatCompletionDate(completion?.appDate);
+      return `
+      <button type="button" class="reader-reading-tab ${item.category === state.currentProblemCategory ? "active" : ""}"
+        role="tab" aria-selected="${item.category === state.currentProblemCategory ? "true" : "false"}"
+        data-problem-picker-category="${escapeHtml(item.category)}">
+        <span>${escapeHtml(item.label)}</span>
+        <small>${item.count}問${completedLabel ? `・${escapeHtml(completedLabel)}` : ""}</small>
+      </button>`;
+    }).join("");
+
+    const selected = categories.find(item => item.category === state.currentProblemCategory) || categories[0];
+    if (!selected) {
+      panel.innerHTML = `<p>この範囲には出題できる問題がありません。</p>`;
+      return;
+    }
+    const description = selected.category === "all"
+      ? "まずはおすすめ順で、範囲全体を確認します。"
+      : `「${selected.label}」だけをまとめて確認します。`;
+    panel.innerHTML = `
+      <div class="problem-picker-copy">
+        <strong>${escapeHtml(selected.label)}</strong>
+        <p>${escapeHtml(description)}</p>
+        <small>${selected.count}問</small>
+      </div>
+      <button type="button" class="primary-button wide problem-picker-start"
+        data-material-print="${escapeHtml(material)}"
+        data-print-name="${escapeHtml(printName)}"
+        data-problem-category="${escapeHtml(selected.category)}"
+        data-problem-ordered="${selected.category === "all" ? "true" : "false"}">
+        ${selected.category === "all" ? "おすすめ順で始める" : "この種類を始める"}
+      </button>`;
+  }
+
+  function openProblemPicker(material, printName) {
+    state.currentProblemMaterial = material;
+    state.currentProblemPrintName = printName;
+    state.currentProblemCategory = "all";
+    renderProblemPicker();
+    showView("problemPickerView");
+    window.scrollTo({ top: 0 });
   }
 
   function renderMaterialPicker(material) {
@@ -1365,20 +1529,27 @@
             const startAllBtn = document.createElement("button");
             startAllBtn.type = "button";
             startAllBtn.className = "material-primary-action material-start-all";
-            startAllBtn.dataset.materialPrint = material;
-            startAllBtn.dataset.printName = group.key;
-            startAllBtn.dataset.problemCategory = "all";
-            startAllBtn.dataset.problemOrdered = "true";
+            startAllBtn.dataset.openProblemMaterial = material;
+            startAllBtn.dataset.openProblemPrint = group.key;
             startAllBtn.textContent = "📝 問題を解く";
-            target.appendChild(startAllBtn);
+            appendActionWithStatus(target, startAllBtn, formatMaterialAttemptStatus(group.items));
           };
 
           const appendQuestionCategoryMenu = target => {
-            const problemMenu = document.createElement("details");
-            problemMenu.className = "material-problem-menu material-category-menu";
-            problemMenu.innerHTML = `<summary>問題を種類から選ぶ <span aria-hidden="true"></span></summary>`;
-            const problemBody = document.createElement("div");
-            problemBody.className = "material-problem-menu-body";
+            const problemMenu = document.createElement("section");
+            problemMenu.className = "material-problem-menu material-category-tabs";
+
+            const heading = document.createElement("div");
+            heading.className = "material-category-tabs-heading";
+            heading.innerHTML = `<strong>問題を種類から選ぶ</strong><small>タブを切り替えて、確認したい種類を選べます。</small>`;
+
+            const tabList = document.createElement("div");
+            tabList.className = "material-category-tab-list";
+            tabList.setAttribute("role", "tablist");
+            tabList.setAttribute("aria-label", "問題の種類");
+
+            const panel = document.createElement("div");
+            panel.className = "material-category-tab-panel";
 
             const categoryOrder = material === "reading"
               ? ["content", "language", "readingSkill", "testStyle"]
@@ -1386,23 +1557,51 @@
                 ? ["structure", "translation", "production"]
                 : ["all"];
 
-            categoryOrder.forEach(category => {
+            const categories = categoryOrder.map(category => {
               const count = category === "all"
                 ? group.items.length
                 : group.items.filter(q => getMaterialProblemCategory(material, q) === category).length;
-              if (!count) return;
-              const btn = document.createElement("button");
-              btn.type = "button";
-              btn.className = "material-menu-action material-problem-category";
-              btn.dataset.materialPrint = material;
-              btn.dataset.printName = group.key;
-              btn.dataset.problemCategory = category;
-              btn.innerHTML = `<span>${escapeHtml(materialProblemCategoryLabel(material, category))}</span><small>${count}問</small>`;
-              problemBody.appendChild(btn);
+              return { category, count };
+            }).filter(item => item.count > 0);
+
+            const renderCategory = selectedIndex => {
+              const selected = categories[selectedIndex];
+              if (!selected) return;
+              tabList.querySelectorAll(".material-category-tab").forEach((button, index) => {
+                const active = index === selectedIndex;
+                button.classList.toggle("active", active);
+                button.setAttribute("aria-selected", active ? "true" : "false");
+                button.tabIndex = active ? 0 : -1;
+              });
+              panel.innerHTML = "";
+              const copy = document.createElement("div");
+              copy.className = "material-category-tab-copy";
+              copy.innerHTML = `<strong>${escapeHtml(materialProblemCategoryLabel(material, selected.category))}</strong><small>${selected.count}問あります</small>`;
+              const startBtn = document.createElement("button");
+              startBtn.type = "button";
+              startBtn.className = "material-menu-action material-problem-category material-category-start";
+              startBtn.dataset.materialPrint = material;
+              startBtn.dataset.printName = group.key;
+              startBtn.dataset.problemCategory = selected.category;
+              startBtn.textContent = `この種類を解く（${selected.count}問）`;
+              panel.append(copy, startBtn);
+            };
+
+            categories.forEach((item, index) => {
+              const button = document.createElement("button");
+              button.type = "button";
+              button.className = "material-category-tab";
+              button.setAttribute("role", "tab");
+              button.setAttribute("aria-selected", index === 0 ? "true" : "false");
+              button.tabIndex = index === 0 ? 0 : -1;
+              button.innerHTML = `<span>${escapeHtml(materialProblemCategoryLabel(material, item.category))}</span><small>${item.count}</small>`;
+              button.addEventListener("click", () => renderCategory(index));
+              tabList.appendChild(button);
             });
 
-            problemMenu.appendChild(problemBody);
+            problemMenu.append(heading, tabList, panel);
             target.appendChild(problemMenu);
+            renderCategory(0);
           };
 
           if (material === "reading") {
@@ -1418,24 +1617,18 @@
               readingBtn.className = "material-primary-action";
               readingBtn.dataset.openReadingMaterial = textMaterialId;
               readingBtn.textContent = "🔊 音読する";
-              mainActions.appendChild(readingBtn);
-              appendQuestionButton(mainActions);
-
-              const menu = document.createElement("details");
-              menu.className = "material-study-menu material-secondary-menu";
-              menu.innerHTML = `<summary>学習メニュー <span aria-hidden="true"></span></summary>`;
-              const menuBody = document.createElement("div");
-              menuBody.className = "material-study-menu-body";
-              appendQuestionCategoryMenu(menuBody);
+              appendActionWithStatus(mainActions, readingBtn, formatActivityDate(getMaterialActivityDate("reading", textMaterialId)));
 
               const breakdownBtn = document.createElement("button");
               breakdownBtn.type = "button";
-              breakdownBtn.className = "material-menu-action";
+              breakdownBtn.className = "material-primary-action material-breakdown-action";
               breakdownBtn.dataset.openTextMaterial = textMaterialId;
               breakdownBtn.textContent = "🧩 文をほどく";
-              menuBody.appendChild(breakdownBtn);
-              menu.appendChild(menuBody);
-              mainActions.appendChild(menu);
+              appendActionWithStatus(mainActions, breakdownBtn, formatActivityDate(getMaterialActivityDate("breakdown", textMaterialId)));
+
+              appendQuestionButton(mainActions);
+              mainActions.classList.add("has-three-actions");
+
             } else {
               appendQuestionButton(mainActions);
             }
@@ -1447,45 +1640,23 @@
               const textRound = hasSecondRound && !hasFirstRound ? "T2" : "T1";
               const focusNo = String(Number(match[1])).padStart(2, "0");
 
-              const audioMenu = document.createElement("details");
-              audioMenu.className = "material-study-menu material-audio-menu";
-              audioMenu.innerHTML = `<summary>🔊 音読する <span aria-hidden="true"></span></summary>`;
-              const audioBody = document.createElement("div");
-              audioBody.className = "material-study-menu-body";
-              [
-                { kind: "EXAMPLE", label: "重要例文を音読" },
-                { kind: "PASSAGE", label: "中文を音読" }
-              ].forEach(item => {
-                const btn = document.createElement("button");
-                btn.type = "button";
-                btn.className = "material-menu-action";
-                btn.dataset.openReadingMaterial = `${textRound}_FOCUS_${focusNo}_${item.kind}`;
-                btn.textContent = `🔊 ${item.label}`;
-                audioBody.appendChild(btn);
-              });
-              audioMenu.appendChild(audioBody);
-              mainActions.appendChild(audioMenu);
-              appendQuestionButton(mainActions);
+              const readingBtn = document.createElement("button");
+              readingBtn.type = "button";
+              readingBtn.className = "material-primary-action";
+              readingBtn.dataset.openReadingMaterial = `${textRound}_FOCUS_${focusNo}_EXAMPLE`;
+              readingBtn.textContent = "🔊 音読する";
+              appendActionWithStatus(mainActions, readingBtn, formatActivityDate(getMaterialActivityDate("reading", `${textRound}_FOCUS_${focusNo}_EXAMPLE`)));
 
-              const menu = document.createElement("details");
-              menu.className = "material-study-menu material-secondary-menu";
-              menu.innerHTML = `<summary>学習メニュー <span aria-hidden="true"></span></summary>`;
-              const menuBody = document.createElement("div");
-              menuBody.className = "material-study-menu-body";
-              appendQuestionCategoryMenu(menuBody);
-              [
-                { kind: "EXAMPLE", label: "🧩 重要例文をほどく" },
-                { kind: "PASSAGE", label: "🧩 中文をほどく" }
-              ].forEach(item => {
-                const btn = document.createElement("button");
-                btn.type = "button";
-                btn.className = "material-menu-action";
-                btn.dataset.openTextMaterial = `${textRound}_FOCUS_${focusNo}_${item.kind}`;
-                btn.textContent = item.label;
-                menuBody.appendChild(btn);
-              });
-              menu.appendChild(menuBody);
-              mainActions.appendChild(menu);
+              const breakdownBtn = document.createElement("button");
+              breakdownBtn.type = "button";
+              breakdownBtn.className = "material-primary-action material-breakdown-action";
+              breakdownBtn.dataset.openTextMaterial = `${textRound}_FOCUS_${focusNo}_EXAMPLE`;
+              breakdownBtn.textContent = "🧩 文をほどく";
+              appendActionWithStatus(mainActions, breakdownBtn, formatActivityDate(getMaterialActivityDate("breakdown", `${textRound}_FOCUS_${focusNo}_EXAMPLE`)));
+
+              appendQuestionButton(mainActions);
+              mainActions.classList.add("has-three-actions");
+
             } else {
               appendQuestionButton(mainActions);
             }
@@ -1865,6 +2036,19 @@
     renderTodayReflection();
     renderWeakTags();
     renderRecentAttempts();
+    renderReadingHabit();
+  }
+
+  function renderReadingHabit() {
+    const details = el("readingHabitDetails");
+    const summary = el("readingHabitSummary");
+    const container = el("readingHabitCalendar");
+    if (!details || !summary || !container) return;
+    const info = window.RulesApp?.getDailyReadingSummary?.();
+    summary.textContent = `今月 ${info?.monthDays || 0}日`;
+    const label = details.querySelector(".reading-habit-toggle-label");
+    if (label) label.textContent = details.open ? "カレンダーを閉じる" : "カレンダーを見る";
+    if (details.open) window.RulesApp?.renderHabitCalendar?.(container);
   }
 
   function renderTodayReflection() {
@@ -2828,25 +3012,26 @@
       const previousOpen = Boolean(list.querySelector(".saved-materials-group")?.open);
       const totalSentences = groups.reduce((sum, group) => sum + group.sentences.length, 0);
       const totalGuides = groups.reduce((sum, group) => sum + group.guides, 0);
-      const cardsHtml = groups.map(group => {
+      const rowsHtml = groups.map(group => {
         const paragraphs = new Set(group.sentences.map(row => row.paragraphNo).filter(Boolean));
         const displayTitle = materialDisplayTitle(group.materialId);
         const updated = group.updatedAt ? new Date(group.updatedAt) : null;
         const updatedText = updated && !Number.isNaN(updated.getTime()) ? `${updated.getMonth()+1}/${updated.getDate()} ${String(updated.getHours()).padStart(2,"0")}:${String(updated.getMinutes()).padStart(2,"0")}` : "保存済み";
+        const countText = `本文 ${group.sentences.length}文${paragraphs.size ? `・段落 ${paragraphs.size}` : ""}・ガイド ${group.guides}文`;
         return `
-          <article class="review-item material-library-item">
-            <div class="material-library-copy">
+          <div class="saved-material-row" role="row">
+            <div class="saved-material-main" role="cell">
               <strong>${escapeHtml(displayTitle)}</strong>
               <small>${escapeHtml(group.materialId)}</small>
-              <p>本文 ${group.sentences.length}文${paragraphs.size ? ` / 段落情報 ${paragraphs.size}件` : ""} / 文ガイド ${group.guides}文</p>
-              <small>最終更新：${escapeHtml(updatedText)}</small>
             </div>
-            <div class="material-library-actions">
-              <button class="secondary-button" type="button" data-open-saved-material="${escapeHtml(group.materialId)}">開く</button>
-              <button class="ghost-button" type="button" data-replace-saved-material="${escapeHtml(group.materialId)}">差し替える</button>
-              <button class="ghost-button danger-button" type="button" data-delete-saved-material="${escapeHtml(group.materialId)}">削除</button>
+            <div class="saved-material-count" role="cell">${escapeHtml(countText)}</div>
+            <div class="saved-material-updated" role="cell"><span>更新</span>${escapeHtml(updatedText)}</div>
+            <div class="saved-material-row-actions" role="cell">
+              <button class="secondary-button compact-button" type="button" data-open-saved-material="${escapeHtml(group.materialId)}">開く</button>
+              <button class="ghost-button compact-button" type="button" data-replace-saved-material="${escapeHtml(group.materialId)}">差替</button>
+              <button class="ghost-button danger-button compact-button" type="button" data-delete-saved-material="${escapeHtml(group.materialId)}">削除</button>
             </div>
-          </article>`;
+          </div>`;
       }).join("");
 
       list.innerHTML = `
@@ -2858,7 +3043,15 @@
             </span>
             <span class="saved-materials-group-toggle" aria-hidden="true"></span>
           </summary>
-          <div class="saved-materials-group-content">${cardsHtml}</div>
+          <div class="saved-materials-group-content saved-materials-table" role="table" aria-label="取り込み済み通常教材一覧">
+            <div class="saved-materials-table-head" role="row">
+              <span role="columnheader">教材</span>
+              <span role="columnheader">収録内容</span>
+              <span role="columnheader">最終更新</span>
+              <span role="columnheader">操作</span>
+            </div>
+            ${rowsHtml}
+          </div>
         </details>`;
     } catch (error) {
       console.error(error);
@@ -3103,6 +3296,52 @@
     return state.currentReaderBundle?.materials?.[state.currentReaderIndex] || null;
   }
 
+  function focusReadingPair(materialId) {
+    const match = String(materialId || "").match(/^(T\d+)_FOCUS[_-]?(\d+)(?:[_-](EXAMPLE|PASSAGE|MODEL|TEXT))?$/i);
+    if (!match) return null;
+    const round = match[1].toUpperCase();
+    const focusNo = String(Number(match[2])).padStart(2, "0");
+    const kind = String(match[3] || "EXAMPLE").toUpperCase();
+    return {
+      kind: kind === "PASSAGE" || kind === "MODEL" || kind === "TEXT" ? "PASSAGE" : "EXAMPLE",
+      exampleId: `${round}_FOCUS_${focusNo}_EXAMPLE`,
+      passageId: `${round}_FOCUS_${focusNo}_PASSAGE`
+    };
+  }
+
+  function renderReaderReadingTabs(materialId) {
+    const tabs = el("readerReadingTabs");
+    if (!tabs) return;
+    const pair = focusReadingPair(materialId);
+    if (!pair) {
+      tabs.innerHTML = "";
+      tabs.classList.add("hidden");
+      return;
+    }
+    tabs.innerHTML = `
+      <button type="button" class="reader-reading-tab ${pair.kind === "EXAMPLE" ? "active" : ""}" data-switch-reading-material="${escapeHtml(pair.exampleId)}">重要例文</button>
+      <button type="button" class="reader-reading-tab ${pair.kind === "PASSAGE" ? "active" : ""}" data-switch-reading-material="${escapeHtml(pair.passageId)}">中文</button>`;
+    tabs.classList.remove("hidden");
+  }
+
+  async function preferredDailyReadingMaterial(category) {
+    const pattern = category === "focus" ? /^T\d+_FOCUS[_-]?\d+_(?:EXAMPLE|PASSAGE)$/i : /^T\d+_CE_Y\d+$/i;
+    const progressMap = loadJsonStorage(TEXT_STUDY_PROGRESS_KEY, {});
+    const recent = Object.entries(progressMap)
+      .filter(([materialId, item]) => pattern.test(materialId) && Number.isInteger(item?.sentenceIndex) && item.sentenceIndex >= 0)
+      .sort((a, b) => String(b[1]?.updatedAt || "").localeCompare(String(a[1]?.updatedAt || "")))[0];
+    if (recent) return recent[0];
+
+    const materials = await getAllFromStore(MATERIAL_STORE);
+    const ids = [...new Set(materials.map(row => String(row.materialId || "").trim()).filter(id => pattern.test(id)))];
+    ids.sort((a, b) => a.localeCompare(b, "ja", { numeric: true }));
+    if (category === "focus") {
+      const example = ids.find(id => /_EXAMPLE$/i.test(id));
+      return example || ids[0] || null;
+    }
+    return ids[0] || null;
+  }
+
   function renderReaderStartChoice(bundle, returnView) {
     const reader = el("materialReader");
     if (!reader) throw new Error("本文表示エリアが見つかりません。");
@@ -3113,6 +3352,7 @@
     const progress = getTextStudyProgress(bundle.materialId);
     const hasProgress = progress && progress.sentenceIndex < bundle.materials.length;
     if (el("readerMaterialTitle")) el("readerMaterialTitle").textContent = materialDisplayTitle(bundle.materialId);
+    renderReaderReadingTabs(bundle.materialId);
     if (el("readerMaterialSummary")) {
       const sourceCount = Number(bundle.sourceMaterialCount || bundle.materials.length);
       el("readerMaterialSummary").textContent = state.currentReaderStudyType === "reading"
@@ -3180,7 +3420,7 @@
             <button type="button" class="text-skip-button" data-text-skip>${isLast ? "この文をスキップして終了" : "この文をスキップ"}</button>
           </div>
         </article>`;
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (!state.preserveReaderScroll) window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
@@ -3207,7 +3447,7 @@
           <button type="button" class="text-skip-button" data-text-skip>${isLast ? "この文をスキップして終了" : "この文をスキップ"}</button>
         </div>
       </article>`;
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (!state.preserveReaderScroll) window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function openSavedMaterial(materialId, returnView = "materialView", options = {}) {
@@ -3221,8 +3461,28 @@
     state.currentReaderReturnView = returnView;
     if (Number.isInteger(options.sentenceNo)) {
       const index = bundle.materials.findIndex(row => Number(row.sentenceNo) === Number(options.sentenceNo));
+      if (el("readerMaterialTitle")) el("readerMaterialTitle").textContent = materialDisplayTitle(bundle.materialId);
+      renderReaderReadingTabs(bundle.materialId);
+      el("materialReader")?.classList.remove("hidden");
       startTextStudyAt(index >= 0 ? index : 0);
       showView("textStudyView");
+      window.scrollTo({ top: 0 });
+      return;
+    }
+    if (options.autoStart) {
+      state.preserveReaderScroll = Boolean(options.preserveScroll);
+      state.currentReaderMaterialId = bundle.materialId;
+      state.currentReaderReturnView = returnView;
+      state.currentReaderBundle = bundle;
+      if (el("readerMaterialTitle")) el("readerMaterialTitle").textContent = materialDisplayTitle(bundle.materialId);
+      renderReaderReadingTabs(bundle.materialId);
+      el("materialReader")?.classList.remove("hidden");
+      const progress = getTextStudyProgress(bundle.materialId);
+      const startIndex = progress && progress.sentenceIndex < bundle.materials.length ? progress.sentenceIndex : 0;
+      startTextStudyAt(startIndex);
+      showView("textStudyView");
+      if (!options.preserveScroll) window.scrollTo({ top: 0 });
+      state.preserveReaderScroll = false;
       return;
     }
     renderReaderStartChoice(bundle, returnView);
@@ -3284,6 +3544,7 @@
     state.currentReaderReturnView = null;
     state.currentReaderBundle = null;
     state.currentReaderMode = null;
+    renderReaderReadingTabs(null);
     el("materialReader")?.classList.add("hidden");
     showView(returnView);
   }
@@ -3315,10 +3576,61 @@
   });
 
   document.addEventListener("click", (e) => {
+    if (e.target.closest("#closeProblemPickerBtn")) {
+      e.preventDefault();
+      showView("materialView");
+      return;
+    }
+
     const finishedReadingBtn = e.target.closest("[data-daily-reading-finished]");
     if (finishedReadingBtn) {
       e.preventDefault();
       alert("今日の音読は終わりです。明日また少しずつ続けよう！");
+      return;
+    }
+
+    const dailyReadingCategoryBtn = e.target.closest("[data-daily-reading-category]");
+    if (dailyReadingCategoryBtn) {
+      e.preventDefault();
+      const category = dailyReadingCategoryBtn.dataset.dailyReadingCategory;
+      const originalText = dailyReadingCategoryBtn.textContent;
+      dailyReadingCategoryBtn.disabled = true;
+      dailyReadingCategoryBtn.textContent = "読み込み中…";
+      preferredDailyReadingMaterial(category)
+        .then(materialId => {
+          if (!materialId) throw new Error(`${category === "focus" ? "FOCUS" : "Cutting Edge"} の本文データがありません。設定から教材CSVを読み込んでください。`);
+          return openSavedMaterial(materialId, "homeView", { studyType: "reading", autoStart: true });
+        })
+        .catch(async error => {
+          console.error(error);
+          alert(error?.message || "教材を開けませんでした。");
+          showView("settingsView");
+          await renderSavedMaterials();
+        })
+        .finally(() => {
+          dailyReadingCategoryBtn.disabled = false;
+          dailyReadingCategoryBtn.textContent = originalText;
+        });
+      return;
+    }
+
+    const switchReadingBtn = e.target.closest("[data-switch-reading-material]");
+    if (switchReadingBtn) {
+      e.preventDefault();
+      const materialId = switchReadingBtn.dataset.switchReadingMaterial;
+      if (materialId === state.currentReaderMaterialId) return;
+      const previousScrollY = window.scrollY;
+      stopSpeechSynthesis();
+      switchReadingBtn.disabled = true;
+      openSavedMaterial(materialId, state.currentReaderReturnView || "materialView", { studyType: state.currentReaderStudyType, autoStart: true, preserveScroll: true })
+        .then(() => {
+          window.requestAnimationFrame(() => window.scrollTo({ top: previousScrollY }));
+        })
+        .catch(error => {
+          console.error(error);
+          alert(error?.message || "音読内容を切り替えられませんでした。");
+          renderReaderReadingTabs(state.currentReaderMaterialId);
+        });
       return;
     }
 
@@ -3330,7 +3642,8 @@
       const originalText = readingMaterialBtn.textContent;
       readingMaterialBtn.disabled = true;
       readingMaterialBtn.textContent = "読み込み中…";
-      openSavedMaterial(materialId, "materialView", { studyType: "reading" })
+      openSavedMaterial(materialId, state.view === "homeView" ? "homeView" : "materialView", { studyType: "reading", autoStart: true })
+        .then(() => markMaterialActivity("reading", materialId))
         .catch(async error => {
           console.error(error);
           alert(error?.message || "教材を開けませんでした。");
@@ -3353,6 +3666,7 @@
       textMaterialBtn.disabled = true;
       textMaterialBtn.textContent = "読み込み中…";
       openSavedMaterial(materialId, "materialView", { studyType: "breakdown" })
+        .then(() => markMaterialActivity("breakdown", materialId))
         .catch(async error => {
           console.error(error);
           alert(error?.message || "教材を開けませんでした。");
@@ -3363,6 +3677,22 @@
           textMaterialBtn.disabled = false;
           textMaterialBtn.textContent = originalText;
         });
+      return;
+    }
+
+    const problemPickerCategoryBtn = e.target.closest("[data-problem-picker-category]");
+    if (problemPickerCategoryBtn) {
+      e.preventDefault();
+      state.currentProblemCategory = problemPickerCategoryBtn.dataset.problemPickerCategory || "all";
+      renderProblemPicker();
+      return;
+    }
+
+    const openProblemBtn = e.target.closest("[data-open-problem-material]");
+    if (openProblemBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      openProblemPicker(openProblemBtn.dataset.openProblemMaterial, openProblemBtn.dataset.openProblemPrint);
       return;
     }
 
@@ -3651,6 +3981,11 @@
     renderHomeStats();
     renderAnalysis();
     renderReview();
+  });
+
+  el("readingHabitDetails")?.addEventListener("toggle", renderReadingHabit);
+  document.addEventListener("rules-progress-updated", () => {
+    if (el("analysisView")?.classList.contains("active")) renderReadingHabit();
   });
 
   window.EikomiApp = { ...(window.EikomiApp || {}), showView };
