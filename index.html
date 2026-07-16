@@ -298,39 +298,29 @@
       <section id="analysisView" class="view" aria-label="分析">
         <div class="section-head">
           <h2>分析</h2>
-          <p>今日のメモと、次に確認するポイント</p>
+          <p>今日の学習を振り返り、次に確認するとよいことに気付く画面です。</p>
         </div>
 
-        <div id="todayReflectionCard" class="analysis-card full today-reflection"></div>
         <div class="analysis-grid">
-          <article class="analysis-card">
-            <h3>習得度チェック</h3>
-            <div class="mastery-row"><span>習得済み</span><strong id="analysisCleared">0</strong></div>
-            <div class="mastery-row"><span>復習中</span><strong id="analysisReview">0</strong></div>
-            <div class="mastery-row"><span>苦手</span><strong id="analysisWeak">0</strong></div>
-            <div class="mastery-row"><span>未着手</span><strong id="analysisNew">0</strong></div>
+          <article id="todayMemoCard" class="analysis-card full today-memo-card">
+            <h3>📝 今日のメモ</h3>
+            <div id="todayMemoBody" class="today-memo-body"></div>
           </article>
 
-          <article class="analysis-card">
-            <h3>残っている確認ポイント</h3>
-            <div id="weakTagsList" class="tag-list"></div>
+          <article id="checkPointsCard" class="analysis-card full checkpoints-card">
+            <h3>📌 確認ポイント</h3>
+            <div id="checkPointsList" class="checkpoints-body"></div>
           </article>
 
-          <details id="readingHabitDetails" class="analysis-card full reading-habit-card">
-            <summary>
-              <span>
-                <strong>音読記録</strong>
-                <small id="readingHabitSummary">今月 0日</small>
-              </span>
-              <span class="reading-habit-toggle-label">カレンダーを見る</span>
-            </summary>
-            <div id="readingHabitCalendar" class="reading-habit-body"></div>
-          </details>
+          <article id="materialBalanceCard" class="analysis-card full material-balance-card">
+            <h3>📚 最近の学習バランス</h3>
+            <div id="materialBalanceList" class="material-balance-list"></div>
+          </article>
 
           <article class="analysis-card full learning-log-card">
             <div class="learning-log-head">
               <div>
-                <h3>学習ログ</h3>
+                <h3>▼ 今日の学習ログ</h3>
                 <p>くわしい解答履歴は必要なときだけ開けます。AI分析に使う場合はコピーできます。</p>
               </div>
             </div>

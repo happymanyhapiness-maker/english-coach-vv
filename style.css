@@ -325,7 +325,6 @@ h2, h3, p { margin-top: 0; }
 }
 
 .result-row,
-.mastery-row,
 .recent-row {
   display: flex;
   justify-content: space-between;
@@ -527,8 +526,8 @@ h2, h3, p { margin-top: 0; }
   transform: translateY(-1px);
 }
 
-.today-reflection {
-  margin-bottom: 14px;
+.today-memo-card {
+  margin-bottom: 0;
 }
 
 .quiz-topbar {
@@ -990,15 +989,7 @@ h2, h3, p { margin-top: 0; }
 }
 
 
-/* v0.4 Phase2-1: teacher-style analysis */
-.teacher-diagnosis-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
+/* v0.4 Phase2-1.6: 今日のメモ */
 .teacher-badge {
   display: inline-flex;
   align-items: center;
@@ -1008,55 +999,13 @@ h2, h3, p { margin-top: 0; }
   color: var(--teal-deep);
   font-weight: 800;
   font-size: 0.78rem;
-}
-
-.teacher-summary {
-  color: var(--muted);
-  font-size: 0.84rem;
-  text-align: right;
+  margin-bottom: 10px;
 }
 
 .teacher-message {
   color: var(--ink);
   line-height: 1.7;
-  margin-bottom: 14px;
-}
-
-.teacher-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-  gap: 12px;
-}
-
-.teacher-panel {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: rgba(250, 252, 251, 0.78);
-  padding: 14px;
-}
-
-.teacher-panel h4 {
-  margin: 0 0 10px;
-  color: var(--teal-deep);
-  font-size: 1rem;
-}
-
-.teacher-drill-panel p {
-  color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
-
-.drill-preview-list {
-  margin: 0 0 12px;
-  padding-left: 1.1em;
-  color: var(--ink);
-  line-height: 1.6;
-}
-
-.drill-preview-list small {
-  display: block;
-  color: var(--muted);
+  margin-bottom: 0;
 }
 
 .primary-button:disabled {
@@ -1066,18 +1015,61 @@ h2, h3, p { margin-top: 0; }
   box-shadow: none;
 }
 
-@media (max-width: 640px) {
-  .teacher-diagnosis-head {
-    display: grid;
-  }
-  .teacher-summary {
-    text-align: left;
-  }
-  .teacher-grid {
-    grid-template-columns: 1fr;
-  }
+/* v0.4 Phase2-1.6: 確認ポイント */
+.checkpoints-scope-label {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
+/* v0.4 Phase2-1.6: 最近の学習バランス */
+.material-balance-list {
+  display: grid;
+  gap: 10px;
+}
+
+.material-balance-row {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.material-balance-label {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.material-balance-bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--teal-soft);
+  border: 1px solid rgba(63, 111, 107, 0.12);
+}
+
+.material-balance-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--teal-deep);
+}
+
+.material-balance-count {
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 0.84rem;
+  white-space: nowrap;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .material-balance-row {
+    grid-template-columns: 78px 1fr auto;
+  }
+}
 
 /* v0.4 Phase2-1.1: collapsible learning log + copy button */
 .learning-log-card h3 { margin-bottom: 4px; }
@@ -1122,65 +1114,6 @@ h2, h3, p { margin-top: 0; }
 
 @media (max-width: 640px) {
   .learning-log-actions { display: grid; }
-}
-
-/* v0.4 Phase2-1.3: recommended drill progress */
-.drill-progress {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 10px;
-  margin: 8px 0 12px;
-}
-
-.drill-progress-bar {
-  height: 10px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: var(--teal-soft);
-  border: 1px solid rgba(63, 111, 107, 0.12);
-}
-
-.drill-progress-bar span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--teal-deep);
-  transition: width 180ms ease;
-}
-
-.drill-progress small {
-  color: var(--muted);
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.drill-preview-list li.done {
-  color: var(--muted);
-}
-
-.drill-complete-box {
-  margin-top: 10px;
-  padding: 13px;
-  border: 1px solid rgba(109,175,139,0.35);
-  border-radius: var(--radius-md);
-  background: var(--mint-soft);
-}
-
-.drill-complete-box strong {
-  display: block;
-  color: #3A765A;
-  margin-bottom: 6px;
-}
-
-.drill-complete-box p {
-  color: var(--ink);
-  margin-bottom: 4px;
-}
-
-.drill-complete-box small {
-  color: var(--muted);
-  line-height: 1.5;
 }
 
 /* Phase2-1.6: 教材CSV / 本文学習 */
@@ -2415,19 +2348,3 @@ h2, h3, p { margin-top: 0; }
 }
 
 
-/* Phase2-1.45.19: 分析タブの音読記録 */
-.reading-habit-card { padding: 0; overflow: hidden; }
-.reading-habit-card > summary { list-style: none; cursor: pointer; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 18px; }
-.reading-habit-card > summary::-webkit-details-marker { display:none; }
-.reading-habit-card > summary span:first-child { display:flex; align-items:baseline; gap:10px; }
-.reading-habit-card > summary strong { font-size:1rem; }
-.reading-habit-card > summary small { color:var(--muted); font-weight:700; }
-.reading-habit-toggle-label { color:var(--accent,#176a51); font-size:.82rem; font-weight:800; white-space:nowrap; }
-.reading-habit-card[open] > summary { border-bottom:1px solid var(--line); }
-.reading-habit-body { display:grid; justify-items:center; padding:14px; }
-.reading-habit-body .rules-habit-calendar { margin:0; }
-@media (max-width:560px) {
-  .reading-habit-card > summary { padding:14px; }
-  .reading-habit-card > summary span:first-child { display:grid; gap:2px; }
-  .reading-habit-body { padding:12px 8px 14px; }
-}
