@@ -1900,10 +1900,21 @@
 
   function renderAnalysis() {
     const materialCounts = getRecentMaterialCounts(7);
+    renderReadingHabit();
     renderTodayMemo(materialCounts);
     renderCheckPoints();
     renderMaterialBalance(materialCounts);
     renderRecentAttempts();
+  }
+
+  function renderReadingHabit() {
+    const box = el("readingHabitCalendarBody");
+    if (!box) return;
+    if (window.RulesApp?.renderHabitCalendar) {
+      window.RulesApp.renderHabitCalendar(box);
+    } else {
+      box.innerHTML = `<p class="muted">Rulesの長文を読み込むと、ここに音読カレンダーが表示されます。</p>`;
+    }
   }
 
   function renderTodayMemo(materialCounts) {
@@ -2073,6 +2084,97 @@
     return lines.join("\n");
   }
 
+  // v0.4 AI分析用JSON出力: 復習プリント自動生成ツール（Claude側管理）向けに、
+  // 人間可読のテキストではなく構造化データをそのまま渡す。
+  function getMasteryCounts() {
+    const counts = { cleared: 0, review: 0, weak: 0, new: 0 };
+    questions.forEach(q => {
+      const status = state.records[q.id]?.statusInApp || "new";
+      counts[status] = (counts[status] || 0) + 1;
+    });
+    return counts;
+  }
+
+  function getUnlearnedVocab(sampleSize = 10) {
+    const vocabQuestions = questions.filter(q => q.type === "teacher_vocab");
+    const unlearned = vocabQuestions.filter(q => {
+      const status = state.records[q.id]?.statusInApp;
+      return !status || status === "new";
+    });
+    const sample = shuffle(unlearned).slice(0, sampleSize).map(q => {
+      const word = (q.title || "").replace(/^重要単語[:：]\s*/, "").trim();
+      return word || q.title || q.id;
+    });
+    return { count: unlearned.length, sample };
+  }
+
+  // v0.4 復習プリント用: 弱点タグに紐づく実際の問題内容（英文・解説）を、
+  // 重複を避けつつ弱点上位から集める。並べ替え問題などの素材に使う。
+  function getWeakPointQuestionDetails(stats, maxPerTag = 2) {
+    const seen = new Set();
+    const details = [];
+    stats.forEach(stat => {
+      (stat.questionIds || []).slice(0, maxPerTag).forEach(id => {
+        if (seen.has(id)) return;
+        const q = getQuestionById(id);
+        if (!q) return;
+        seen.add(id);
+        details.push({
+          id: q.id,
+          mistakeTag: mistakeTagLabel(q.mistakeTag),
+          source: q.source || null,
+          title: q.title || null,
+          question: q.question || null,
+          explanation: q.explanation || null
+        });
+      });
+    });
+    return details;
+  }
+
+  function buildAnalysisJSON() {
+    const today = getAppTodayDate();
+    const materialCounts = getRecentMaterialCounts(7);
+    const memo = buildTodayMemo(materialCounts);
+    const topInfo = getTopMistakeInfo();
+    const stats = topInfo.stats.slice(0, 3);
+    const attempts = getTodayAttemptsForLog();
+    const readingHabit = window.RulesApp?.getDailyReadingSummary?.() || null;
+
+    return {
+      date: today,
+      todayMemo: { badge: memo.badge, message: memo.message },
+      weakPoints: stats.map(s => ({
+        tag: s.tag,
+        label: s.label,
+        count: s.count,
+        questionIds: s.questionIds || []
+      })),
+      materialBalance: Object.entries(materialCounts)
+        .sort((a, b) => b[1] - a[1])
+        .map(([category, count]) => ({ category, count })),
+      mastery: getMasteryCounts(),
+      readingHabit: readingHabit ? { monthDays: readingHabit.monthDays || 0 } : null,
+      unlearnedVocab: getUnlearnedVocab(10),
+      weakPointQuestions: getWeakPointQuestionDetails(stats),
+      hasAnswerLog: attempts.length > 0,
+      answerLog: attempts.map(a => {
+        const q = getQuestionById(a.questionId);
+        return {
+          questionId: a.questionId,
+          source: q?.source || null,
+          type: q?.type || null,
+          title: q?.title || null,
+          result: a.correct ? "correct" : "wrong",
+          selected: q?.choices?.[a.selected] ?? null,
+          correct: q?.choices?.[q?.answer] ?? null,
+          mistakeTag: q ? mistakeTagLabel(q.mistakeTag) : null,
+          answeredAt: a.answeredAt || null
+        };
+      })
+    };
+  }
+
   async function copyTextToClipboard(text) {
     if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(text);
@@ -2095,6 +2197,24 @@
     const original = btn?.textContent || "学習ログをコピー";
     try {
       await copyTextToClipboard(buildLearningLogText());
+      if (btn) {
+        btn.textContent = "コピーしました";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove("copied");
+        }, 1600);
+      }
+    } catch (error) {
+      alert("コピーできませんでした。ブラウザの権限を確認してください。");
+    }
+  }
+
+  async function copyAnalysisJson() {
+    const btn = el("copyAnalysisJsonBtn");
+    const original = btn?.textContent || "AI分析用JSONをコピー";
+    try {
+      await copyTextToClipboard(JSON.stringify(buildAnalysisJSON(), null, 2));
       if (btn) {
         btn.textContent = "コピーしました";
         btn.classList.add("copied");
@@ -3762,6 +3882,7 @@
     renderAnalysis();
   });
   el("copyAnalysisLogBtn")?.addEventListener("click", copyAnalysisLog);
+  el("copyAnalysisJsonBtn")?.addEventListener("click", copyAnalysisJson);
   el("togglePreviousLearningBtn")?.addEventListener("click", () => {
     state.showPreviousLearning = !state.showPreviousLearning;
     renderAnalysis();

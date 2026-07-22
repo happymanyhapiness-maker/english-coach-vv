@@ -423,8 +423,12 @@
     const card=byId('rulesListenCard');
     if(!card)return;
     habitCalendarDate=new Date(new Date().getFullYear(),new Date().getMonth(),1);
-    card.innerHTML=`<div class="rules-listen-complete"><div class="rules-complete-icon">🎉</div><p class="eyebrow">Daily Reading Complete</p><h2>今日の音読 完了！</h2><p><strong>${esc(info.title)}</strong>を最後まで聞きました。</p><p class="rules-gentle">少しずつ続けた日が、カレンダーにたまっていきます。</p>${monthCalendarHtml(habitCalendarDate)}<button id="rulesListenDoneHome" class="primary-button wide" type="button">今日はここまで</button><button id="rulesListenAgain" class="ghost-button wide" type="button">もう一度聞く</button></div>`;
+    const nextPack=packs.length>1?packs.find(p=>p.lessonId===state.dailyListenTargetLessonId):null;
+    const nextInfo=nextPack?.data?.info?.[0];
+    const nextButtonHtml=nextPack?`<button id="rulesListenNext" class="primary-button wide" type="button">次の長文を聞く（Lesson ${esc(nextInfo?.lessonOrder||'')}　${esc(nextInfo?.title||'')}）</button>`:'';
+    card.innerHTML=`<div class="rules-listen-complete"><div class="rules-complete-icon">🎉</div><p class="eyebrow">Daily Reading Complete</p><h2>今日の音読 完了！</h2><p><strong>${esc(info.title)}</strong>を最後まで聞きました。</p><p class="rules-gentle">少しずつ続けた日が、カレンダーにたまっていきます。</p>${monthCalendarHtml(habitCalendarDate)}${nextButtonHtml}<button id="rulesListenDoneHome" class="${nextPack?'secondary-button':'primary-button'} wide" type="button">今日はここまで</button><button id="rulesListenAgain" class="ghost-button wide" type="button">もう一度聞く</button></div>`;
     bindHabitCalendarNavigation();
+    if(nextPack)byId('rulesListenNext').onclick=()=>{listenOrigin='home';bindData(nextPack);renderListen();show('rulesListenView');};
     byId('rulesListenDoneHome').onclick=()=>{listenOrigin='menu';show('homeView');};
     byId('rulesListenAgain').onclick=()=>{renderListen();};
   }
